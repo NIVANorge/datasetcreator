@@ -1,7 +1,8 @@
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 
 import numpy as np
 import xarray as xr
+
 from dataexport.cfarray.dims import DIMLESS
 
 

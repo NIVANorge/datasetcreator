@@ -1,14 +1,14 @@
 #%%
 import imp
-import psycopg2
 import os
-from dataexport.odm2.queries import timeseries, timeseries_metadata
-
-from dataexport.cfarray.base import dataarraybytime, DEFAULT_ENCODING
-from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
-
-from functools import partial
 from datetime import datetime, timedelta
+from functools import partial
+
+import psycopg2
+
+from dataexport.cfarray.base import DEFAULT_ENCODING, dataarraybytime
+from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
+from dataexport.odm2.queries import timeseries, timeseries_metadata
 
 #%%
 DATABASE_URL = f'postgresql:///odm2?host=localhost&port=5432&user={os.environ["DB_USER"]}'

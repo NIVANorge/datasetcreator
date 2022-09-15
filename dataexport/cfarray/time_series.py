@@ -1,18 +1,13 @@
-from typing import List
-
+from dataclasses import asdict, dataclass
 from datetime import datetime
+from functools import partial
+from typing import List
 
 import xarray as xr
 
-from dataexport.cfarray.attributes import (
-    LatitudeAttrs,
-    LongitudeAttrs,
-    TimeAttrs,
-)
-from dataclasses import asdict, dataclass
-from dataexport.cfarray.dims import TIME, DIMLESS
-from functools import partial
+from dataexport.cfarray.attributes import LatitudeAttrs, LongitudeAttrs, TimeAttrs
 from dataexport.cfarray.base import dataset
+from dataexport.cfarray.dims import DIMLESS, TIME
 
 
 @dataclass

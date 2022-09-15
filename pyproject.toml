@@ -11,6 +11,7 @@ psycopg2-binary = "^2.9.3"
 typing-extensions = "^4.3.0"
 xarray = "^2022.6.0"
 cf-units = "^3.1.1"
+netCDF4 = "^1.6.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
