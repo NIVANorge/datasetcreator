@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List, NamedTuple
 
 import psycopg2
-from psycopg2.extras import NamedTupleCursor
+from psycopg2.extras import RealDictCursor
 from dataclasses import dataclass
 
 
@@ -42,24 +42,33 @@ def timeseries(
     ORDER BY
         TSRV.VALUEDATETIME ASC
     """
-    with conn, conn.cursor(cursor_factory=NamedTupleCursor) as cur:
+    with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (variable_code, project_name, project_station_code, start_time, end_time))
         res = cur.fetchall()
     return TimeseriesResult(variable_code, values=[r.datavalue for r in res], datetime=[r.valuedatetime for r in res])
+
+
+@dataclass
+class TimeseriesMetadataResult:
+    projectname: str
+    projectdescription: str
+    projectstationname: str
+    longitude: float
+    latitude: float
 
 
 def timeseries_metadata(
     conn: psycopg2.extensions.connection,
     project_name: str,
     project_station_code: str,
-) -> NamedTuple:
+) -> TimeseriesMetadataResult:
     query = """
     SELECT 
         p.projectname,
         p.projectdescription,
         pr.projectstationname,
-        ST_X(featuregeometry) as lon,
-        ST_Y(featuregeometry) as lat
+        ST_X(featuregeometry) as longitude,
+        ST_Y(featuregeometry) as latitude
     FROM odm2.samplingfeatures sf
         JOIN odm2.projectstations pr ON pr.samplingfeatureid = sf.samplingfeatureid
         JOIN odm2.projects P ON p.projectid = pr.projectid
@@ -67,7 +76,7 @@ def timeseries_metadata(
         p.projectname = %s
         AND pr.projectstationcode = %s;
     """
-    with conn, conn.cursor(cursor_factory=NamedTupleCursor) as cur:
+    with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (project_name, project_station_code))
         res = cur.fetchone()
-    return res
+    return TimeseriesMetadataResult(**res)

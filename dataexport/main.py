@@ -17,7 +17,7 @@ DATABASE_URL = f'postgresql:///odm2?host=localhost&port=5432&user={os.environ["D
 @app.command()
 def sios_export():
     """Export sios data from odm2 to netcdf
-    
+
     Map odm2 data into climate & forecast convention
     and store the data as netcdf
     """
@@ -39,23 +39,21 @@ def sios_export():
     query_results = map(
         lambda vc: query_by_time(variable_code=vc),
         [
-            "ChlaValue",
-            "RawBackScattering",
-            "fDOM",
-            "OxygenCon",
-            "OxygenSat",
-            "CondValue",
-            "Salinity",
             "Temp",
             "Turbidity",
+            "Salinity",
+            "ChlaValue",
+            "CondValue",
+            "OxygenCon",
+            "OxygenSat",
+            "RawBackScattering",
+            "fDOM",
         ],
     )
 
     project_metadata = timeseries_metadata(conn, project_name=project_name, project_station_code=project_station_code)
 
-    dataarrays = map(
-        lambda qr: sios.cfdataarrays(qr, longitude=project_metadata.lon, latitude=project_metadata.lat), query_results
-    )
+    dataarrays = map(lambda qr: sios.cfdataarray(qr, project_metadata), query_results)
 
 
 if __name__ == "__main__":

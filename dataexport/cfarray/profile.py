@@ -13,6 +13,7 @@ from functools import partial
 from dataexport.cfarray.dims import DEPTH, DIMLESS
 from dataexport.cfarray.base import dataset
 
+
 @dataclass
 class DepthCoords:
     depth: xr.Variable
@@ -35,5 +36,6 @@ def depthcoords(
             latitude=xr.Variable(DIMLESS, latitude, asdict(LatitudeAttrs())),
         )
     )
+
 
 profiledataset = partial(dataset, "profile", "profile_name")

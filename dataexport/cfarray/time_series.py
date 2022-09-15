@@ -27,11 +27,13 @@ def timeseriescoords(
     longitude: float,
     latitude: float,
 ):
-    return asdict(TimeSeriesCoord(
-        time=xr.Variable(TIME, time, asdict(TimeAttrs())),
-        longitude=xr.Variable(DIMLESS, longitude, asdict(LongitudeAttrs())),
-        latitude=xr.Variable(DIMLESS, latitude, asdict(LatitudeAttrs())),
-    ))
+    return asdict(
+        TimeSeriesCoord(
+            time=xr.Variable(TIME, time, asdict(TimeAttrs())),
+            longitude=xr.Variable(DIMLESS, longitude, asdict(LongitudeAttrs())),
+            latitude=xr.Variable(DIMLESS, latitude, asdict(LatitudeAttrs())),
+        )
+    )
 
 
 timeseriesdataset = partial(dataset, feature_type="timeseries", id_name="station_name")

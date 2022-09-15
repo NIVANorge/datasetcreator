@@ -30,5 +30,5 @@ def trajectorycoords(
         )
     )
 
-trajectorydataset =  partial(dataset, "trajectory", "trajectory_name")
- 
+
+trajectorydataset = partial(dataset, "trajectory", "trajectory_name")

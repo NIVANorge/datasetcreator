@@ -75,6 +75,4 @@ def dataset(
     return ds
 
 
-DEFAULT_ENCODING = {
-    "time": {"dtype": "int32", "units": "seconds since 1970-01-01 00:00:00"}
-}
+DEFAULT_ENCODING = {"time": {"dtype": "int32", "units": "seconds since 1970-01-01 00:00:00"}}

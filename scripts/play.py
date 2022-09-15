@@ -51,21 +51,21 @@ turbidity_array = dataarraybytime(
 ).assign_coords(
     timeseriescoords(
         time=turbidity_res.datetime,
-        latitude=project_metadata.lat,
-        longitude=project_metadata.lon,
+        latitude=project_metadata.latitude,
+        longitude=project_metadata.longitude,
     )
 )
 
 # %%
-turbidity_array.plot.line('o')
+turbidity_array.plot.line("o")
 # %%
 ds = timeseriesdataset(
     named_dataarrays=[temperature_array, turbidity_array],
     id=project_metadata.projectstationname,
-    title="SIOS sensor buoy in Adventfjorden", 
-    summary=project_metadata.projectdescription, 
+    title="SIOS sensor buoy in Adventfjorden",
+    summary=project_metadata.projectdescription,
     keywords=["Water-based Platforms>Buoys>Moored>BUOYS"],
-    project=project_metadata.projectname, 
+    project=project_metadata.projectname,
 )
 #%%
 ds
@@ -73,7 +73,7 @@ ds
 ds.to_netcdf("timeseries.nc", unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
 
 # %%
-sios_data = map(lambda vc : query_sios_by_time(variable_code=vc), ["Temp", "Turbidity"])
+sios_data = map(lambda vc: query_sios_by_time(variable_code=vc), ["Temp", "Turbidity"])
 # %%
 from dataexport.datasets.sios import dump as sios_dump
 
