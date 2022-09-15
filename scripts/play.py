@@ -1,4 +1,5 @@
 #%%
+import imp
 import psycopg2
 import os
 from dataexport.odm2.queries import timeseries, timeseries_metadata
@@ -64,7 +65,7 @@ ds = timeseriesdataset(
     id=project_metadata.projectstationname,
     title="SIOS sensor buoy in Adventfjorden",
     summary=project_metadata.projectdescription,
-    keywords=["Water-based Platforms>Buoys>Moored>BUOYS"],
+    keywords=["Water-based Platforms > Buoys > Moored > BUOYS", "EARTH SCIENCE > Oceans > Salinity/Density > Salinity"],
     project=project_metadata.projectname,
 )
 #%%
@@ -74,13 +75,4 @@ ds.to_netcdf("timeseries.nc", unlimited_dims=["time"], encoding=DEFAULT_ENCODING
 
 # %%
 sios_data = map(lambda vc: query_sios_by_time(variable_code=vc), ["Temp", "Turbidity"])
-# %%
-from dataexport.datasets.sios import dump as sios_dump
-
-sios_data = sios_dump(conn, end_time - timedelta(days=2), end_time)
-# %%
-for res in sios_data:
-    print(res.varible_code)
-# %%
-sios_data
 # %%
