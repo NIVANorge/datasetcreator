@@ -38,8 +38,8 @@ temperature_array = dataarraybytime(
 ).assign_coords(
     timeseriescoords(
         time=temperature_res.datetime,
-        latitude=project_metadata.lat,
-        longitude=project_metadata.lon,
+        latitude=project_metadata.latitude,
+        longitude=project_metadata.longitude,
     )
 )
 #%%
