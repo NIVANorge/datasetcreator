@@ -1,0 +1,12 @@
+version: '3.5'
+services:
+  thredds:
+    image: europe-west1-docker.pkg.dev/niva-cd/images/thredds:latest
+    ports:
+      - "80:8080"
+      - "443:8443"
+      - "8443:8443"
+    container_name: thredds
+    volumes:
+      - ./datasets/catalog.xml:/usr/local/tomcat/content/thredds/catalog.xml
+      - ./datasets:/datasets
