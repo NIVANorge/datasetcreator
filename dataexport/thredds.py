@@ -1,6 +1,9 @@
+import logging
 from typing import Optional
+
 import requests
-from tenacity import retry, wait_fixed, stop_after_attempt
+from tenacity import retry, stop_after_attempt, wait_fixed
+
 from dataexport.config import Settings
 
 settings = Settings()
@@ -16,8 +19,9 @@ def get_last_index(dataset_name: str, variable:str) -> Optional[int]:
 
     Get the last timestamp for a given dataset on the thredds server 
     """
-    res = requests.get(f"{settings.thredds_server}/thredds/dodsC/datasets/{dataset_name}.nc.dds?{variable}")
-
+    res = requests.get(f"{settings.thredds_url}/thredds/dodsC/datasets/{dataset_name}.nc.dds?{variable}")
     res.raise_for_status()
-
-    return dds_to_index(res.text) if res.text else None
+    if res.text.startswith("Error"):
+        logging.error(res.text)
+        return None
+    return dds_to_index(res.text)
