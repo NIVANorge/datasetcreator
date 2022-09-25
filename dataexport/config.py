@@ -9,3 +9,8 @@ class Settings(BaseSettings):
         case_sensitive = False
         env_file = ".env"
 
+SETTINGS = Settings()
+THREDDS_DATASET_URL = f"{SETTINGS.thredds_url}/thredds/dodsC/datasets"
+DATABASE_URL = f'postgresql:///odm2?host=localhost&port=5432&user={Settings.db_user}'
+
+
