@@ -12,10 +12,11 @@ from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dataexport.cfarray.base import DEFAULT_ENCODING
 from dataexport.datasets import sios
 from dataexport.odm2.queries import timeseries, timeseries_metadata
+from config import Settings
 
 app = typer.Typer()
 
-DATABASE_URL = f'postgresql:///odm2?host=localhost&port=5432&user={os.environ["DB_USER"]}'
+DATABASE_URL = f'postgresql:///odm2?host=localhost&port=5432&user={Settings.db_user}'
 
 logging.basicConfig(
     level=logging.INFO,
