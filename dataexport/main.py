@@ -4,19 +4,19 @@ import sys
 from datetime import datetime, timedelta
 from functools import partial
 
-import numpy as np
 import psycopg2
 import typer
+import xarray as xr
 
 from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dataexport.cfarray.base import DEFAULT_ENCODING
 from dataexport.datasets import sios
+from dataexport import thredds
 from dataexport.odm2.queries import timeseries, timeseries_metadata
-from config import Settings
+from config import DATABASE_URL, THREDDS_DATASET_URL
 
 app = typer.Typer()
 
-DATABASE_URL = f'postgresql:///odm2?host=localhost&port=5432&user={Settings.db_user}'
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,7 +26,7 @@ logging.basicConfig(
 
 
 @app.command()
-def sios_export():
+def sios_export(start_from_thredds: bool=True):
     """Export sios data from odm2 to netcdf
 
     Map odm2 data into climate & forecast convention
@@ -36,10 +36,13 @@ def sios_export():
     logging.info("Exporting SIOS dataset")
 
     conn = psycopg2.connect(DATABASE_URL)
-    start_time = datetime.now() - timedelta(days=6)
     end_time = datetime.now() - timedelta(days=4)
     project_name = "SIOS"
     project_station_code = "20"
+    dataset_name = "sios"
+
+    last_index = thredds.get_last_index()
+    start_time = xr.open_dataset(f"{THREDDS_DATASET_URL}/{dataset_name}.nc?time[{last_index}]").time[0]
 
     query_by_time = partial(
         timeseries,
@@ -84,7 +87,7 @@ def sios_export():
     first_timestamp = np.datetime_as_string(ds.time[0], timezone="UTC", unit="s")
     filename = f"{first_timestamp}_{project_name}.nc"
     ds.to_netcdf(filename, unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
-
+    conn.close()
     logging.info("Finished")
 
 
