@@ -13,4 +13,4 @@ class Settings(BaseSettings):
 
 SETTINGS = Settings()
 THREDDS_DATASET_URL = f"{SETTINGS.thredds_url}/thredds/dodsC/datasets"
-DATABASE_URL = f"postgresql:///odm2?host=localhost&port=5432&user={Settings.db_user}"
+DATABASE_URL = f"postgresql:///odm2?host=localhost&port=5432&user={SETTINGS.db_user}"

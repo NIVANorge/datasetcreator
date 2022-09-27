@@ -5,13 +5,14 @@ from datetime import datetime, timedelta
 
 import typer
 import xarray as xr
+import numpy as np
 
-
-from config import DATABASE_URL, THREDDS_DATASET_URL
+from dataexport.config import DATABASE_URL, THREDDS_DATASET_URL
 from dataexport.datasets import sios
+from dataexport.cfarray.base import DEFAULT_ENCODING
+
 
 app = typer.Typer()
-
 
 logging.basicConfig(
     level=logging.INFO,
@@ -37,7 +38,7 @@ def sios_update_thredds():
 
     ds = sios.dump(start_time, end_time)
     first_timestamp = np.datetime_as_string(ds.time[0], timezone="UTC", unit="s")
-    filename = f"{first_timestamp}_{project_name}.nc"
+    filename = f"{first_timestamp}_{dataset_name}.nc"
     ds.to_netcdf(filename, unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
 
 

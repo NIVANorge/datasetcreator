@@ -1,8 +1,5 @@
 from dataclasses import asdict
-import imp
 import logging
-import os
-import sys
 from datetime import datetime, timedelta
 from functools import partial
 
@@ -14,7 +11,7 @@ from dataexport.cfarray.time_series import timeseriesdataset
 from dataexport.datasets import maps
 from dataexport.cfarray.base import DatasetAttrs
 from dataexport.odm2.queries import timeseries, timeseries_metadata
-from config import DATABASE_URL
+from dataexport.config import DATABASE_URL
 
 TITLE = "SIOS sensor buoy in Adventfjorden"
 
