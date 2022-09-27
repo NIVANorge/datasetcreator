@@ -56,9 +56,11 @@ def dump(start_time, end_time) -> xr.Dataset:
 
     dataarrays = map(lambda qr: maps.cfdataarray(qr, project_metadata), query_results)
 
-    ds = timeseriesdataset(named_dataarrays=list(dataarrays), title=TITLE)
-    logging.info("Created dataset")
+    ds = timeseriesdataset(
+        named_dataarrays=list(dataarrays), title=TITLE, station_name=project_metadata.projectstationname
+    )
     conn.close()
+    logging.info("Created dataset")
 
     return ds
 
