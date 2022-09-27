@@ -45,7 +45,9 @@ def timeseries(
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (variable_code, project_name, project_station_code, start_time, end_time))
         res = cur.fetchall()
-    return TimeseriesResult(variable_code, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res])
+    return TimeseriesResult(
+        variable_code, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res]
+    )
 
 
 @dataclass

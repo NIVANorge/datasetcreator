@@ -12,10 +12,10 @@ def dds_to_index(dds_time_text: str) -> int:
 
 
 @retry(wait=wait_fixed(2), stop=stop_after_attempt(3))
-def get_last_index(dataset_name: str, variable:str) -> Optional[int]:
+def get_last_index(dataset_name: str, variable: str) -> Optional[int]:
     """Get last timestamp from thredds server
 
-    Get the last timestamp for a given dataset on the thredds server 
+    Get the last timestamp for a given dataset on the thredds server
     """
     res = requests.get(f"{THREDDS_DATASET_URL}/thredds/dodsC/datasets/{dataset_name}.nc.dds?{variable}")
     res.raise_for_status()

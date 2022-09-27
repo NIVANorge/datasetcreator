@@ -6,7 +6,7 @@ from typing import List
 import xarray as xr
 
 from dataexport.cfarray.attributes import DepthAttrs, LatitudeAttrs, LongitudeAttrs, TimeAttrs
-from dataexport.cfarray.base import dataset
+from dataexport.cfarray.base import idarray
 from dataexport.cfarray.dims import DEPTH, DIMLESS
 
 
@@ -34,4 +34,10 @@ def depthcoords(
     )
 
 
-profiledataset = partial(dataset, "profile", "profile_name")
+def profiledataset(named_dataarrays: List[xr.DataArray], title: str, profile_name: str) -> xr.Dataset:
+
+    feature_type = "profile"
+    ds = xr.merge(named_dataarrays + [idarray(feature_type + "_name", profile_name, feature_type + "_id")])
+
+    ds.attrs = {"title": title, "featureType": feature_type}
+    return ds

@@ -2,18 +2,13 @@ import logging
 import os
 import sys
 from datetime import datetime, timedelta
-from functools import partial
 
-import psycopg2
 import typer
 import xarray as xr
 
-from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
-from dataexport.cfarray.base import DEFAULT_ENCODING
-from dataexport.datasets import sios
-from dataexport import thredds
-from dataexport.odm2.queries import timeseries, timeseries_metadata
+
 from config import DATABASE_URL, THREDDS_DATASET_URL
+from dataexport.datasets import sios
 
 app = typer.Typer()
 
@@ -26,7 +21,7 @@ logging.basicConfig(
 
 
 @app.command()
-def sios_export(start_from_thredds: bool=True):
+def sios_update_thredds():
     """Export sios data from odm2 to netcdf
 
     Map odm2 data into climate & forecast convention
@@ -35,60 +30,15 @@ def sios_export(start_from_thredds: bool=True):
 
     logging.info("Exporting SIOS dataset")
 
-    conn = psycopg2.connect(DATABASE_URL)
     end_time = datetime.now() - timedelta(days=4)
-    project_name = "SIOS"
-    project_station_code = "20"
     dataset_name = "sios"
 
-    last_index = thredds.get_last_index()
-    start_time = xr.open_dataset(f"{THREDDS_DATASET_URL}/{dataset_name}.nc?time[{last_index}]").time[0]
+    start_time = xr.open_dataset(f"{THREDDS_DATASET_URL}/{dataset_name}.nc").time.values[-1]
 
-    query_by_time = partial(
-        timeseries,
-        conn=conn,
-        project_name=project_name,
-        project_station_code=project_station_code,
-        start_time=start_time,
-        end_time=end_time,
-    )
-
-    query_results = map(
-        lambda vc: query_by_time(variable_code=vc),
-        [
-            "Temp",
-            "Turbidity",
-            "Salinity",
-            "ChlaValue",
-            "CondValue",
-            #"OxygenCon",
-            #"OxygenSat",
-            #"RawBackScattering",
-            #"fDOM",
-        ],
-    )
-
-    project_metadata = timeseries_metadata(conn, project_name=project_name, project_station_code=project_station_code)
-
-    dataarrays = map(lambda qr: sios.cfdataarray(qr, project_metadata), query_results)
-
-    ds = timeseriesdataset(
-        named_dataarrays=list(dataarrays),
-        id=project_metadata.projectstationname,
-        title="SIOS sensor buoy in Adventfjorden",
-        summary=project_metadata.projectdescription,
-        keywords=[
-            "Water-based Platforms > Buoys > Moored > BUOYS",
-            "EARTH SCIENCE > Oceans > Salinity/Density > Salinity",
-        ],
-        project=project_metadata.projectname,
-    )
-
+    ds = sios.dump(start_time, end_time)
     first_timestamp = np.datetime_as_string(ds.time[0], timezone="UTC", unit="s")
     filename = f"{first_timestamp}_{project_name}.nc"
     ds.to_netcdf(filename, unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
-    conn.close()
-    logging.info("Finished")
 
 
 if __name__ == "__main__":

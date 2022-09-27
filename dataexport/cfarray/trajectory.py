@@ -6,7 +6,7 @@ from typing import List
 import xarray as xr
 
 from dataexport.cfarray.attributes import LatitudeAttrs, LongitudeAttrs, TimeAttrs
-from dataexport.cfarray.base import dataset
+from dataexport.cfarray.base import idarray
 from dataexport.cfarray.dims import DIMLESS, TIME
 
 
@@ -31,4 +31,10 @@ def trajectorycoords(
     )
 
 
-trajectorydataset = partial(dataset, "trajectory", "trajectory_name")
+def trajectorydataset(named_dataarrays: List[xr.DataArray], title: str, trajectory_name: str) -> xr.Dataset:
+    """Trajectory dataset"""
+    feature_type = "trajectory"
+    ds = xr.merge(named_dataarrays + [idarray(feature_type + "_name", trajectory_name, feature_type + "_id")])
+
+    ds.attrs = {"title": title, "featureType": feature_type}
+    return ds

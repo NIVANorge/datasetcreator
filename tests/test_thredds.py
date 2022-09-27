@@ -17,12 +17,13 @@ THREDDS_DATASETS = f"{settings.thredds_url}/thredds/dodsC/datasets"
 def test_dds_to_index(text, expected):
     assert thredds.dds_to_index(text) == expected
 
+
 @pytest.mark.parametrize(
     "text,expected",
     [
         ("Dataset {\n    Int32 time[time = 192];\n} datasets/sios.nc;\n", 192),
         ("Dataset {\n    Int32 time[time = 0];\n} datasets/sios.nc;\n", 0),
-        ("Error {\n    code = 404;\n    message = 'datasets/siosf.nc (No such file or directory)';\n};\n", None)
+        ("Error {\n    code = 404;\n    message = 'datasets/siosf.nc (No such file or directory)';\n};\n", None),
     ],
 )
 def test_last_index(requests_mock, text, expected):

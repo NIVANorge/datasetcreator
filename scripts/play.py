@@ -1,5 +1,4 @@
 #%%
-import imp
 import os
 from datetime import datetime, timedelta
 from functools import partial
@@ -60,19 +59,13 @@ turbidity_array = dataarraybytime(
 # %%
 turbidity_array.plot.line("o")
 # %%
-ds = timeseriesdataset(
-    named_dataarrays=[temperature_array, turbidity_array],
-    id=project_metadata.projectstationname,
-    title="SIOS sensor buoy in Adventfjorden",
-    summary=project_metadata.projectdescription,
-    keywords=["Water-based Platforms > Buoys > Moored > BUOYS", "EARTH SCIENCE > Oceans > Salinity/Density > Salinity"],
-    project=project_metadata.projectname,
-)
+ds = timeseriesdataset(named_dataarrays=[temperature_array, turbidity_array], title="SIOS sensor buoy in Adventfjorden", station_name="Adventfjorden")
 #%%
-ds
 # %%
 ds.to_netcdf("timeseries.nc", unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
 
 # %%
 sios_data = map(lambda vc: query_sios_by_time(variable_code=vc), ["Temp", "Turbidity"])
+# %%
+ds
 # %%

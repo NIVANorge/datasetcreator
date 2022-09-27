@@ -1,71 +1,82 @@
+from dataclasses import asdict
+import imp
 import logging
-from array import array
+import os
+import sys
 from datetime import datetime, timedelta
 from functools import partial
 
+import psycopg2
+import numpy as np
 import xarray as xr
 
-from dataexport.cfarray.base import DEFAULT_ENCODING, dataarraybytime
-from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
-from dataexport.odm2.queries import TimeseriesMetadataResult, TimeseriesResult
+from dataexport.cfarray.time_series import timeseriesdataset
+from dataexport.datasets import maps
+from dataexport.cfarray.base import DatasetAttrs
+from dataexport.odm2.queries import timeseries, timeseries_metadata
+from config import DATABASE_URL
+
+TITLE = "SIOS sensor buoy in Adventfjorden"
 
 
-def cfdataarray(timeseries_result: TimeseriesResult, project_metadata: TimeseriesMetadataResult) -> xr.DataArray:
-    """Match timeserie data to C&F
+def dump(start_time, end_time) -> xr.Dataset:
+    """Export sios data from odm2 to netcdf
 
-    Match timeseries data to the climate and forecast convention based on the given variable code.
-    Standard names are found at http://vocab.nerc.ac.uk/collection/P07/current/
-    online unit list on https://ncics.org/portfolio/other-resources/udunits2/
+    Map odm2 data into climate & forecast convention
     """
-    match timeseries_result.variable_code:
-        case "Temp":
-            array = dataarraybytime(
-                data=timeseries_result.values,
-                name="temperature",
-                standard_name="sea_water_temperature",
-                long_name="Sea Water Temperature",
-                units="degree_Celsius",
-            )
-        case "Turbidity":
-            array = dataarraybytime(
-                data=timeseries_result.values,
-                name="turbidity",
-                standard_name="sea_water_turbidity",
-                long_name="Sea Water Turbidity",
-                units="NTU",
-            )
-        case "Salinity":
-            array = dataarraybytime(
-                data=timeseries_result.values,
-                name="salinity",
-                standard_name="sea_water_salinity",
-                long_name="Sea Water Salinity",
-                units="1e-3",
-            )
-        case "ChlaValue":
-            array = dataarraybytime(
-                data=timeseries_result.values,
-                name="chlorophylla",
-                standard_name="mass_concentration_of_chlorophyll_a_in_sea_water",
-                long_name="Mass Concentration of Chlorophyll A in Sea Water",
-                units="µg/l",
-            )
-        case "CondValue":
-            array = dataarraybytime(
-                data=timeseries_result.values,
-                name="conductivity",
-                standard_name="sea_water_electrical_conductivity",
-                long_name="Sea Water Conductivity",
-                units="S/m",
-            )
-        case _:
-            logging.warning(f"Array definition not found for: {timeseries_result.variable_code}")
-            # raise RuntimeError("Unknown variable code")
 
-    return array.assign_coords(
-        timeseriescoords(
-            time=timeseries_result.datetime,
-            latitude=project_metadata.latitude,
-            longitude=project_metadata.longitude,
+    logging.info("Exporting SIOS dataset")
+
+    project_name = "SIOS"
+    project_station_code = "20"
+
+    conn = psycopg2.connect(DATABASE_URL)
+    query_by_time = partial(
+        timeseries,
+        conn=conn,
+        project_name=project_name,
+        project_station_code=project_station_code,
+        start_time=start_time,
+        end_time=end_time,
+    )
+
+    query_results = map(
+        lambda vc: query_by_time(variable_code=vc),
+        [
+            "Temp",
+            "Turbidity",
+            "Salinity",
+            "ChlaValue",
+            "CondValue",
+            # "OxygenCon",
+            # "OxygenSat",
+            # "RawBackScattering",
+            # "fDOM",
+        ],
+    )
+
+    project_metadata = timeseries_metadata(conn, project_name=project_name, project_station_code=project_station_code)
+
+    dataarrays = map(lambda qr: maps.cfdataarray(qr, project_metadata), query_results)
+
+    ds = timeseriesdataset(named_dataarrays=list(dataarrays), title=TITLE)
+    logging.info("Created dataset")
+    conn.close()
+
+    return ds
+
+
+def template(ds: xr.Dataset, project_metadata):
+    ds.attrs.update(
+        asdict(
+            DatasetAttrs(
+                title=TITLE,
+                summary=project_metadata.projectdescription,
+                keywords=[
+                    "Water-based Platforms > Buoys > Moored > BUOYS",
+                    "EARTH SCIENCE > Oceans > Salinity/Density > Salinity",
+                ],
+                project=project_metadata.projectname,
+            )
         )
     )
