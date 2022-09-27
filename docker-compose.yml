@@ -8,5 +8,5 @@ services:
       - "8443:8443"
     container_name: thredds
     volumes:
-      - ./datasets/catalog.xml:/usr/local/tomcat/content/thredds/catalog.xml
-      - ./datasets:/datasets
+      - ./threddsdata/catalog.xml:/usr/local/tomcat/content/thredds/catalog.xml
+      - ./threddsdata:/datasets
