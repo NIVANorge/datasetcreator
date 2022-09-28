@@ -29,6 +29,3 @@ def test_dds_to_index(text, expected):
 def test_last_index(requests_mock, text, expected):
     requests_mock.get(f"{THREDDS_DATASETS}/sample.nc.dds?time", text=text)
     assert thredds.get_last_index("sample", "time") == expected
-
-def test_end_time():
-    
