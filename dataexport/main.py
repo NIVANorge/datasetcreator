@@ -46,6 +46,5 @@ def sios_update_thredds():
     logging.info(f"Data {ds.time[0]} --> {ds.time[-1]} exported")
 
 
-
 if __name__ == "__main__":
     app()

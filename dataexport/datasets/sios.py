@@ -16,7 +16,7 @@ from dataexport.config import DATABASE_URL
 TITLE = "SIOS sensor buoy in Adventfjorden"
 
 
-def dump(start_time, end_time) -> xr.Dataset:
+def dump(start_time: datetime, end_time: datetime) -> xr.Dataset:
     """Export sios data from odm2 to netcdf
 
     Map odm2 data into climate & forecast convention

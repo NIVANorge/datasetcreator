@@ -59,7 +59,11 @@ turbidity_array = dataarraybytime(
 # %%
 turbidity_array.plot.line("o")
 # %%
-ds = timeseriesdataset(named_dataarrays=[temperature_array, turbidity_array], title="SIOS sensor buoy in Adventfjorden", station_name="Adventfjorden")
+ds = timeseriesdataset(
+    named_dataarrays=[temperature_array, turbidity_array],
+    title="SIOS sensor buoy in Adventfjorden",
+    station_name="Adventfjorden",
+)
 #%%
 # %%
 ds.to_netcdf("timeseries.nc", unlimited_dims=["time"], encoding=DEFAULT_ENCODING)

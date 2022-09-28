@@ -30,7 +30,7 @@ def last_index(dataset_name: str, variable: str) -> Optional[int]:
 
 def end_time(dataset_name: str) -> datetime:
     """Get dataset end time
-    
+
     Fetch the last timestamp for a dataset on the thredds server
     """
     start_time = xr.open_dataset(f"{THREDDS_DATASET_URL}/{dataset_name}.nc").time.values[-1]
