@@ -7,7 +7,7 @@ import xarray as xr
 
 from dataexport.cfarray.attributes import LatitudeAttrs, LongitudeAttrs, TimeAttrs
 from dataexport.cfarray.base import idarray
-from dataexport.cfarray.dims import DIMLESS, TIME
+from dataexport.cfarray.dims import TIME
 
 
 @dataclass
