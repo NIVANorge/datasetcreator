@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, NamedTuple
+from typing import List, Tuple, Optional
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -82,3 +82,30 @@ def timeseries_metadata(
         cur.execute(query, (project_name, project_station_code))
         res = cur.fetchone()
     return TimeseriesMetadataResult(**res)
+
+
+def first_timestamp(
+    conn: psycopg2.extensions.connection, variable_codes: Tuple[str], project_name: str, project_station_code: str
+) -> Optional[datetime]:
+    query = """
+    SELECT
+        valuedatetime
+    FROM
+        odm2.timeseriesresultvalues tsrv
+        JOIN odm2.results r ON r.resultid = tsrv.resultid
+        JOIN odm2.featureactions f ON f.featureactionid = r.featureactionid
+        JOIN odm2.samplingfeatures sf ON f.samplingfeatureid=sf.samplingfeatureid 
+        JOIN odm2.variables v ON v.variableid=r.variableid
+        JOIN odm2.projectstations pr ON pr.samplingfeatureid=sf.samplingfeatureid 
+        JOIN odm2.projects p ON p.projectid=pr.projectid
+    WHERE
+        V.VARIABLECODE IN %s
+        AND P.PROJECTNAME = %s
+        AND PR.PROJECTSTATIONCODE = %s
+    ORDER BY
+        TSRV.VALUEDATETIME ASC
+    """
+    with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute(query, (variable_codes, project_name, project_station_code))
+        res = cur.fetchone()
+    return res['valuedatetime'] if res is not None else None
