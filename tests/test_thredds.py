@@ -1,10 +1,7 @@
 from unittest import mock
 import pytest
 from dataexport import thredds
-from dataexport.config import Settings
-
-settings = Settings()
-THREDDS_DATASETS = f"{settings.thredds_url}/thredds/dodsC/datasets"
+from dataexport.config import THREDDS_DATASET_URL
 
 
 @pytest.mark.parametrize(
@@ -27,5 +24,5 @@ def test_dds_to_index(text, expected):
     ],
 )
 def test_last_index(requests_mock, text, expected):
-    requests_mock.get(f"{THREDDS_DATASETS}/sample.nc.dds?time", text=text)
-    assert thredds.get_last_index("sample", "time") == expected
+    requests_mock.get(f"{THREDDS_DATASET_URL}/sample.nc.dds?time", text=text)
+    assert thredds.last_index("sample", "time") == expected

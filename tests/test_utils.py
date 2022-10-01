@@ -1,5 +1,4 @@
 from datetime import datetime
-import imp
 import numpy as np
 
 from dataexport import utils
