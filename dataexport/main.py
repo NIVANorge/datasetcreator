@@ -25,7 +25,7 @@ logging.basicConfig(
 
 
 @app.command()
-def sios_update_thredds():
+def sios():
     """Export sios data from odm2 to netcdf
 
     Map odm2 data into climate & forecast convention
