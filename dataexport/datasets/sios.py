@@ -2,8 +2,8 @@ from dataclasses import asdict
 import logging
 from datetime import datetime, timedelta
 from functools import partial
+from psycopg2.extensions import connection
 
-import psycopg2
 import numpy as np
 import xarray as xr
 
@@ -11,12 +11,11 @@ from dataexport.cfarray.time_series import timeseriesdataset
 from dataexport.datasets import maps
 from dataexport.cfarray.base import DatasetAttrs
 from dataexport.odm2.queries import timeseries, timeseries_metadata
-from dataexport.config import DATABASE_URL
 
 TITLE = "SIOS sensor buoy in Adventfjorden"
 
 
-def dump(start_time: datetime, end_time: datetime) -> xr.Dataset:
+def dump(conn: connection, start_time: datetime, end_time: datetime) -> xr.Dataset:
     """Export sios data from odm2 to netcdf
 
     Map odm2 data into climate & forecast convention
@@ -27,7 +26,6 @@ def dump(start_time: datetime, end_time: datetime) -> xr.Dataset:
     project_name = "SIOS"
     project_station_code = "20"
 
-    conn = psycopg2.connect(DATABASE_URL)
     query_by_time = partial(
         timeseries,
         conn=conn,
@@ -59,7 +57,6 @@ def dump(start_time: datetime, end_time: datetime) -> xr.Dataset:
     ds = timeseriesdataset(
         named_dataarrays=list(dataarrays), title=TITLE, station_name=project_metadata.projectstationname
     )
-    conn.close()
     logging.info("Created dataset")
 
     return ds

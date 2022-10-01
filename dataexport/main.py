@@ -5,12 +5,14 @@ from datetime import datetime, timedelta
 
 import typer
 import xarray as xr
+import psycopg2
 import numpy as np
 
 from dataexport.config import DATABASE_URL, THREDDS_DATASET_URL
 from dataexport.datasets import sios
 from dataexport.cfarray.base import DEFAULT_ENCODING
-from dataexport import utils, thredds
+from dataexport import thredds
+from dataexport.config import DATABASE_URL
 
 
 app = typer.Typer()
@@ -37,7 +39,9 @@ def sios_update_thredds():
     start_time = thredds.end_time(dataset_name)
     end_time = datetime.now()
 
+    conn = psycopg2.connect(DATABASE_URL)
     ds = sios.dump(start_time, end_time)
+    conn.close()
 
     first_timestamp = np.datetime_as_string(ds.time[0], timezone="UTC", unit="s")
     filename = f"{first_timestamp}_{dataset_name}.nc"
