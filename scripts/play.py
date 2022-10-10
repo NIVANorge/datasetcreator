@@ -10,7 +10,7 @@ from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dataexport.odm2.queries import timeseries, timeseries_metadata
 
 #%%
-DATABASE_URL = f'postgresql:///odm2?host=localhost&port=5432&user={os.environ["DB_USER"]}'
+DATABASE_URL = f'postgresql:///odm2?host=localhost&port=6001&user={os.environ["DB_USER"]}'
 conn = psycopg2.connect(DATABASE_URL)
 #%%
 end_time = datetime.now()
