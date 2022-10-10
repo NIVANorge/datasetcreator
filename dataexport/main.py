@@ -25,7 +25,7 @@ logging.basicConfig(
 
 
 @app.command()
-def sios():
+def sios_dump():
     """Export sios data from odm2 to netcdf
 
     Map odm2 data into climate & forecast convention
@@ -40,7 +40,7 @@ def sios():
     end_time = datetime.now()
 
     conn = psycopg2.connect(DATABASE_URL)
-    ds = sios.dump(start_time, end_time)
+    ds = sios.dump(conn, start_time, end_time)
     conn.close()
 
     first_timestamp = np.datetime_as_string(ds.time[0], timezone="UTC", unit="s")
