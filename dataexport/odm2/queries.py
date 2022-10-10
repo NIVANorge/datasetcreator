@@ -4,7 +4,7 @@ from typing import List, Tuple, Optional
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
-
+import logging
 
 @dataclass
 class TimeseriesResult:
@@ -42,6 +42,8 @@ def timeseries(
     ORDER BY
         TSRV.VALUEDATETIME ASC
     """
+    logging.info(f"Querying timeseries for variable code {variable_code} on project {project_name}")
+
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (variable_code, project_name, project_station_code, start_time, end_time))
         res = cur.fetchall()
@@ -55,6 +57,7 @@ class TimeseriesMetadataResult:
     projectname: str
     projectdescription: str
     projectstationname: str
+    projectstationcode: str
     longitude: float
     latitude: float
 
@@ -69,6 +72,7 @@ def timeseries_metadata(
         p.projectname,
         p.projectdescription,
         pr.projectstationname,
+        pr.projectstationcode,
         ST_X(featuregeometry) as longitude,
         ST_Y(featuregeometry) as latitude
     FROM odm2.samplingfeatures sf
