@@ -108,4 +108,4 @@ def first_timestamp(
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (variable_codes, project_name, project_station_code))
         res = cur.fetchone()
-    return res['valuedatetime'] if res is not None else None
+    return res["valuedatetime"] if res is not None else None
