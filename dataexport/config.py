@@ -4,6 +4,7 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     db_user: str
     db_host: str
+    db_port: int = 5432
     thredds_url: str
 
     class Config:
@@ -13,4 +14,4 @@ class Settings(BaseSettings):
 
 SETTINGS = Settings()
 THREDDS_DATASET_URL = f"{SETTINGS.thredds_url}/thredds/dodsC/datasets"
-DATABASE_URL = f"postgresql:///odm2?host=localhost&port=5432&user={SETTINGS.db_user}"
+DATABASE_URL = f"postgresql:///odm2?host=localhost&port={SETTINGS.db_port}&user={SETTINGS.db_user}"
