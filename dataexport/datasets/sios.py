@@ -10,15 +10,15 @@ import xarray as xr
 from dataexport.cfarray.time_series import timeseriesdataset
 from dataexport.datasets import maps
 from dataexport.cfarray.base import DatasetAttrs
-from dataexport.odm2.queries import timeseries, timeseries_metadata
+from dataexport.odm2.queries import timeseries, timeseries_metadata, TimeseriesMetadataResult
 
 TITLE = "SIOS sensor buoy in Adventfjorden"
 
 
 def dump(conn: connection, start_time: datetime, end_time: datetime) -> xr.Dataset:
-    """Export sios data from odm2 to netcdf
+    """Export sios data from odm2 to xarray dataset
 
-    Map odm2 data into climate & forecast convention
+    Map odm2 data into climate & forecast convention and return a xarray dataset.
     """
 
     logging.info("Exporting SIOS dataset")
@@ -51,11 +51,10 @@ def dump(conn: connection, start_time: datetime, end_time: datetime) -> xr.Datas
     )
 
     project_metadata = timeseries_metadata(conn, project_name=project_name, project_station_code=project_station_code)
-
-    dataarrays = map(lambda qr: maps.cfdataarray(qr, project_metadata), query_results)
+    time_arrays = map(lambda qr: maps.cftimearray(qr, project_metadata.latitude, project_metadata.longitude), query_results)
 
     ds = timeseriesdataset(
-        named_dataarrays=list(dataarrays), title=TITLE, station_name=project_metadata.projectstationname
+        named_dataarrays=list(time_arrays), title=TITLE, station_name=project_metadata.projectstationname
     )
     logging.info("Created dataset")
 

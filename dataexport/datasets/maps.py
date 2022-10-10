@@ -10,7 +10,7 @@ from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dataexport.odm2.queries import TimeseriesMetadataResult, TimeseriesResult
 
 
-def cfdataarray(timeseries_result: TimeseriesResult, project_metadata: TimeseriesMetadataResult) -> xr.DataArray:
+def cftimearray(timeseries_result: TimeseriesResult, latitude: float, longitude: float) -> xr.DataArray:
     """Match timeserie data to C&F
 
     Match timeseries data to the climate and forecast convention based on the given variable code.
@@ -65,7 +65,7 @@ def cfdataarray(timeseries_result: TimeseriesResult, project_metadata: Timeserie
     return array.assign_coords(
         timeseriescoords(
             time=timeseries_result.datetime,
-            latitude=project_metadata.latitude,
-            longitude=project_metadata.longitude,
+            latitude=latitude,
+            longitude=longitude,
         )
     )
