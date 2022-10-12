@@ -1,8 +1,8 @@
-from unittest import mock
 from datetime import datetime
+from unittest import mock
 
-from dataexport.odm2.queries import TimeseriesResult, TimeseriesMetadataResult
 from dataexport.datasets import sios
+from dataexport.odm2.queries import TimeseriesMetadataResult, TimeseriesResult
 
 sample_timeseries = TimeseriesResult(
     variable_code="Temp",

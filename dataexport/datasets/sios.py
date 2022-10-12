@@ -1,16 +1,16 @@
-from dataclasses import asdict
 import logging
+from dataclasses import asdict
 from datetime import datetime, timedelta
 from functools import partial
-from psycopg2.extensions import connection
 
 import numpy as np
 import xarray as xr
+from psycopg2.extensions import connection
 
+from dataexport.cfarray.base import DatasetAttrs
 from dataexport.cfarray.time_series import timeseriesdataset
 from dataexport.datasets import maps
-from dataexport.cfarray.base import DatasetAttrs
-from dataexport.odm2.queries import timeseries, timeseries_metadata, TimeseriesMetadataResult
+from dataexport.odm2.queries import TimeseriesMetadataResult, timeseries, timeseries_metadata
 
 TITLE = "SIOS sensor buoy in Adventfjorden"
 PROJECT_NAME = "SIOS"

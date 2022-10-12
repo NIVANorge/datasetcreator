@@ -1,13 +1,13 @@
 import logging
+from datetime import datetime
 from typing import Optional
 
 import requests
 import xarray as xr
-from datetime import datetime
 from tenacity import retry, stop_after_attempt, wait_fixed
 
-from dataexport.config import THREDDS_DATASET_URL
 from dataexport import utils
+from dataexport.config import THREDDS_DATASET_URL
 
 
 def dds_to_index(dds_time_text: str) -> int:

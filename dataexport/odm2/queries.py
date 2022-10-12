@@ -1,10 +1,11 @@
+import logging
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, Tuple, Optional
+from typing import List, Optional, Tuple
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
-import logging
+
 
 @dataclass
 class TimeseriesResult:

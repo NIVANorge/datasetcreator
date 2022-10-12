@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-import numpy as np
-from typing import List
 from datetime import datetime, timedelta
+from typing import List
+
+import numpy as np
 
 
 def numpy_to_datetime(dt: np.datetime64) -> datetime:

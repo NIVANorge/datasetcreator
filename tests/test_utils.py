@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+
 import numpy as np
 import pytest
-from datetime import datetime, timedelta
 
 from dataexport import utils
 
