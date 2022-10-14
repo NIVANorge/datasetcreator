@@ -1,6 +1,6 @@
 import logging
 from dataclasses import asdict
-from datetime import datetime, timedelta
+from datetime import datetime
 from functools import partial
 
 import numpy as np
@@ -86,7 +86,16 @@ def acdd(ds: xr.Dataset, project_metadata):
                     "Water-based Platforms > Buoys > Moored > BUOYS",
                     "EARTH SCIENCE > Oceans > Salinity/Density > Salinity",
                 ],
+                featureType=ds.attrs["featureType"],
+                date_created=str(datetime.now()),
                 project=project_metadata.projectname,
+                time_coverage_start=str(ds.time.min().values),
+                time_coverage_end=str(ds.time.max().values),
+                geospatial_lat_min=float(ds.latitude.min()),
+                geospatial_lat_max=float(ds.latitude.max()),
+                geospatial_lon_min=float(ds.longitude.min()),
+                geospatial_lon_max=float(ds.longitude.max()),
             )
         )
     )
+    return ds
