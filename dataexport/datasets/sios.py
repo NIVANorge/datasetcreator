@@ -15,9 +15,20 @@ from dataexport.odm2.queries import TimeseriesMetadataResult, timeseries, timese
 TITLE = "SIOS sensor buoy in Adventfjorden"
 PROJECT_NAME = "SIOS"
 PROJECT_STATION_CODE = "20"
+VARIABLE_CODES = [
+    "Temp",
+    "Turbidity",
+    "Salinity",
+    "ChlaValue",
+    "CondValue",
+    # "OxygenCon",
+    # "OxygenSat",
+    # "RawBackScattering",
+    # "fDOM",
+]
 
 
-def dump(conn: connection, start_time: datetime, end_time: datetime, is_acdd: bool=False) -> xr.Dataset:
+def dump(conn: connection, start_time: datetime, end_time: datetime, is_acdd: bool = False) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
     Map odm2 data into climate & forecast convention and return a xarray dataset.
@@ -29,7 +40,9 @@ def dump(conn: connection, start_time: datetime, end_time: datetime, is_acdd: bo
     return acdd(ds, project_metadata) if is_acdd else ds
 
 
-def dataset(conn: connection, start_time: datetime, end_time: datetime, project_metadata: TimeseriesMetadataResult) -> xr.Dataset:
+def dataset(
+    conn: connection, start_time: datetime, end_time: datetime, project_metadata: TimeseriesMetadataResult
+) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
     Map odm2 data into climate & forecast convention and return a xarray dataset.
@@ -44,22 +57,11 @@ def dataset(conn: connection, start_time: datetime, end_time: datetime, project_
         end_time=end_time,
     )
 
-    query_results = map(
-        lambda vc: query_by_time(variable_code=vc),
-        [
-            "Temp",
-            "Turbidity",
-            "Salinity",
-            "ChlaValue",
-            "CondValue",
-            # "OxygenCon",
-            # "OxygenSat",
-            # "RawBackScattering",
-            # "fDOM",
-        ],
-    )
+    query_results = map(lambda vc: query_by_time(variable_code=vc), VARIABLE_CODES)
 
-    time_arrays = map(lambda qr: maps.cftimearray(qr, project_metadata.latitude, project_metadata.longitude), query_results)
+    time_arrays = map(
+        lambda qr: maps.cftimearray(qr, project_metadata.latitude, project_metadata.longitude), query_results
+    )
 
     ds = timeseriesdataset(
         named_dataarrays=list(time_arrays), title=TITLE, station_name=project_metadata.projectstationname
@@ -68,9 +70,10 @@ def dataset(conn: connection, start_time: datetime, end_time: datetime, project_
 
     return ds
 
+
 def acdd(ds: xr.Dataset, project_metadata):
-    """ Add ACDD attributes to a xarray dataset
-    
+    """Add ACDD attributes to a xarray dataset
+
     Add attributes following the Attribute Convention for Data Discovery to a dataset
     """
     logging.info(f"Adding ACDD attributes")

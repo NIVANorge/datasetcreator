@@ -1,16 +1,13 @@
 import logging
-import os
 import sys
 from datetime import datetime, timedelta
 
-import numpy as np
 import psycopg2
 import typer
-import xarray as xr
 
-from dataexport import datasets, thredds
-from dataexport.cfarray.base import DEFAULT_ENCODING
-from dataexport.config import DATABASE_URL, THREDDS_DATASET_URL
+from dataexport import datasets, utils
+from dataexport import odm2, thredds
+from dataexport.config import DATABASE_URL
 
 app = typer.Typer()
 
@@ -22,7 +19,9 @@ logging.basicConfig(
 
 
 @app.command()
-def sios_dump(acdd:bool=False):
+def sios_dump(
+    every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False
+):
     """Export sios data from odm2 to netcdf
 
     Map odm2 data into climate & forecast convention
@@ -34,18 +33,30 @@ def sios_dump(acdd:bool=False):
 
     dataset_name = "sios"
 
-    start_time = thredds.end_time(dataset_name)
-    end_time = datetime.now()
-
     conn = psycopg2.connect(DATABASE_URL)
-    ds = datasets.sios.dump(conn, start_time, end_time, acdd)
+    start_time = (
+        odm2.queries.first_timestamp(
+            conn,
+            datasets.sios.VARIABLE_CODES,
+            datasets.sios.PROJECT_NAME,
+            datasets.sios.PROJECT_STATION_CODE,
+        )
+        if start_from_scratch
+        else thredds.end_time(dataset_name)
+    )
+
+    time_intervals = utils.datetime_intervals(start_time, datetime.now(), timedelta(hours=every_n_hours))
+    last_index = len(time_intervals) if stop_after_n_files < 0 else stop_after_n_files
+
+    for interval in time_intervals[0:last_index]:
+        logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
+        ds = datasets.sios.dump(conn, interval.start_time, interval.end_time, acdd)
+        if ds.dims['time']>0:
+            utils.save_dataset(dataset_name, ds)
+        else:
+            logging.info("No data for interval")
+
     conn.close()
-
-    first_timestamp = np.datetime_as_string(ds.time[0], timezone="UTC", unit="s").replace(":","")
-    filename = f"{first_timestamp}_{dataset_name}.nc"
-    ds.to_netcdf(filename, unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
-
-    logging.info(f"Data {ds.time[0]} --> {ds.time[-1]} exported")
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pytest
+import xarray as xr
 
 from dataexport import utils
 
@@ -22,6 +23,12 @@ def test_numpy_to_datetime():
             1,
         ),
         (
+            datetime(2022, 10, 2, 6, 30),
+            datetime(2022, 10, 12, 10, 45),
+            timedelta(hours=24),
+            11,
+        ),
+        (
             datetime(2022, 9, 20, 9, 45),
             datetime(2022, 9, 30, 9, 45),
             timedelta(days=1),
@@ -39,4 +46,5 @@ def test_time_interval(start_time, end_time, delta, expected):
 
     intervals = utils.datetime_intervals(start_time, end_time, delta)
     assert len(intervals) == expected
+    assert intervals[0].start_time == start_time
     assert intervals[-1].start_time + delta == intervals[-1].end_time

@@ -17,6 +17,7 @@ sample_project_metadata = TimeseriesMetadataResult(
     projectname="SIOS",
     projectdescription="Sensorbøye innerst i Adventfjorden",
     projectstationname="SIOS bøye",
+    projectstationcode="20",
     longitude=15.6231,
     latitude=78.2232,
 )
