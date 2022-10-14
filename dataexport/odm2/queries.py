@@ -90,7 +90,7 @@ def timeseries_metadata(
 
 
 def first_timestamp(
-    conn: psycopg2.extensions.connection, variable_codes: Tuple[str], project_name: str, project_station_code: str
+    conn: psycopg2.extensions.connection, variable_codes: List[str], project_name: str, project_station_code: str
 ) -> Optional[datetime]:
     query = """
     SELECT
@@ -111,6 +111,6 @@ def first_timestamp(
         TSRV.VALUEDATETIME ASC
     """
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute(query, (variable_codes, project_name, project_station_code))
+        cur.execute(query, (tuple(variable_codes), project_name, project_station_code))
         res = cur.fetchone()
     return res["valuedatetime"] if res is not None else None
