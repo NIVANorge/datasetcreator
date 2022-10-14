@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 
 import psycopg2
 import typer
+from functools import partial
+
 
 from dataexport import datasets, utils
 from dataexport import odm2, thredds
@@ -29,32 +31,33 @@ def sios_dump(
     """
 
     logging.info("Exporting SIOS dataset")
-    logging.info(f"{acdd}")
 
     dataset_name = "sios"
 
     conn = psycopg2.connect(DATABASE_URL)
-    start_time = (
-        odm2.queries.first_timestamp(
-            conn,
-            datasets.sios.VARIABLE_CODES,
-            datasets.sios.PROJECT_NAME,
-            datasets.sios.PROJECT_STATION_CODE,
-        )
-        if start_from_scratch
-        else thredds.end_time(dataset_name)
+
+    timestamp_fetcher = partial(
+        odm2.queries.fetch_one_timestamp,
+        conn=conn,
+        variable_codes=datasets.sios.VARIABLE_CODES,
+        project_name=datasets.sios.PROJECT_NAME,
+        project_station_code=datasets.sios.PROJECT_STATION_CODE
     )
 
-    time_intervals = utils.datetime_intervals(start_time, datetime.now(), timedelta(hours=every_n_hours))
+    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(dataset_name)
+    end_time = timestamp_fetcher(is_asc=False)
+    time_intervals = utils.datetime_intervals(start_time, end_time, timedelta(hours=every_n_hours))
     last_index = len(time_intervals) if stop_after_n_files < 0 else stop_after_n_files
+
+    logging.info(f"Start dumping for {start_time} -> {end_time}")
 
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
         ds = datasets.sios.dump(conn, interval.start_time, interval.end_time, acdd)
-        if ds.dims['time']>0:
+        if ds.dims['time'] > 0:
             utils.save_dataset(dataset_name, ds)
         else:
-            logging.info("No data for interval")
+            logging.info("Found no data for interval")
 
     conn.close()
 

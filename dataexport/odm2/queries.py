@@ -89,8 +89,12 @@ def timeseries_metadata(
     return TimeseriesMetadataResult(**res)
 
 
-def first_timestamp(
-    conn: psycopg2.extensions.connection, variable_codes: List[str], project_name: str, project_station_code: str
+def fetch_one_timestamp(
+    conn: psycopg2.extensions.connection,
+    variable_codes: List[str],
+    project_name: str,
+    project_station_code: str,
+    is_asc: bool,
 ) -> Optional[datetime]:
     query = """
     SELECT
@@ -108,8 +112,9 @@ def first_timestamp(
         AND P.PROJECTNAME = %s
         AND PR.PROJECTSTATIONCODE = %s
     ORDER BY
-        TSRV.VALUEDATETIME ASC
+        TSRV.VALUEDATETIME
     """
+    query += "ASC" if is_asc else "DESC"
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (tuple(variable_codes), project_name, project_station_code))
         res = cur.fetchone()
