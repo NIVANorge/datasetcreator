@@ -9,4 +9,5 @@ services:
     container_name: thredds
     volumes:
       - ./threddsdata/catalog.xml:/usr/local/tomcat/content/thredds/catalog.xml
+      - ./threddsdata/subcatalog.xml:/usr/local/tomcat/content/thredds/subcatalog.xml
       - ./threddsdata:/datasets
