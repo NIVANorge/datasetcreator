@@ -4,7 +4,6 @@ from typing import Optional
 
 import requests
 import xarray as xr
-from tenacity import retry, stop_after_attempt, wait_fixed
 
 from dataexport import utils
 from dataexport.config import THREDDS_DATASET_URL
