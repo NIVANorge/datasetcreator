@@ -67,6 +67,7 @@ class DepthAttrs:
 @dataclass
 class DatasetAttrs:
     title: str
+    summary: str
     date_created: datetime
     keywords: List[str]
     time_coverage_start: str
@@ -77,15 +78,18 @@ class DatasetAttrs:
     geospatial_lon_max: float
     featureType: str
     project: str
-    keywords_vocabulary: str = "GCM:GCMD Keywords"
+    naming_authority: str = "no.niva"
+    creator_type: str = "institution"
+    creator_institution: str = "Norwegian Institute for Water Research"
+    creator_email: str = "miljoinformatikk@niva.no"
+    creator_url: str = "https://niva.no"
     data_owner: str = "Norwegian Institute for Water Research"
-    summary: str = ""
-    geospatial_vertical_positive: str = "down"
+    keywords_vocabulary: str = "GCM:GCMD Keywords"
     processing_level: str = "Missing data has been filled with fillValue."
-    Conventions: str = "CF-1.6, ACDD-1.3"
+    Conventions: str = "CF-1.7, ACDD-1.3"
     netcdf_version: str = "4"
-    publisher_name: str = "NIVA"
-    publisher_email: str = "post[..]niva.no"
-    publisher_url: str = "niva.no"
+    publisher_name: str = "Norwegian Institute for Water Research"
+    publisher_email: str = "miljoinformatikk@niva.no"
+    publisher_url: str = "https://niva.no"
     licence: str = 'Freely distributed. Must credit the source of data, e.g. "Data fra Norsk Institut for Vannforskning", "Based on data from the Norwegian Institute for Water Research". Data and products are licensed under Norwegian license for public data (NLOD) and Creative Commons Attribution 3.0 Norway.'
     history: str = "Initial data"
