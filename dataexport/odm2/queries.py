@@ -14,7 +14,7 @@ class TimeseriesResult:
     datetime: List[datetime]
 
 
-def timeseries(
+def timeseries_by_project(
     conn: psycopg2.extensions.connection,
     variable_code: str,
     project_name: str,
@@ -52,6 +52,39 @@ def timeseries(
         variable_code, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res]
     )
 
+def timeseries_by_sampling_code(
+    conn: psycopg2.extensions.connection,
+    variable_code: str,
+    sampling_feature_code: str,
+    start_time: datetime,
+    end_time: datetime,
+) -> TimeseriesResult:
+    query = """
+    SELECT
+        valuedatetime,
+        datavalue
+    FROM
+        odm2.timeseriesresultvalues tsrv
+        JOIN odm2.results r ON r.resultid = tsrv.resultid
+        JOIN odm2.featureactions f ON f.featureactionid = r.featureactionid
+        JOIN odm2.samplingfeatures sf ON f.samplingfeatureid=sf.samplingfeatureid 
+        JOIN odm2.variables v ON v.variableid=r.variableid
+    WHERE
+        V.VARIABLECODE= %s
+        AND SF.SAMPLINGFEATURECODE = %s
+        AND TSRV.VALUEDATETIME > %s
+        AND TSRV.VALUEDATETIME <= %s
+    ORDER BY
+        TSRV.VALUEDATETIME ASC
+    """
+    logging.info(f"Querying timeseries for variable code {variable_code} on sampling feature code {sampling_feature_code}")
+
+    with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute(query, (variable_code, sampling_feature_code, start_time, end_time))
+        res = cur.fetchall()
+    return TimeseriesResult(
+        variable_code, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res]
+    )
 
 @dataclass
 class TimeseriesMetadataResult:
@@ -89,7 +122,7 @@ def timeseries_metadata(
     return TimeseriesMetadataResult(**res)
 
 
-def fetch_one_timestamp(
+def timestamp_by_project(
     conn: psycopg2.extensions.connection,
     variable_codes: List[str],
     project_name: str,
@@ -117,5 +150,32 @@ def fetch_one_timestamp(
     query += "ASC" if is_asc else "DESC"
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (tuple(variable_codes), project_name, project_station_code))
+        res = cur.fetchone()
+    return res["valuedatetime"] if res is not None else None
+
+def timestamp_by_sampling_code(
+    conn: psycopg2.extensions.connection,
+    variable_codes: List[str],
+    sampling_feature_code: str,
+    is_asc: bool,
+) -> Optional[datetime]:
+    query = """
+    SELECT
+        valuedatetime
+    FROM
+        odm2.timeseriesresultvalues tsrv
+        JOIN odm2.results r ON r.resultid = tsrv.resultid
+        JOIN odm2.featureactions f ON f.featureactionid = r.featureactionid
+        JOIN odm2.samplingfeatures sf ON f.samplingfeatureid=sf.samplingfeatureid 
+        JOIN odm2.variables v ON v.variableid=r.variableid
+    WHERE
+        V.VARIABLECODE IN %s
+        AND SF.SAMPLINGFEATURECODE = %s
+    ORDER BY
+        TSRV.VALUEDATETIME
+    """
+    query += "ASC" if is_asc else "DESC"
+    with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute(query, (tuple(variable_codes), sampling_feature_code))
         res = cur.fetchone()
     return res["valuedatetime"] if res is not None else None
