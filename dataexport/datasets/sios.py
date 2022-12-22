@@ -10,7 +10,7 @@ from psycopg2.extensions import connection
 from dataexport.cfarray.base import DatasetAttrs
 from dataexport.cfarray.time_series import timeseriesdataset
 from dataexport.datasets import maps
-from dataexport.odm2.queries import TimeseriesMetadataResult, timeseries, timeseries_metadata
+from dataexport.odm2.queries import TimeseriesMetadataResult, timeseries_by_project, timeseries_metadata
 
 TITLE = "SIOS sensor buoy in Adventfjorden"
 PROJECT_NAME = "SIOS"
@@ -49,7 +49,7 @@ def dataset(
     """
 
     query_by_time = partial(
-        timeseries,
+        timeseries_by_project,
         conn=conn,
         project_name=project_metadata.projectname,
         project_station_code=project_metadata.projectstationcode,
