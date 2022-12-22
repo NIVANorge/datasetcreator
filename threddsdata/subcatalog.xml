@@ -10,9 +10,9 @@
   <service name="ncml" serviceType="NCML" base="/thredds/ncml/" />
   <service name="uddc" serviceType="UDDC" base="/thredds/uddc/" />
   <datasetRoot path="datasets" location="/datasets" />
-  <dataset name="Test Time Series" ID="testTimeseries" serviceName="subsetservices"
-    urlPath="datasets/timeseries.nc" dataType="STATION" />
-    <dataset name="Test SIOS2" ID="testTimeseries" serviceName="subsetservices"
+  <dataset name="Test Time Series2" ID="testTimeseriesStations" serviceName="subsetservices"
+    urlPath="datasets/timeseries.nc" dataType="timeseries" />
+  <dataset name="Test SIOS2" ID="testTimeseries" serviceName="subsetservices"
     urlPath="datasets/sios/2019-04-23T200000Z_sios.nc" dataType="timeseries" />
   <dataset name="Test SIOS" ID="testSIOS" urlPath="datasets/sios.nc">
     <serviceName>subsetservices</serviceName>
