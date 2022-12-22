@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="NIVA THREDDS Catalog"
+  xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0 https://schemas.unidata.ucar.edu/thredds/InvCatalog.1.0.6.xsd">
+  <service name="subsetservices" base="" serviceType="compound">
+    <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/" />
+    <service name="ncssTimeseries" serviceType="NetcdfSubset" base="/thredds/ncss/point/" />
+    <service name="cdmremote" serviceType="CdmRemote" base="/thredds/cdmremote/" />
+    <service name="iso" serviceType="ISO" base="/thredds/iso/" />
+    <service name="ncml" serviceType="NCML" base="/thredds/ncml/" />
+    <service name="uddc" serviceType="UDDC" base="/thredds/uddc/" />
+  </service>
+  <catalogRef xlink:title="Observations" xlink:href="subcatalog.xml" name="" />
+</catalog>
