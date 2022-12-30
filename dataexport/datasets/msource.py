@@ -9,7 +9,6 @@ from psycopg2.extensions import connection
 
 from dataexport.cfarray.base import DatasetAttrs
 from dataexport.cfarray.time_series import timeseriesdataset
-from dataexport.datasets import maps
 from dataexport.odm2.queries import TimeseriesMetadataResult, timeseries_by_sampling_code
 
 TITLE = "MSource/DigiVeivann"
