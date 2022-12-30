@@ -8,20 +8,29 @@ import psycopg2
 from dataexport.cfarray.base import DEFAULT_ENCODING, dataarraybytime
 from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dataexport.config import DATABASE_URL
-from dataexport.odm2.queries import timeseries, timeseries_metadata
+from dataexport.odm2.queries import timeseries_by_project, timeseries_by_sampling_code, timeseries_metadata
 
 #%%
 conn = psycopg2.connect(DATABASE_URL)
 #%%
 end_time = datetime.now()
 query_sios_by_time = partial(
-    timeseries,
+    timeseries_by_project,
     conn=conn,
     project_name="SIOS",
     project_station_code="20",
     start_time=end_time - timedelta(days=2),
     end_time=end_time,
 )
+#%%
+query_msource_by_time = partial(
+    timeseries_by_sampling_code,
+    conn=conn,
+    sampling_feature_code="MSOURCE2",
+    start_time=end_time - timedelta(days=2),
+    end_time=end_time,
+)
+
 #%%
 temperature_res = query_sios_by_time(variable_code="Temp")
 turbidity_res = query_sios_by_time(variable_code="Turbidity")
