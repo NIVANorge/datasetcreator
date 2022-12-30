@@ -1,3 +1,3 @@
-from dataexport.datasets import maps, sios
+from dataexport.datasets import maps, msource, sios
 
-__all__ = ["sios", "maps"]
+__all__ = ["msource", "sios", "maps"]

@@ -39,8 +39,7 @@ def msource_dump(
         odm2.queries.timestamp_by_sampling_code,
         conn=conn,
         variable_codes=datasets.msource.VARIABLE_CODES,
-        project_name=datasets.sios.PROJECT_NAME,
-        project_station_code=datasets.sios.PROJECT_STATION_CODE
+        sampling_feature_codes=datasets.msource.SAMPLING_FEATURE_CODES
     )
 
     start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(dataset_name)
@@ -52,7 +51,7 @@ def msource_dump(
 
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
-        ds = datasets.sios.dump(conn, interval.start_time, interval.end_time, acdd)
+        ds = datasets.msource.dump(conn, interval.start_time, interval.end_time, acdd)
         if ds.dims['time'] > 0:
             utils.save_dataset(dataset_name, ds)
         else:

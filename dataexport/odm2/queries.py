@@ -156,7 +156,7 @@ def timestamp_by_project(
 def timestamp_by_sampling_code(
     conn: psycopg2.extensions.connection,
     variable_codes: List[str],
-    sampling_feature_code: str,
+    sampling_feature_codes: List[str],
     is_asc: bool,
 ) -> Optional[datetime]:
     query = """
@@ -170,12 +170,12 @@ def timestamp_by_sampling_code(
         JOIN odm2.variables v ON v.variableid=r.variableid
     WHERE
         V.VARIABLECODE IN %s
-        AND SF.SAMPLINGFEATURECODE = %s
+        AND SF.SAMPLINGFEATURECODE IN %s
     ORDER BY
         TSRV.VALUEDATETIME
     """
     query += "ASC" if is_asc else "DESC"
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute(query, (tuple(variable_codes), sampling_feature_code))
+        cur.execute(query, (tuple(variable_codes), tuple(sampling_feature_codes)))
         res = cur.fetchone()
     return res["valuedatetime"] if res is not None else None
