@@ -2,6 +2,7 @@ import logging
 from dataclasses import asdict
 from datetime import datetime
 from functools import partial
+from itertools import product
 
 import numpy as np
 import xarray as xr
@@ -9,7 +10,7 @@ from psycopg2.extensions import connection
 
 from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
 from dataexport.cfarray.time_series import timeseriesdataset, timeseriescoords
-from dataexport.odm2.queries import TimeseriesMetadataResult, TimeseriesResult, timeseries_by_sampling_code
+from dataexport.odm2.queries import TimeseriesMetadataResult, TimeseriesSamplingResult, timeseries_by_sampling_code
 
 TITLE = "MSource/DigiVeivann"
 PROJECT_NAME = "Multisource"
@@ -40,8 +41,7 @@ def dataset(
     conn: connection,
     start_time: datetime,
     end_time: datetime,
-    project_metadata: TimeseriesMetadataResult,
-    sampling_feature_code: str,
+    project_metadata: TimeseriesMetadataResult
 ) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
@@ -51,12 +51,13 @@ def dataset(
     query_by_time = partial(
         timeseries_by_sampling_code,
         conn=conn,
-        sampling_feature_code=sampling_feature_code,
         start_time=start_time,
         end_time=end_time,
     )
 
-    query_results = map(lambda vc: query_by_time(variable_code=vc), VARIABLE_CODES)
+    query_variables =  [p for p in product(VARIABLE_CODES, SAMPLING_FEATURE_CODES) if p != ("Temp", "MSOURCE2")]
+
+    query_results = map(lambda p: query_by_time(variable_code=p[0], sampling_feature_code=p[1]), query_variables)
 
     time_arrays = map(lambda qr: cftimearray(qr, project_metadata.latitude, project_metadata.longitude), query_results)
 
@@ -98,7 +99,7 @@ def acdd(ds: xr.Dataset, projectdescription: str, projectname):
     return ds
 
 
-def cftimearray(timeseries_result: TimeseriesResult, latitude: float, longitude: float) -> xr.DataArray:
+def cftimearray(timeseries_result: TimeseriesSamplingResult, latitude: float, longitude: float) -> xr.DataArray:
     """Match timeserie data to C&F
 
     Match timeseries data to the climate and forecast convention based on the given variable code.
@@ -110,9 +111,25 @@ def cftimearray(timeseries_result: TimeseriesResult, latitude: float, longitude:
             array = dataarraybytime(
                 data=timeseries_result.values,
                 name="temperature",
-                standard_name="sea_water_temperature",
-                long_name="Sea Water Temperature",
+                standard_name="rainbed_temperature",
+                long_name="Rainbed Water Temperature",
                 units="degree_Celsius",
+            )
+        case "LevelValue":
+            array = dataarraybytime(
+                data=timeseries_result.values,
+                name="levelvalue",
+                standard_name="rainsource_level1",
+                long_name="Rainbed Level",
+                units="m",
+            )
+        case "Turbidity":
+            array = dataarraybytime(
+                data=timeseries_result.values,
+                name="turbidity",
+                standard_name="turbidity",
+                long_name="Turbidity",
+                units="m",
             )
         case _:
             logging.warning(f"Array definition not found for: {timeseries_result.variable_code}")

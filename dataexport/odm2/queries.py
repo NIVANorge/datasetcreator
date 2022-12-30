@@ -52,6 +52,9 @@ def timeseries_by_project(
         variable_code, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res]
     )
 
+@dataclass
+class TimeseriesSamplingResult(TimeseriesResult):
+    sampling_feature_code: str
 
 def timeseries_by_sampling_code(
     conn: psycopg2.extensions.connection,
@@ -59,7 +62,7 @@ def timeseries_by_sampling_code(
     sampling_feature_code: str,
     start_time: datetime,
     end_time: datetime,
-) -> TimeseriesResult:
+) -> TimeseriesSamplingResult:
     query = """
     SELECT
         valuedatetime,
@@ -85,8 +88,8 @@ def timeseries_by_sampling_code(
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (variable_code, sampling_feature_code, start_time, end_time))
         res = cur.fetchall()
-    return TimeseriesResult(
-        variable_code, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res]
+    return TimeseriesSamplingResult(
+        variable_code, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res], sampling_feature_code=sampling_feature_code
     )
 
 
