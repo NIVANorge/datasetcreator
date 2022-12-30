@@ -19,6 +19,7 @@ logging.basicConfig(
     handlers=[logging.StreamHandler(sys.stdout)],
 )
 
+
 @app.command()
 def msource_dump(
     every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False
@@ -39,7 +40,7 @@ def msource_dump(
         odm2.queries.timestamp_by_sampling_code,
         conn=conn,
         variable_codes=datasets.msource.VARIABLE_CODES,
-        sampling_feature_codes=datasets.msource.SAMPLING_FEATURE_CODES
+        sampling_feature_codes=datasets.msource.SAMPLING_FEATURE_CODES,
     )
 
     start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(dataset_name)
@@ -52,12 +53,13 @@ def msource_dump(
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
         ds = datasets.msource.dump(conn, interval.start_time, interval.end_time, acdd)
-        if ds.dims['time'] > 0:
+        if ds.dims["time"] > 0:
             utils.save_dataset(dataset_name, ds)
         else:
             logging.info("Found no data for interval")
 
     conn.close()
+
 
 @app.command()
 def sios_dump(
@@ -80,7 +82,7 @@ def sios_dump(
         conn=conn,
         variable_codes=datasets.sios.VARIABLE_CODES,
         project_name=datasets.sios.PROJECT_NAME,
-        project_station_code=datasets.sios.PROJECT_STATION_CODE
+        project_station_code=datasets.sios.PROJECT_STATION_CODE,
     )
 
     start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(dataset_name)
@@ -93,7 +95,7 @@ def sios_dump(
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
         ds = datasets.sios.dump(conn, interval.start_time, interval.end_time, acdd)
-        if ds.dims['time'] > 0:
+        if ds.dims["time"] > 0:
             utils.save_dataset(dataset_name, ds)
         else:
             logging.info("Found no data for interval")

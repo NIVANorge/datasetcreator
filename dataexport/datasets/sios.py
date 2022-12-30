@@ -9,7 +9,12 @@ from psycopg2.extensions import connection
 
 from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
 from dataexport.cfarray.time_series import timeseriesdataset, timeseriescoords
-from dataexport.odm2.queries import TimeseriesMetadataResult, TimeseriesResult, timeseries_by_project, timeseries_metadata
+from dataexport.odm2.queries import (
+    TimeseriesMetadataResult,
+    TimeseriesResult,
+    timeseries_by_project,
+    timeseries_metadata,
+)
 
 TITLE = "SIOS sensor buoy in Adventfjorden"
 PROJECT_NAME = "SIOS"
@@ -58,9 +63,7 @@ def dataset(
 
     query_results = map(lambda vc: query_by_time(variable_code=vc), VARIABLE_CODES)
 
-    time_arrays = map(
-        lambda qr: cftimearray(qr, project_metadata.latitude, project_metadata.longitude), query_results
-    )
+    time_arrays = map(lambda qr: cftimearray(qr, project_metadata.latitude, project_metadata.longitude), query_results)
 
     ds = timeseriesdataset(
         named_dataarrays=list(time_arrays), title=TITLE, station_name=project_metadata.projectstationname
@@ -98,6 +101,7 @@ def acdd(ds: xr.Dataset, project_metadata):
         )
     )
     return ds
+
 
 def cftimearray(timeseries_result: TimeseriesResult, latitude: float, longitude: float) -> xr.DataArray:
     """Match timeserie data to C&F

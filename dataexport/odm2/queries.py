@@ -52,6 +52,7 @@ def timeseries_by_project(
         variable_code, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res]
     )
 
+
 def timeseries_by_sampling_code(
     conn: psycopg2.extensions.connection,
     variable_code: str,
@@ -77,7 +78,9 @@ def timeseries_by_sampling_code(
     ORDER BY
         TSRV.VALUEDATETIME ASC
     """
-    logging.info(f"Querying timeseries for variable code {variable_code} on sampling feature code {sampling_feature_code}")
+    logging.info(
+        f"Querying timeseries for variable code {variable_code} on sampling feature code {sampling_feature_code}"
+    )
 
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (variable_code, sampling_feature_code, start_time, end_time))
@@ -85,6 +88,7 @@ def timeseries_by_sampling_code(
     return TimeseriesResult(
         variable_code, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res]
     )
+
 
 @dataclass
 class TimeseriesMetadataResult:
@@ -152,6 +156,7 @@ def timestamp_by_project(
         cur.execute(query, (tuple(variable_codes), project_name, project_station_code))
         res = cur.fetchone()
     return res["valuedatetime"] if res is not None else None
+
 
 def timestamp_by_sampling_code(
     conn: psycopg2.extensions.connection,
