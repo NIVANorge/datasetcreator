@@ -15,11 +15,10 @@ from dataexport.odm2.queries import TimeseriesMetadataResult, TimeseriesSampling
 TITLE = "MSource/DigiVeivann"
 PROJECT_NAME = "Multisource"
 VARIABLE_CODES = [
-    "Temp",
     "LevelValue",
     "Turbidity",
 ]
-SAMPLING_FEATURE_CODES = ["MSOURCE1", "MSOURCE2"]
+SAMPLING_FEATURE_CODE = "MSOURCE2"
 
 
 def dump(conn: connection, start_time: datetime, end_time: datetime, is_acdd: bool = False) -> xr.Dataset:
@@ -29,19 +28,16 @@ def dump(conn: connection, start_time: datetime, end_time: datetime, is_acdd: bo
     """
 
     metadata = TimeseriesMetadataResult(
-        PROJECT_NAME, "Description", "msource_inlet", "msource_inlet", 59.911491, 10.757933
+        PROJECT_NAME, "Description", "msource_outlet", "msource_outlet", 59.911491, 10.757933
     )
 
     ds = dataset(conn, start_time, end_time, metadata)
- 
+
     return acdd(ds, metadata.projectdescription, PROJECT_NAME) if is_acdd else ds
 
 
 def dataset(
-    conn: connection,
-    start_time: datetime,
-    end_time: datetime,
-    project_metadata: TimeseriesMetadataResult
+    conn: connection, start_time: datetime, end_time: datetime, project_metadata: TimeseriesMetadataResult
 ) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
@@ -55,9 +51,9 @@ def dataset(
         end_time=end_time,
     )
 
-    query_variables =  [p for p in product(VARIABLE_CODES, SAMPLING_FEATURE_CODES) if p != ("Temp", "MSOURCE2")]
-
-    query_results = map(lambda p: query_by_time(variable_code=p[0], sampling_feature_code=p[1]), query_variables)
+    query_results = map(
+        lambda v: query_by_time(variable_code=v, sampling_feature_code=SAMPLING_FEATURE_CODE), VARIABLE_CODES
+    )
 
     time_arrays = map(lambda qr: cftimearray(qr, project_metadata.latitude, project_metadata.longitude), query_results)
 

@@ -21,7 +21,7 @@ logging.basicConfig(
 
 
 @app.command()
-def msource_dump(
+def msource_inlet(
     every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False
 ):
     """Export msource data from odm2 to netcdf
@@ -32,15 +32,15 @@ def msource_dump(
 
     logging.info("Exporting MSOURCE dataset")
 
-    dataset_name = "msource"
+    dataset_name = "msource_inlet"
 
     conn = psycopg2.connect(DATABASE_URL)
 
     timestamp_fetcher = partial(
         odm2.queries.timestamp_by_sampling_code,
         conn=conn,
-        variable_codes=datasets.msource.VARIABLE_CODES,
-        sampling_feature_codes=datasets.msource.SAMPLING_FEATURE_CODES,
+        variable_codes=datasets.msource_inlet.VARIABLE_CODES,
+        sampling_feature_code=datasets.msource_inlet.SAMPLING_FEATURE_CODE,
     )
 
     start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(dataset_name)
@@ -52,7 +52,7 @@ def msource_dump(
 
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
-        ds = datasets.msource.dump(conn, interval.start_time, interval.end_time, acdd)
+        ds = datasets.msource_inlet.dump(conn, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
             utils.save_dataset(dataset_name, ds)
         else:
@@ -62,9 +62,7 @@ def msource_dump(
 
 
 @app.command()
-def sios_dump(
-    every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False
-):
+def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False):
     """Export sios data from odm2 to netcdf
 
     Map odm2 data into climate & forecast convention

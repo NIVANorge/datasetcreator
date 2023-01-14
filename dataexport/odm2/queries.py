@@ -52,9 +52,11 @@ def timeseries_by_project(
         variable_code, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res]
     )
 
+
 @dataclass
 class TimeseriesSamplingResult(TimeseriesResult):
     sampling_feature_code: str
+
 
 def timeseries_by_sampling_code(
     conn: psycopg2.extensions.connection,
@@ -89,7 +91,10 @@ def timeseries_by_sampling_code(
         cur.execute(query, (variable_code, sampling_feature_code, start_time, end_time))
         res = cur.fetchall()
     return TimeseriesSamplingResult(
-        variable_code, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res], sampling_feature_code=sampling_feature_code
+        variable_code,
+        values=[r["datavalue"] for r in res],
+        datetime=[r["valuedatetime"] for r in res],
+        sampling_feature_code=sampling_feature_code,
     )
 
 
@@ -164,7 +169,7 @@ def timestamp_by_project(
 def timestamp_by_sampling_code(
     conn: psycopg2.extensions.connection,
     variable_codes: List[str],
-    sampling_feature_codes: List[str],
+    sampling_feature_code: str,
     is_asc: bool,
 ) -> Optional[datetime]:
     query = """
@@ -178,12 +183,12 @@ def timestamp_by_sampling_code(
         JOIN odm2.variables v ON v.variableid=r.variableid
     WHERE
         V.VARIABLECODE IN %s
-        AND SF.SAMPLINGFEATURECODE IN %s
+        AND SF.SAMPLINGFEATURECODE = %s
     ORDER BY
         TSRV.VALUEDATETIME
     """
     query += "ASC" if is_asc else "DESC"
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute(query, (tuple(variable_codes), tuple(sampling_feature_codes)))
+        cur.execute(query, (tuple(variable_codes), sampling_feature_code))
         res = cur.fetchone()
     return res["valuedatetime"] if res is not None else None
