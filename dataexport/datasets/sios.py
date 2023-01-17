@@ -9,6 +9,7 @@ from psycopg2.extensions import connection
 
 from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
 from dataexport.cfarray.time_series import timeseriesdataset, timeseriescoords
+from dataexport.export_types import ProjectExport
 from dataexport.odm2.queries import (
     TimeseriesMetadataResult,
     TimeseriesResult,
@@ -16,36 +17,29 @@ from dataexport.odm2.queries import (
     timeseries_metadata,
 )
 
-TITLE = "SIOS sensor buoy in Adventfjorden"
-PROJECT_NAME = "SIOS"
-PROJECT_STATION_CODE = "20"
-VARIABLE_CODES = [
-    "Temp",
-    "Turbidity",
-    "Salinity",
-    "ChlaValue",
-    "CondValue",
-    # "OxygenCon",
-    # "OxygenSat",
-    # "RawBackScattering",
-    # "fDOM",
-]
 
-
-def dump(conn: connection, start_time: datetime, end_time: datetime, is_acdd: bool = False) -> xr.Dataset:
+def dump(
+    conn: connection, settings: ProjectExport, start_time: datetime, end_time: datetime, is_acdd: bool = False
+) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
     Map odm2 data into climate & forecast convention and return a xarray dataset.
     """
 
-    project_metadata = timeseries_metadata(conn, project_name=PROJECT_NAME, project_station_code=PROJECT_STATION_CODE)
-    ds = dataset(conn, start_time, end_time, project_metadata)
+    project_metadata = timeseries_metadata(
+        conn, project_name=settings.project_name, project_station_code=settings.project_station_code
+    )
+    ds = dataset(conn, settings, project_metadata, start_time, end_time)
 
-    return acdd(ds, project_metadata) if is_acdd else ds
+    return acdd(settings.title, ds, project_metadata) if is_acdd else ds
 
 
 def dataset(
-    conn: connection, start_time: datetime, end_time: datetime, project_metadata: TimeseriesMetadataResult
+    conn: connection,
+    settings: ProjectExport,
+    project_metadata: TimeseriesMetadataResult,
+    start_time: datetime,
+    end_time: datetime,
 ) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
@@ -61,19 +55,19 @@ def dataset(
         end_time=end_time,
     )
 
-    query_results = map(lambda vc: query_by_time(variable_code=vc), VARIABLE_CODES)
+    query_results = map(lambda vc: query_by_time(variable_code=vc), settings.variable_codes)
 
     time_arrays = map(lambda qr: cftimearray(qr, project_metadata.latitude, project_metadata.longitude), query_results)
 
     ds = timeseriesdataset(
-        named_dataarrays=list(time_arrays), title=TITLE, station_name=project_metadata.projectstationname
+        named_dataarrays=list(time_arrays), title=settings.title, station_name=project_metadata.projectstationname
     )
     logging.info("Created xarray dataset")
 
     return ds
 
 
-def acdd(ds: xr.Dataset, project_metadata):
+def acdd(title: str, ds: xr.Dataset, project_metadata):
     """Add ACDD attributes to a xarray dataset
 
     Add attributes following the Attribute Convention for Data Discovery to a dataset
@@ -82,7 +76,7 @@ def acdd(ds: xr.Dataset, project_metadata):
     ds.attrs.update(
         asdict(
             DatasetAttrs(
-                title=TITLE,
+                title=title,
                 summary=project_metadata.projectdescription,
                 keywords=[
                     "Water-based Platforms > Buoys > Moored > BUOYS",

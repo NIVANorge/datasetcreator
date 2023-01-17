@@ -10,6 +10,7 @@ from functools import partial
 from dataexport import datasets, utils
 from dataexport import odm2, thredds
 from dataexport.config import DATABASE_URL
+from dataexport.export_types import ProjectExport, SamplingExport
 
 app = typer.Typer()
 
@@ -32,18 +33,27 @@ def msource_inlet(
 
     logging.info("Exporting MSOURCE dataset")
 
-    dataset_name = "msource_inlet"
-
+    settings = SamplingExport(
+        title="Test MSource/DigiVeivann Inlet",
+        filename="msource-inlet",
+        project_name="Multisource",
+        sampling_feature_code="MSOURCE1",
+        variable_codes=[
+            "Temp",
+            "LevelValue",
+            "Turbidity",
+        ],
+    )
     conn = psycopg2.connect(DATABASE_URL)
 
     timestamp_fetcher = partial(
         odm2.queries.timestamp_by_sampling_code,
         conn=conn,
-        variable_codes=datasets.msource_inlet.VARIABLE_CODES,
-        sampling_feature_code=datasets.msource_inlet.SAMPLING_FEATURE_CODE,
+        variable_codes=settings.variable_codes,
+        sampling_feature_code=settings.sampling_feature_code,
     )
 
-    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(dataset_name)
+    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(settings.filename)
     end_time = timestamp_fetcher(is_asc=False)
     time_intervals = utils.datetime_intervals(start_time, end_time, timedelta(hours=every_n_hours))
     last_index = len(time_intervals) if stop_after_n_files < 0 else stop_after_n_files
@@ -52,14 +62,61 @@ def msource_inlet(
 
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
-        ds = datasets.msource_inlet.dump(conn, interval.start_time, interval.end_time, acdd)
+        ds = datasets.msource.dump(conn, settings, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
-            utils.save_dataset(dataset_name, ds)
+            utils.save_dataset(settings.filename, ds)
         else:
             logging.info("Found no data for interval")
 
     conn.close()
 
+@app.command()
+def msource_outlet(
+    every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False
+):
+    """Export msource data from odm2 to netcdf
+
+    Map odm2 data into climate & forecast convention
+    and store the data as netcdf.
+    """
+
+    logging.info("Exporting MSOURCE dataset")
+
+    settings = SamplingExport(
+        title="Test MSource/DigiVeivann Outlet",
+        filename="mosurce-inlet",
+        project_name="Multisource",
+        sampling_feature_code="MSOURCE2",
+        variable_codes=[
+            "LevelValue",
+            "Turbidity",
+        ],
+    )
+    conn = psycopg2.connect(DATABASE_URL)
+
+    timestamp_fetcher = partial(
+        odm2.queries.timestamp_by_sampling_code,
+        conn=conn,
+        variable_codes=settings.variable_codes,
+        sampling_feature_code=settings.sampling_feature_code,
+    )
+
+    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(settings.filename)
+    end_time = timestamp_fetcher(is_asc=False)
+    time_intervals = utils.datetime_intervals(start_time, end_time, timedelta(hours=every_n_hours))
+    last_index = len(time_intervals) if stop_after_n_files < 0 else stop_after_n_files
+
+    logging.info(f"Start dumping for {start_time} -> {end_time}")
+
+    for interval in time_intervals[0:last_index]:
+        logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
+        ds = datasets.msource.dump(conn, settings, interval.start_time, interval.end_time, acdd)
+        if ds.dims["time"] > 0:
+            utils.save_dataset(settings.filename, ds)
+        else:
+            logging.info("Found no data for interval")
+
+    conn.close()
 
 @app.command()
 def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False):
@@ -71,19 +128,34 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
 
     logging.info("Exporting SIOS dataset")
 
-    dataset_name = "sios"
-
+    settings = ProjectExport(
+        title="SIOS sensor buoy in Adventfjorden",
+        project_name="SIOS",
+        project_station_code="20",
+        filename="sios",
+        variable_codes=[
+            "Temp",
+            "Turbidity",
+            "Salinity",
+            "ChlaValue",
+            "CondValue",
+            # "OxygenCon",
+            # "OxygenSat",
+            # "RawBackScattering",
+            # "fDOM",
+        ],
+    )
     conn = psycopg2.connect(DATABASE_URL)
 
     timestamp_fetcher = partial(
         odm2.queries.timestamp_by_project,
         conn=conn,
-        variable_codes=datasets.sios.VARIABLE_CODES,
-        project_name=datasets.sios.PROJECT_NAME,
-        project_station_code=datasets.sios.PROJECT_STATION_CODE,
+        variable_codes=settings.variable_codes,
+        project_name=settings.project_name,
+        project_station_code=settings.project_station_code,
     )
 
-    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(dataset_name)
+    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(settings.filename)
     end_time = timestamp_fetcher(is_asc=False)
     time_intervals = utils.datetime_intervals(start_time, end_time, timedelta(hours=every_n_hours))
     last_index = len(time_intervals) if stop_after_n_files < 0 else stop_after_n_files
@@ -92,9 +164,9 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
 
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
-        ds = datasets.sios.dump(conn, interval.start_time, interval.end_time, acdd)
+        ds = datasets.sios.dump(conn, settings, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
-            utils.save_dataset(dataset_name, ds)
+            utils.save_dataset(settings.filename, ds)
         else:
             logging.info("Found no data for interval")
 
