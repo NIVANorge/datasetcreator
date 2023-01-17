@@ -35,7 +35,9 @@ def msource_inlet(
 
     settings = SamplingExport(
         title="Test MSource/DigiVeivann Inlet",
+        projectdescription="Test MSource/DigiVeivann Inlet",
         filename="msource-inlet",
+        station_name="msource-inlet",
         project_name="Multisource",
         sampling_feature_code="MSOURCE1",
         variable_codes=[
@@ -84,7 +86,9 @@ def msource_outlet(
 
     settings = SamplingExport(
         title="Test MSource/DigiVeivann Outlet",
-        filename="mosurce-inlet",
+        projectdescription="Test MSource/DigiVeivann Outlet",
+        filename="msource-outlet",
+        station_name="msource-outlet",
         project_name="Multisource",
         sampling_feature_code="MSOURCE2",
         variable_codes=[

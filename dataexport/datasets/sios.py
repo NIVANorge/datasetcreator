@@ -11,10 +11,10 @@ from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
 from dataexport.cfarray.time_series import timeseriesdataset, timeseriescoords
 from dataexport.export_types import ProjectExport
 from dataexport.odm2.queries import (
-    TimeseriesMetadataResult,
+    PointProjectResult,
     TimeseriesResult,
     timeseries_by_project,
-    timeseries_metadata,
+    point_by_project,
 )
 
 
@@ -26,18 +26,18 @@ def dump(
     Map odm2 data into climate & forecast convention and return a xarray dataset.
     """
 
-    project_metadata = timeseries_metadata(
+    project_info = point_by_project(
         conn, project_name=settings.project_name, project_station_code=settings.project_station_code
     )
-    ds = dataset(conn, settings, project_metadata, start_time, end_time)
+    ds = dataset(conn, settings, project_info, start_time, end_time)
 
-    return acdd(settings.title, ds, project_metadata) if is_acdd else ds
+    return acdd(settings.title, ds, project_info) if is_acdd else ds
 
 
 def dataset(
     conn: connection,
     settings: ProjectExport,
-    project_metadata: TimeseriesMetadataResult,
+    project_info: PointProjectResult,
     start_time: datetime,
     end_time: datetime,
 ) -> xr.Dataset:
@@ -49,25 +49,25 @@ def dataset(
     query_by_time = partial(
         timeseries_by_project,
         conn=conn,
-        project_name=project_metadata.projectname,
-        project_station_code=project_metadata.projectstationcode,
+        project_name=project_info.projectname,
+        project_station_code=project_info.projectstationcode,
         start_time=start_time,
         end_time=end_time,
     )
 
     query_results = map(lambda vc: query_by_time(variable_code=vc), settings.variable_codes)
 
-    time_arrays = map(lambda qr: cftimearray(qr, project_metadata.latitude, project_metadata.longitude), query_results)
+    time_arrays = map(lambda qr: cftimearray(qr, project_info.latitude, project_info.longitude), query_results)
 
     ds = timeseriesdataset(
-        named_dataarrays=list(time_arrays), title=settings.title, station_name=project_metadata.projectstationname
+        named_dataarrays=list(time_arrays), title=settings.title, station_name=project_info.projectstationname
     )
     logging.info("Created xarray dataset")
 
     return ds
 
 
-def acdd(title: str, ds: xr.Dataset, project_metadata):
+def acdd(title: str, ds: xr.Dataset, project_info: PointProjectResult):
     """Add ACDD attributes to a xarray dataset
 
     Add attributes following the Attribute Convention for Data Discovery to a dataset
@@ -77,14 +77,14 @@ def acdd(title: str, ds: xr.Dataset, project_metadata):
         asdict(
             DatasetAttrs(
                 title=title,
-                summary=project_metadata.projectdescription,
+                summary=project_info.projectdescription,
                 keywords=[
                     "Water-based Platforms > Buoys > Moored > BUOYS",
                     "EARTH SCIENCE > Oceans > Salinity/Density > Salinity",
                 ],
                 featureType=ds.attrs["featureType"],
                 date_created=str(datetime.now()),
-                project=project_metadata.projectname,
+                project=project_info.projectname,
                 time_coverage_start=str(ds.time.min().values),
                 time_coverage_end=str(ds.time.max().values),
                 geospatial_lat_min=float(ds.latitude.min()),

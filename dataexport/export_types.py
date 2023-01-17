@@ -18,4 +18,6 @@ class ProjectExport(__ExportSettings):
 
 @dataclass
 class SamplingExport(__ExportSettings):
+    station_name: str
     sampling_feature_code: str
+    projectdescription: str

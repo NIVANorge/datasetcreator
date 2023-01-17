@@ -97,28 +97,32 @@ def timeseries_by_sampling_code(
         sampling_feature_code=sampling_feature_code,
     )
 
+@dataclass
+class PointResult:
+    samplingfeaturecode: str
+    longitude: float
+    latitude: float
 
 @dataclass
-class TimeseriesMetadataResult:
+class PointProjectResult(PointResult):
     projectname: str
     projectdescription: str
     projectstationname: str
     projectstationcode: str
-    longitude: float
-    latitude: float
 
 
-def timeseries_metadata(
+def point_by_project(
     conn: psycopg2.extensions.connection,
     project_name: str,
     project_station_code: str,
-) -> TimeseriesMetadataResult:
+) -> PointProjectResult:
     query = """
     SELECT 
         p.projectname,
         p.projectdescription,
         pr.projectstationname,
         pr.projectstationcode,
+        sf.samplingfeaturecode,
         ST_X(featuregeometry) as longitude,
         ST_Y(featuregeometry) as latitude
     FROM odm2.samplingfeatures sf
@@ -131,8 +135,26 @@ def timeseries_metadata(
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (project_name, project_station_code))
         res = cur.fetchone()
-    return TimeseriesMetadataResult(**res)
+    return PointProjectResult(**res)
 
+
+def point_by_sampling_code(
+    conn: psycopg2.extensions.connection,
+    sampling_feature_code: str,
+) -> PointProjectResult:
+    query = """
+    SELECT 
+        sf.samplingfeaturecode,
+        ST_X(sf.featuregeometry) as longitude,
+        ST_Y(sf.featuregeometry) as latitude
+    FROM odm2.samplingfeatures sf
+    WHERE 
+        sf.samplingfeaturecode = %s
+    """
+    with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute(query, (sampling_feature_code,))
+        res = cur.fetchone()
+    return PointResult(**res)
 
 def timestamp_by_project(
     conn: psycopg2.extensions.connection,

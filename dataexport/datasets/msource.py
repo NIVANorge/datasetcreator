@@ -10,7 +10,7 @@ from psycopg2.extensions import connection
 
 from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
 from dataexport.cfarray.time_series import timeseriesdataset, timeseriescoords
-from dataexport.odm2.queries import TimeseriesMetadataResult, TimeseriesSamplingResult, timeseries_by_sampling_code
+from dataexport.odm2.queries import PointProjectResult, TimeseriesSamplingResult, point_by_sampling_code, timeseries_by_sampling_code
 from dataexport.export_types import SamplingExport
 
 
@@ -22,19 +22,17 @@ def dump(
     Map odm2 data into climate & forecast convention and return a xarray dataset.
     """
 
-    metadata = TimeseriesMetadataResult(
-        settings.project_name, "Description", "msource_outlet", "msource_outlet", 59.911491, 10.757933
-    )
+    point_info = point_by_sampling_code(conn, settings.sampling_feature_code)
 
-    ds = dataset(conn, settings, metadata, start_time, end_time)
+    ds = dataset(conn, settings, point_info, start_time, end_time)
 
-    return acdd(settings.title, ds, metadata.projectdescription, settings.project_name) if is_acdd else ds
+    return acdd(settings.title, ds, settings.projectdescription, settings.project_name) if is_acdd else ds
 
 
 def dataset(
     conn: connection,
     settings: SamplingExport,
-    project_metadata: TimeseriesMetadataResult,
+    point_info: PointProjectResult,
     start_time: datetime,
     end_time: datetime,
 ) -> xr.Dataset:
@@ -55,10 +53,10 @@ def dataset(
         settings.variable_codes,
     )
 
-    time_arrays = map(lambda qr: cftimearray(qr, project_metadata.latitude, project_metadata.longitude), query_results)
+    time_arrays = map(lambda qr: cftimearray(qr, point_info.latitude, point_info.longitude), query_results)
 
     ds = timeseriesdataset(
-        named_dataarrays=list(time_arrays), title=settings.title, station_name=project_metadata.projectstationname
+        named_dataarrays=list(time_arrays), title=settings.title, station_name=settings.station_name
     )
     logging.info("Created xarray dataset")
 
