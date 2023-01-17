@@ -14,6 +14,27 @@
     urlPath="datasets/timeseries.nc" dataType="timeseries" />
   <dataset name="Test SIOS2" ID="testTimeseries" serviceName="subsetservices"
     urlPath="datasets/sios/2019-04-23T200000Z_sios.nc" dataType="timeseries" />
+  <dataset name="Test MSOURCE INLET" ID="testmsourceinlet" serviceName="subsetservices"
+    urlPath="datasets/msource/2022-09-14T111500Z_msource-inlet.nc" dataType="timeseries" />
+  <dataset name="Test MSOURCE OUTLET" ID="testmsourceoutlet" serviceName="subsetservices"
+    urlPath="datasets/msource/2022-09-14T111459Z_msource-outlet.nc" dataType="timeseries" />
+  <dataset name="Test MSOURCE/DIGIVEIVANN INLET" ID="testmsourceinlet" serviceName="subsetservices"
+    urlPath="datasets/msource-inlet.nc">
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <attribute name="id" value="d2675936-8ebf-4fc5-988c-4a5198b2df57" />
+      <group name="THREDDSMetadata">
+        <group name="services">
+          <attribute name="opendap_service"
+            value="https://thredds.t.niva.no/thredds/dodsC/datasets/msource-inlet.nc" />
+          <attribute name="nccs_service"
+            value="https://thredds.t.niva.no/thredds/ncss/point/datasets/msource-inlet.nc/dataset.html" />
+        </group>
+      </group>
+      <aggregation dimName="time" type="joinExisting">
+        <scan location="/datasets/msource" regExp=".*msource-inlet.nc" />
+      </aggregation>
+    </netcdf>
+  </dataset>
   <dataset name="Test SIOS" ID="testSIOS" urlPath="datasets/sios.nc">
     <serviceName>subsetservices</serviceName>
     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
