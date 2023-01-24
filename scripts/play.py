@@ -8,7 +8,7 @@ import psycopg2
 from dataexport.cfarray.base import DEFAULT_ENCODING, dataarraybytime
 from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dataexport.config import DATABASE_URL
-from dataexport.odm2.queries import timeseries_by_project, timeseries_by_sampling_code, timeseries_metadata
+from dataexport.odm2.queries import timeseries_by_project, timeseries_by_sampling_code, point_by_project
 
 #%%
 conn = psycopg2.connect(DATABASE_URL)
@@ -35,7 +35,7 @@ query_msource_by_time = partial(
 temperature_res = query_sios_by_time(variable_code="Temp")
 turbidity_res = query_sios_by_time(variable_code="Turbidity")
 #%%
-project_metadata = timeseries_metadata(conn, project_name="SIOS", project_station_code="20")
+project_metadata = point_by_project(conn, project_name="SIOS", project_station_code="20")
 #%%
 temperature_array = dataarraybytime(
     data=temperature_res.values,
