@@ -7,8 +7,8 @@ import typer
 from functools import partial
 
 
-from dataexport import datasets, utils
-from dataexport import odm2, thredds
+from dataexport import datasets, utils, thredds
+from dataexport.sources import odm2
 from dataexport.config import DATABASE_URL
 from dataexport.export_types import ProjectExport, SamplingExport
 
