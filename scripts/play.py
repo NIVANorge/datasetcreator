@@ -1,5 +1,4 @@
 #%%
-import os
 from datetime import datetime, timedelta
 from functools import partial
 
@@ -13,7 +12,7 @@ from dataexport.sources.odm2.queries import timeseries_by_project, timeseries_by
 #%%
 conn = psycopg2.connect(DATABASE_URL)
 #%%
-end_time = datetime.now()
+end_time = datetime(2022, 10, 1)
 query_sios_by_time = partial(
     timeseries_by_project,
     conn=conn,
@@ -74,6 +73,7 @@ ds = timeseriesdataset(
     station_name="Adventfjorden",
 )
 #%%
+ds
 # %%
 ds.to_netcdf("timeseries.nc", unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
 

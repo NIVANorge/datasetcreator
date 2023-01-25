@@ -448,6 +448,24 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "nc-time-axis"
+version = "1.4.1"
+description = "Provides support for a cftime axis in matplotlib"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+cftime = ">=1.5"
+matplotlib = "*"
+numpy = "*"
+
+[package.extras]
+all = ["codecov", "ipython", "numpydoc", "pre-commit", "pytest (>=6.0)", "pytest-cov", "sphinx", "sphinx-rtd-theme"]
+docs = ["ipython", "numpydoc", "sphinx", "sphinx-rtd-theme"]
+test = ["codecov", "pytest (>=6.0)", "pytest-cov"]
+
+[[package]]
 name = "nest-asyncio"
 version = "1.5.5"
 description = "Patch asyncio to allow nested event loops"
@@ -956,7 +974,7 @@ viz = ["matplotlib", "nc-time-axis", "seaborn"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "1711247eaf24b48cf3489b13a26faeae058b0b74dc7cfe7446e15bfc3b7868ce"
+content-hash = "33159c0cabba55b58f3734eed78ee1fe8b6f2eeac9c1037a0b93d3a003f4d943"
 
 [metadata.files]
 antlr4-python3-runtime = [
@@ -1432,6 +1450,10 @@ matplotlib-inline = [
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
+]
+nc-time-axis = [
+    {file = "nc-time-axis-1.4.1.tar.gz", hash = "sha256:72d80f492f34bbf59490838d8cb3d92f14e88900b0ee35498b2b33c82795eb81"},
+    {file = "nc_time_axis-1.4.1-py3-none-any.whl", hash = "sha256:96a6fb28cede0d07998fcd666599f76e51a086e1929fbcbfb758c1d0f3e7b0d1"},
 ]
 nest-asyncio = [
     {file = "nest_asyncio-1.5.5-py3-none-any.whl", hash = "sha256:b98e3ec1b246135e4642eceffa5a6c23a3ab12c82ff816a92c612d68205813b2"},
