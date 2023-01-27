@@ -34,6 +34,7 @@ def msource_inlet(
     logging.info("Exporting MSOURCE dataset")
 
     settings = SamplingExport(
+        uuid="268ac6d7-c991-48e6-8c9c-f554eb5a9516",
         title="Test MSource/DigiVeivann Inlet",
         projectdescription="Test MSource/DigiVeivann Inlet",
         filename="msource-inlet",
@@ -85,6 +86,7 @@ def msource_outlet(
     logging.info("Exporting MSOURCE dataset")
 
     settings = SamplingExport(
+        uuid="09eb5028-9bc7-4587-b8ff-0436bc00494a",
         title="Test MSource/DigiVeivann Outlet",
         projectdescription="Test MSource/DigiVeivann Outlet",
         filename="msource-outlet",
@@ -133,6 +135,7 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
     logging.info("Exporting SIOS dataset")
 
     settings = ProjectExport(
+        uuid="29b7de62-e1fa-4dce-90e4-7ff8a0931397",
         title="SIOS sensor buoy in Adventfjorden",
         project_name="SIOS",
         project_station_code="20",

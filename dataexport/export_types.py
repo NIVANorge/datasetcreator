@@ -5,6 +5,7 @@ from datetime import datetime
 
 @dataclass
 class __ExportSettings:
+    uuid: str
     title: str
     project_name: str
     variable_codes: List[str]
