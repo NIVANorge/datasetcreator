@@ -66,11 +66,11 @@
       </aggregation>
     </netcdf>
   </dataset>
-  <!---datasetScan name="Files" ID="testDatasetScan" path="testAll" location="/datasets">
+  <datasetScan name="Files" ID="testDatasetScan" path="testAll" location="/datasets">
     <metadata
-  inherited="true">
+      inherited="true">
       <serviceName>all</serviceName>
     </metadata>
   </datasetScan>
-  <catalogRef xlink:title="Test Enhanced Catalog" xlink:href="enhancedCatalog.xml" name="" /-->
+  <!--catalogRef xlink:title="Test Enhanced Catalog" xlink:href="enhancedCatalog.xml" name="" /-->
 </catalog>
