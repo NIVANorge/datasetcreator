@@ -1,4 +1,4 @@
-threddsdata/**/*.nc
+catalog/**/*.nc
 # vscode
 .vscode/
 

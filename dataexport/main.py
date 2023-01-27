@@ -2,6 +2,7 @@ import logging
 import sys
 from datetime import datetime, timedelta
 
+
 import psycopg2
 import typer
 from functools import partial
@@ -67,7 +68,7 @@ def msource_inlet(
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
         ds = datasets.msource.create(conn, export_info, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
-            utils.save_dataset(export_info.filename, ds)
+            utils.save_dataset(ds, export_info.project_name, export_info.filename)
         else:
             logging.info("Found no data for interval")
 
@@ -119,7 +120,7 @@ def msource_outlet(
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
         ds = datasets.msource.create(conn, export_info, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
-            utils.save_dataset(export_info.filename, ds)
+            utils.save_dataset(ds, export_info.project_name, export_info.filename)
         else:
             logging.info("Found no data for interval")
 
@@ -175,7 +176,7 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
         ds = datasets.sios.create(conn, export_info, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
-            utils.save_dataset(export_info.filename, ds)
+            utils.save_dataset(ds, export_info.project_name, export_info.filename)
         else:
             logging.info("Found no data for interval")
 

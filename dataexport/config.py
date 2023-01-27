@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     thredds_url: str
     storage_path: Annotated[
         str, Field(description="A local storage path, or a gcs storage path", example="gs://nivatest-1-senda/datasets")
-    ] = "./threddsdata"
+    ] = "./"
 
     class Config:
         case_sensitive = False

@@ -2,6 +2,8 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import List
+import tempfile
+import os
 
 import numpy as np
 import xarray as xr
@@ -39,10 +41,24 @@ def datetime_intervals(start_time: datetime, end_time: datetime, delta: timedelt
     return intervals
 
 
-def save_dataset(dataset_name: str, ds: xr.Dataset):
+def save_dataset(ds: xr.Dataset, project_name: str, filename: str):
 
     first_timestamp = np.datetime_as_string(ds.time[0], timezone="UTC", unit="s").replace(":", "")
-    filename = f"{first_timestamp}_{dataset_name}.nc"
-    ds.to_netcdf(filename, unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
+    filepath = os.path.join(project_name.lower(), f"{first_timestamp}_{filename.lower()}.nc")
+    
+    if SETTINGS.storage_path.startswith("gs://"):
+        storage_client = storage.Client()
+        tmp_file = tempfile.NamedTemporaryFile()
+        ds.to_netcdf(tmp_file.name, unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
+        bucket = storage_client.bucket(SETTINGS.storage_path)
+        blob = bucket.blob(filepath)
+        blob.upload_from_filename(tmp_file.name)
+        tmp_file.close()
+        filepath = os.path.join(SETTINGS.storage_path, filepath)
+    else:
+        filepath = os.path.join(SETTINGS.storage_path, filepath)
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        ds.to_netcdf(filepath, unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
+        
 
-    logging.info(f"Data {ds.time[0]} --> {ds.time[-1]} exported")
+    logging.info(f"Data {ds.time[0]} --> {ds.time[-1]} exported to {filepath}")
