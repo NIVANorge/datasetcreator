@@ -4,7 +4,6 @@ from datetime import datetime
 from functools import partial
 from itertools import product
 
-import numpy as np
 import xarray as xr
 from psycopg2.extensions import connection
 
@@ -15,23 +14,23 @@ from dataexport.export_types import SamplingExport
 
 
 def create(
-    conn: connection, settings: SamplingExport, start_time: datetime, end_time: datetime, is_acdd: bool = False
+    conn: connection, export_info: SamplingExport, start_time: datetime, end_time: datetime, is_acdd: bool = False
 ) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
     Map odm2 data into climate & forecast convention and return a xarray dataset.
     """
 
-    point_info = point_by_sampling_code(conn, settings.sampling_feature_code)
+    point_info = point_by_sampling_code(conn, export_info.sampling_feature_code)
 
-    ds = dataset(conn, settings, point_info, start_time, end_time)
+    ds = dataset(conn, export_info, point_info, start_time, end_time)
 
-    return acdd(settings.title, ds, settings.projectdescription, settings.project_name) if is_acdd else ds
+    return acdd(export_info.title, ds, export_info.projectdescription, export_info.project_name) if is_acdd else ds
 
 
 def dataset(
     conn: connection,
-    settings: SamplingExport,
+    export_info: SamplingExport,
     point_info: PointProjectResult,
     start_time: datetime,
     end_time: datetime,
@@ -49,14 +48,14 @@ def dataset(
     )
 
     query_results = map(
-        lambda v: query_by_time(variable_code=v, sampling_feature_code=settings.sampling_feature_code),
-        settings.variable_codes,
+        lambda v: query_by_time(variable_code=v, sampling_feature_code=export_info.sampling_feature_code),
+        export_info.variable_codes,
     )
 
     time_arrays = map(lambda qr: cftimearray(qr, point_info.latitude, point_info.longitude), query_results)
 
     ds = timeseriesdataset(
-        named_dataarrays=list(time_arrays), title=settings.title, station_name=settings.station_name
+        named_dataarrays=list(time_arrays), title=export_info.title, station_name=export_info.station_name
     )
     logging.info("Created xarray dataset")
 
@@ -113,16 +112,16 @@ def cftimearray(timeseries_result: TimeseriesSamplingResult, latitude: float, lo
             array = dataarraybytime(
                 data=timeseries_result.values,
                 name="levelvalue",
-                standard_name="rainsource_level1",
-                long_name="Rainbed Level",
+                standard_name="rainbed_level",
+                long_name="Rainbed Water Level",
                 units="m",
             )
         case "Turbidity":
             array = dataarraybytime(
                 data=timeseries_result.values,
                 name="turbidity",
-                standard_name="turbidity",
-                long_name="Turbidity",
+                standard_name="rainbed_turbidity",
+                long_name="Rainbed Water Turbidity",
                 units="m",
             )
         case _:

@@ -33,7 +33,7 @@ def msource_inlet(
 
     logging.info("Exporting MSOURCE dataset")
 
-    settings = SamplingExport(
+    export_info = SamplingExport(
         uuid="268ac6d7-c991-48e6-8c9c-f554eb5a9516",
         title="Test MSource/DigiVeivann Inlet",
         projectdescription="Test MSource/DigiVeivann Inlet",
@@ -52,11 +52,11 @@ def msource_inlet(
     timestamp_fetcher = partial(
         odm2.queries.timestamp_by_sampling_code,
         conn=conn,
-        variable_codes=settings.variable_codes,
-        sampling_feature_code=settings.sampling_feature_code,
+        variable_codes=export_info.variable_codes,
+        sampling_feature_code=export_info.sampling_feature_code,
     )
 
-    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(settings.filename)
+    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(export_info.filename)
     end_time = timestamp_fetcher(is_asc=False)
     time_intervals = utils.datetime_intervals(start_time, end_time, timedelta(hours=every_n_hours))
     last_index = len(time_intervals) if stop_after_n_files < 0 else stop_after_n_files
@@ -65,9 +65,9 @@ def msource_inlet(
 
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
-        ds = datasets.msource.create(conn, settings, interval.start_time, interval.end_time, acdd)
+        ds = datasets.msource.create(conn, export_info, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
-            utils.save_dataset(settings.filename, ds)
+            utils.save_dataset(export_info.filename, ds)
         else:
             logging.info("Found no data for interval")
 
@@ -85,7 +85,7 @@ def msource_outlet(
 
     logging.info("Exporting MSOURCE dataset")
 
-    settings = SamplingExport(
+    export_info = SamplingExport(
         uuid="09eb5028-9bc7-4587-b8ff-0436bc00494a",
         title="Test MSource/DigiVeivann Outlet",
         projectdescription="Test MSource/DigiVeivann Outlet",
@@ -103,11 +103,11 @@ def msource_outlet(
     timestamp_fetcher = partial(
         odm2.queries.timestamp_by_sampling_code,
         conn=conn,
-        variable_codes=settings.variable_codes,
-        sampling_feature_code=settings.sampling_feature_code,
+        variable_codes=export_info.variable_codes,
+        sampling_feature_code=export_info.sampling_feature_code,
     )
 
-    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(settings.filename)
+    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(export_info.filename)
     end_time = timestamp_fetcher(is_asc=False)
     time_intervals = utils.datetime_intervals(start_time, end_time, timedelta(hours=every_n_hours))
     last_index = len(time_intervals) if stop_after_n_files < 0 else stop_after_n_files
@@ -116,9 +116,9 @@ def msource_outlet(
 
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
-        ds = datasets.msource.create(conn, settings, interval.start_time, interval.end_time, acdd)
+        ds = datasets.msource.create(conn, export_info, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
-            utils.save_dataset(settings.filename, ds)
+            utils.save_dataset(export_info.filename, ds)
         else:
             logging.info("Found no data for interval")
 
@@ -134,7 +134,7 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
 
     logging.info("Exporting SIOS dataset")
 
-    settings = ProjectExport(
+    export_info = ProjectExport(
         uuid="29b7de62-e1fa-4dce-90e4-7ff8a0931397",
         title="SIOS sensor buoy in Adventfjorden",
         project_name="SIOS",
@@ -157,12 +157,12 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
     timestamp_fetcher = partial(
         odm2.queries.timestamp_by_project,
         conn=conn,
-        variable_codes=settings.variable_codes,
-        project_name=settings.project_name,
-        project_station_code=settings.project_station_code,
+        variable_codes=export_info.variable_codes,
+        project_name=export_info.project_name,
+        project_station_code=export_info.project_station_code,
     )
 
-    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(settings.filename)
+    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(export_info.filename)
     end_time = timestamp_fetcher(is_asc=False)
     time_intervals = utils.datetime_intervals(start_time, end_time, timedelta(hours=every_n_hours))
     last_index = len(time_intervals) if stop_after_n_files < 0 else stop_after_n_files
@@ -171,9 +171,9 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
 
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
-        ds = datasets.sios.create(conn, settings, interval.start_time, interval.end_time, acdd)
+        ds = datasets.sios.create(conn, export_info, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
-            utils.save_dataset(settings.filename, ds)
+            utils.save_dataset(export_info.filename, ds)
         else:
             logging.info("Found no data for interval")
 

@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     db_host: str
     db_port: int = 5432
     thredds_url: str
+    gcs_bucket_name: str = ""
 
     class Config:
         case_sensitive = False
