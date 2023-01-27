@@ -25,11 +25,11 @@ sample_project_metadata = TimeseriesMetadataResult(
 
 @mock.patch("dataexport.datasets.sios.timeseries")
 @mock.patch("dataexport.datasets.sios.timeseries_metadata")
-def test_dump(m_timeseries_metadata, m_timeseries):
+def test_create(m_timeseries_metadata, m_timeseries):
 
     m_timeseries.return_value = sample_timeseries
     m_timeseries_metadata.return_value = sample_project_metadata
-    ds = sios.dump(mock.MagicMock(), sample_timeseries.datetime[0], sample_timeseries.datetime[-1])
+    ds = sios.create(mock.MagicMock(), sample_timeseries.datetime[0], sample_timeseries.datetime[-1])
 
     assert len(ds.temperature.values) == len(sample_timeseries.values)
     assert all(expected == actual for expected, actual in zip(sample_timeseries.values, ds.temperature.values))

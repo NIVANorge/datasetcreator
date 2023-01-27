@@ -18,7 +18,7 @@ from dataexport.sources.odm2.queries import (
 )
 
 
-def dump(
+def create(
     conn: connection, settings: ProjectExport, start_time: datetime, end_time: datetime, is_acdd: bool = False
 ) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset

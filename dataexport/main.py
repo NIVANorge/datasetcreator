@@ -64,7 +64,7 @@ def msource_inlet(
 
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
-        ds = datasets.msource.dump(conn, settings, interval.start_time, interval.end_time, acdd)
+        ds = datasets.msource.create(conn, settings, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
             utils.save_dataset(settings.filename, ds)
         else:
@@ -114,7 +114,7 @@ def msource_outlet(
 
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
-        ds = datasets.msource.dump(conn, settings, interval.start_time, interval.end_time, acdd)
+        ds = datasets.msource.create(conn, settings, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
             utils.save_dataset(settings.filename, ds)
         else:
@@ -168,7 +168,7 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
 
     for interval in time_intervals[0:last_index]:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
-        ds = datasets.sios.dump(conn, settings, interval.start_time, interval.end_time, acdd)
+        ds = datasets.sios.create(conn, settings, interval.start_time, interval.end_time, acdd)
         if ds.dims["time"] > 0:
             utils.save_dataset(settings.filename, ds)
         else:

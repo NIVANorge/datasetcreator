@@ -14,7 +14,7 @@ from dataexport.sources.odm2.queries import PointProjectResult, TimeseriesSampli
 from dataexport.export_types import SamplingExport
 
 
-def dump(
+def create(
     conn: connection, settings: SamplingExport, start_time: datetime, end_time: datetime, is_acdd: bool = False
 ) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
