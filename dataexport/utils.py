@@ -45,7 +45,7 @@ def datetime_intervals(start_time: datetime, end_time: datetime, delta: timedelt
 def save_dataset(ds: xr.Dataset, project_name: str, filename: str):
 
     first_timestamp = np.datetime_as_string(ds.time[0], timezone="UTC", unit="s").replace(":", "")
-    filepath = os.path.join(project_name.lower(), f"{first_timestamp}_{filename.lower()}.nc")
+    filepath = os.path.join("datasets", project_name.lower(), f"{first_timestamp}_{filename.lower()}.nc")
 
     if SETTINGS.storage_path.startswith("gs://"):
         storage_client = storage.Client()

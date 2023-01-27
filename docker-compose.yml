@@ -9,5 +9,5 @@ services:
     container_name: thredds
     volumes:
       - ./catalog/catalog.xml:/usr/local/tomcat/content/thredds/catalog.xml
-      - ./catalog:/datasets
+      - ./catalog/datasets:/datasets
       - ./catalog/UnidataDD2MI.xsl:/usr/local/tomcat/webapps/thredds/WEB-INF/classes/resources/xsl/nciso/UnidataDD2MI.xsl

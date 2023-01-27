@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     db_port: int = 5432
     thredds_url: str
     storage_path: Annotated[
-        str, Field(description="A local storage path, or a gcs storage path", example="gs://nivatest-1-senda/datasets")
+        str, Field(description="A local storage path, or a gcs storage path", example="gs://nivatest-1-senda")
     ] = "./catalog"
 
     class Config:
