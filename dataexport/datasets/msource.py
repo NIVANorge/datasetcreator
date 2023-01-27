@@ -8,14 +8,14 @@ import xarray as xr
 from psycopg2.extensions import connection
 
 from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
-from dataexport.cfarray.time_series import timeseriesdataset, timeseriescoords
+from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
+from dataexport.export_types import SamplingExport
 from dataexport.sources.odm2.queries import (
     PointProjectResult,
     TimeseriesSamplingResult,
     point_by_sampling_code,
     timeseries_by_sampling_code,
 )
-from dataexport.export_types import SamplingExport
 
 
 def create(
@@ -29,7 +29,7 @@ def create(
     point_info = point_by_sampling_code(conn, export_info.sampling_feature_code)
 
     ds = dataset(conn, export_info, point_info, start_time, end_time)
-
+    ds.attrs["id"] = export_info.uuid
     return acdd(export_info.title, ds, export_info.projectdescription, export_info.project_name) if is_acdd else ds
 
 

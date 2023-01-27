@@ -1,17 +1,15 @@
 import logging
 import sys
 from datetime import datetime, timedelta
-
+from functools import partial
 
 import psycopg2
 import typer
-from functools import partial
 
-
-from dataexport import datasets, utils, thredds
-from dataexport.sources import odm2
+from dataexport import datasets, thredds, utils
 from dataexport.config import DATABASE_URL
 from dataexport.export_types import ProjectExport, SamplingExport
+from dataexport.sources import odm2
 
 app = typer.Typer()
 

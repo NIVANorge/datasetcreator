@@ -1,6 +1,6 @@
-from pydantic import BaseSettings
 from typing import Annotated
-from pydantic import Field
+
+from pydantic import BaseSettings, Field
 
 
 class Settings(BaseSettings):

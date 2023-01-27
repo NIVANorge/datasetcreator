@@ -8,18 +8,18 @@ import xarray as xr
 from psycopg2.extensions import connection
 
 from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
-from dataexport.cfarray.time_series import timeseriesdataset, timeseriescoords
+from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dataexport.export_types import ProjectExport
 from dataexport.sources.odm2.queries import (
     PointProjectResult,
     TimeseriesResult,
-    timeseries_by_project,
     point_by_project,
+    timeseries_by_project,
 )
 
 
 def create(
-    conn: connection, settings: ProjectExport, start_time: datetime, end_time: datetime, is_acdd: bool = False
+    conn: connection, export_info: ProjectExport, start_time: datetime, end_time: datetime, is_acdd: bool = False
 ) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
@@ -27,16 +27,16 @@ def create(
     """
 
     project_info = point_by_project(
-        conn, project_name=settings.project_name, project_station_code=settings.project_station_code
+        conn, project_name=export_info.project_name, project_station_code=export_info.project_station_code
     )
-    ds = dataset(conn, settings, project_info, start_time, end_time)
-
-    return acdd(settings.title, ds, project_info) if is_acdd else ds
+    ds = dataset(conn, export_info, project_info, start_time, end_time)
+    ds.attrs["id"] = export_info.uuid
+    return acdd(export_info.title, ds, project_info) if is_acdd else ds
 
 
 def dataset(
     conn: connection,
-    settings: ProjectExport,
+    export_info: ProjectExport,
     project_info: PointProjectResult,
     start_time: datetime,
     end_time: datetime,
@@ -55,12 +55,12 @@ def dataset(
         end_time=end_time,
     )
 
-    query_results = map(lambda vc: query_by_time(variable_code=vc), settings.variable_codes)
+    query_results = map(lambda vc: query_by_time(variable_code=vc), export_info.variable_codes)
 
     time_arrays = map(lambda qr: cftimearray(qr, project_info.latitude, project_info.longitude), query_results)
 
     ds = timeseriesdataset(
-        named_dataarrays=list(time_arrays), title=settings.title, station_name=project_info.projectstationname
+        named_dataarrays=list(time_arrays), title=export_info.title, station_name=project_info.projectstationname
     )
     logging.info("Created xarray dataset")
 
