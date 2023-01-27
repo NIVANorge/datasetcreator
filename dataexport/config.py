@@ -1,4 +1,6 @@
 from pydantic import BaseSettings
+from typing import Annotated
+from pydantic import Field
 
 
 class Settings(BaseSettings):
@@ -6,7 +8,9 @@ class Settings(BaseSettings):
     db_host: str
     db_port: int = 5432
     thredds_url: str
-    gcs_bucket_name: str = ""
+    storage_path: Annotated[
+        str, Field(description="A local storage path, or a gcs storage path", example="gs://nivatest-1-senda/datasets")
+    ] = "./threddsdata"
 
     class Config:
         case_sensitive = False

@@ -73,6 +73,7 @@ def msource_inlet(
 
     conn.close()
 
+
 @app.command()
 def msource_outlet(
     every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False
@@ -123,6 +124,7 @@ def msource_outlet(
             logging.info("Found no data for interval")
 
     conn.close()
+
 
 @app.command()
 def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False):

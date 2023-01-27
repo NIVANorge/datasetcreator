@@ -7,7 +7,8 @@ import numpy as np
 import xarray as xr
 
 from dataexport.cfarray.base import DEFAULT_ENCODING
-
+from dataexport.config import SETTINGS
+from google.cloud import storage
 
 def numpy_to_datetime(dt: np.datetime64) -> datetime:
     """convert ns numpy.datetime64 to datetime"""

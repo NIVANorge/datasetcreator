@@ -9,7 +9,12 @@ from psycopg2.extensions import connection
 
 from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
 from dataexport.cfarray.time_series import timeseriesdataset, timeseriescoords
-from dataexport.sources.odm2.queries import PointProjectResult, TimeseriesSamplingResult, point_by_sampling_code, timeseries_by_sampling_code
+from dataexport.sources.odm2.queries import (
+    PointProjectResult,
+    TimeseriesSamplingResult,
+    point_by_sampling_code,
+    timeseries_by_sampling_code,
+)
 from dataexport.export_types import SamplingExport
 
 

@@ -97,11 +97,13 @@ def timeseries_by_sampling_code(
         sampling_feature_code=sampling_feature_code,
     )
 
+
 @dataclass
 class PointResult:
     samplingfeaturecode: str
     longitude: float
     latitude: float
+
 
 @dataclass
 class PointProjectResult(PointResult):
@@ -155,6 +157,7 @@ def point_by_sampling_code(
         cur.execute(query, (sampling_feature_code,))
         res = cur.fetchone()
     return PointResult(**res)
+
 
 def timestamp_by_project(
     conn: psycopg2.extensions.connection,
