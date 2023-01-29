@@ -31,10 +31,10 @@ def timeseriescoords(
     )
 
 
-def timeseriesdataset(named_dataarrays: List[xr.DataArray], title: str, station_name: str) -> xr.Dataset:
+def timeseriesdataset(named_dataarrays: List[xr.DataArray], station_name: str) -> xr.Dataset:
     """Timeseries dataset"""
     feature_type = "timeseries"
     ds = xr.merge(named_dataarrays + [idarray("station_name", station_name, "timeseries" + "_id")])
 
-    ds.attrs = {"title": title, "featureType": feature_type}
+    ds.attrs = {"featureType": feature_type}
     return ds

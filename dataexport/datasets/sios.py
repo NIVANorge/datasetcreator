@@ -60,7 +60,7 @@ def dataset(
     time_arrays = map(lambda qr: cftimearray(qr, project_info.latitude, project_info.longitude), query_results)
 
     ds = timeseriesdataset(
-        named_dataarrays=list(time_arrays), title=export_info.title, station_name=project_info.projectstationname
+        named_dataarrays=list(time_arrays), station_name=project_info.projectstationname
     )
     logging.info("Created xarray dataset")
 

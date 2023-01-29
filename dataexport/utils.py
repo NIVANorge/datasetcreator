@@ -44,8 +44,8 @@ def datetime_intervals(start_time: datetime, end_time: datetime, delta: timedelt
 
 def save_dataset(ds: xr.Dataset, project_name: str, filename: str):
     """Save the dataset
-    
-    Depending on the environment variable STORAGE_PATH save either to a gcs bucket or 
+
+    Depending on the environment variable STORAGE_PATH save either to a gcs bucket or
     the local filesystem
     """
 
@@ -62,7 +62,7 @@ def save_dataset(ds: xr.Dataset, project_name: str, filename: str):
 
 def save_to_gcs(ds: xr.Dataset, filepath: str) -> str:
     """Save a file to a GCS bucket
-    
+
     To support netCDF version 4 the file is first stored to the filessystem
     """
 
@@ -77,6 +77,7 @@ def save_to_gcs(ds: xr.Dataset, filepath: str) -> str:
     save_location = os.path.join(SETTINGS.storage_path, filepath)
 
     return save_location
+
 
 def save_local(ds: xr.Dataset, filepath: str):
     """Save to the local filesystem"""
