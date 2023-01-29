@@ -3,6 +3,7 @@ from dataclasses import asdict
 from datetime import datetime
 from functools import partial
 from itertools import product
+from typing import List
 
 import xarray as xr
 from psycopg2.extensions import connection
@@ -11,7 +12,7 @@ from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
 from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dataexport.export_types import SamplingExport
 from dataexport.sources.odm2.queries import (
-    PointProjectResult,
+    PointResult,
     TimeseriesSamplingResult,
     point_by_sampling_code,
     timeseries_by_sampling_code,
@@ -19,24 +20,31 @@ from dataexport.sources.odm2.queries import (
 
 
 def create(
-    conn: connection, export_info: SamplingExport, start_time: datetime, end_time: datetime, is_acdd: bool = False
+    conn: connection,
+    uuid: str,
+    sampling_feature_code: str,
+    variable_codes: List[str],
+    station_name: str,
+    start_time: datetime,
+    end_time: datetime,
 ) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
     Map odm2 data into climate & forecast convention and return a xarray dataset.
     """
 
-    point_info = point_by_sampling_code(conn, export_info.sampling_feature_code)
+    point_info = point_by_sampling_code(conn, sampling_feature_code)
+    ds = dataset(conn, variable_codes, station_name, point_info, start_time, end_time)
+    ds.attrs["id"] = uuid
 
-    ds = dataset(conn, export_info, point_info, start_time, end_time)
-    ds.attrs["id"] = export_info.uuid
-    return acdd(export_info.title, ds, export_info.projectdescription, export_info.project_name) if is_acdd else ds
+    return ds
 
 
 def dataset(
     conn: connection,
-    export_info: SamplingExport,
-    point_info: PointProjectResult,
+    variable_codes: List[str],
+    station_name: str,
+    point_info: PointResult,
     start_time: datetime,
     end_time: datetime,
 ) -> xr.Dataset:
@@ -53,19 +61,19 @@ def dataset(
     )
 
     query_results = map(
-        lambda v: query_by_time(variable_code=v, sampling_feature_code=export_info.sampling_feature_code),
-        export_info.variable_codes,
+        lambda v: query_by_time(variable_code=v, sampling_feature_code=point_info.samplingfeaturecode),
+        variable_codes,
     )
 
     time_arrays = map(lambda qr: cftimearray(qr, point_info.latitude, point_info.longitude), query_results)
 
-    ds = timeseriesdataset(named_dataarrays=list(time_arrays), station_name=export_info.station_name)
+    ds = timeseriesdataset(named_dataarrays=list(time_arrays), station_name=station_name)
     logging.info("Created xarray dataset")
 
     return ds
 
 
-def acdd(title: str, ds: xr.Dataset, projectdescription: str, projectname):
+def add_acdd(ds: xr.Dataset, title: str, summary: str, projectname):
     """Add ACDD attributes to a xarray dataset
 
     Add attributes following the Attribute Convention for Data Discovery to a dataset
@@ -75,7 +83,7 @@ def acdd(title: str, ds: xr.Dataset, projectdescription: str, projectname):
         asdict(
             DatasetAttrs(
                 title=title,
-                summary=projectdescription,
+                summary=summary,
                 keywords=[
                     "Land-based Platforms",
                     "EARTH SCIENCE > LAND SURFACE",

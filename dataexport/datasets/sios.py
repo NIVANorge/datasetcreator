@@ -2,6 +2,7 @@ import logging
 from dataclasses import asdict
 from datetime import datetime
 from functools import partial
+from typing import List
 
 import numpy as np
 import xarray as xr
@@ -19,24 +20,28 @@ from dataexport.sources.odm2.queries import (
 
 
 def create(
-    conn: connection, export_info: ProjectExport, start_time: datetime, end_time: datetime, is_acdd: bool = False
+    conn: connection,
+    uuid: str,
+    project_name: str,
+    project_station_code: str,
+    variable_codes: List[str],
+    start_time: datetime,
+    end_time: datetime,
 ) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
     Map odm2 data into climate & forecast convention and return a xarray dataset.
     """
 
-    project_info = point_by_project(
-        conn, project_name=export_info.project_name, project_station_code=export_info.project_station_code
-    )
-    ds = dataset(conn, export_info, project_info, start_time, end_time)
-    ds.attrs["id"] = export_info.uuid
-    return acdd(export_info.title, ds, project_info) if is_acdd else ds
+    project_info = point_by_project(conn, project_name=project_name, project_station_code=project_station_code)
+    ds = dataset(conn, variable_codes, project_info, start_time, end_time)
+    ds.attrs["id"] = uuid
+    return ds
 
 
 def dataset(
     conn: connection,
-    export_info: ProjectExport,
+    variable_codes: List[str],
     project_info: PointProjectResult,
     start_time: datetime,
     end_time: datetime,
@@ -55,7 +60,7 @@ def dataset(
         end_time=end_time,
     )
 
-    query_results = map(lambda vc: query_by_time(variable_code=vc), export_info.variable_codes)
+    query_results = map(lambda vc: query_by_time(variable_code=vc), variable_codes)
 
     time_arrays = map(lambda qr: cftimearray(qr, project_info.latitude, project_info.longitude), query_results)
 
@@ -65,7 +70,7 @@ def dataset(
     return ds
 
 
-def acdd(title: str, ds: xr.Dataset, project_info: PointProjectResult):
+def add_acdd(ds: xr.Dataset, title: str, summary, projectname: str):
     """Add ACDD attributes to a xarray dataset
 
     Add attributes following the Attribute Convention for Data Discovery to a dataset
@@ -75,14 +80,14 @@ def acdd(title: str, ds: xr.Dataset, project_info: PointProjectResult):
         asdict(
             DatasetAttrs(
                 title=title,
-                summary=project_info.projectdescription,
+                summary=summary,
                 keywords=[
                     "Water-based Platforms > Buoys > Moored > BUOYS",
                     "EARTH SCIENCE > Oceans > Salinity/Density > Salinity",
                 ],
                 featureType=ds.attrs["featureType"],
                 date_created=str(datetime.now()),
-                project=project_info.projectname,
+                project=projectname,
                 time_coverage_start=str(ds.time.min().values),
                 time_coverage_end=str(ds.time.max().values),
                 geospatial_lat_min=float(ds.latitude.min()),

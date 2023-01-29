@@ -29,17 +29,17 @@ sample_project_metadata = PointProjectResult(
 @mock.patch("dataexport.datasets.sios.point_by_project")
 def test_create(m_timeseries_metadata, m_timeseries):
 
-    export_info = ProjectExport(
-        uuid="id",
-        title="title2",
-        project_name="project_name",
-        variable_codes=["Temp"],
-        dataset_name="datasetname",
-        project_station_code="pcode",
-    )
     m_timeseries.return_value = sample_timeseries
     m_timeseries_metadata.return_value = sample_project_metadata
-    ds = sios.create(mock.MagicMock(), export_info, sample_timeseries.datetime[0], sample_timeseries.datetime[-1])
+    ds = sios.create(
+        mock.MagicMock(),
+        uuid="id",
+        project_name="project_name",
+        project_station_code="pcode",
+        variable_codes=["Temp"],
+        start_time=sample_timeseries.datetime[0],
+        end_time=sample_timeseries.datetime[-1],
+    )
 
     assert ds.attrs["featureType"] == "timeseries"
     assert len(ds.temperature.values) == len(sample_timeseries.values)

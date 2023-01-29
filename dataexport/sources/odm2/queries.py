@@ -143,7 +143,7 @@ def point_by_project(
 def point_by_sampling_code(
     conn: psycopg2.extensions.connection,
     sampling_feature_code: str,
-) -> PointProjectResult:
+) -> PointResult:
     query = """
     SELECT 
         sf.samplingfeaturecode,
