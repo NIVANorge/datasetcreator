@@ -34,13 +34,13 @@ def test_create(m_timeseries_metadata, m_timeseries):
         title="title2",
         project_name="project_name",
         variable_codes=["Temp"],
-        filename="filename",
+        dataset_name="datasetname",
         project_station_code="pcode",
     )
     m_timeseries.return_value = sample_timeseries
     m_timeseries_metadata.return_value = sample_project_metadata
     ds = sios.create(mock.MagicMock(), export_info, sample_timeseries.datetime[0], sample_timeseries.datetime[-1])
 
-    assert (ds.attrs["featureType"]=="timeseries")
+    assert ds.attrs["featureType"] == "timeseries"
     assert len(ds.temperature.values) == len(sample_timeseries.values)
     assert all(expected == actual for expected, actual in zip(sample_timeseries.values, ds.temperature.values))

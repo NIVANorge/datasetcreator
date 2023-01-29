@@ -9,7 +9,7 @@ class __ExportSettings:
     title: str
     project_name: str
     variable_codes: List[str]
-    filename: str
+    dataset_name: str
 
 
 @dataclass
