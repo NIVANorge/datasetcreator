@@ -11,7 +11,7 @@ from dataexport.cfarray.dims import TIME
 
 
 @dataclass
-class TimeSeriesCoord:
+class TrajectoryCoord:
     time: xr.Variable
     longitude: xr.Variable
     latitude: xr.Variable
@@ -23,7 +23,7 @@ def trajectorycoords(
     latitude: List[float],
 ):
     return asdict(
-        TimeSeriesCoord(
+        TrajectoryCoord(
             time=xr.Variable(TIME, time, asdict(TimeAttrs())),
             longitude=xr.Variable(TIME, longitude, asdict(LongitudeAttrs())),
             latitude=xr.Variable(TIME, latitude, asdict(LatitudeAttrs())),
