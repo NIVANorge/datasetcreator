@@ -1,8 +1,6 @@
 import logging
 from dataclasses import asdict
 from datetime import datetime
-from functools import partial
-from itertools import product
 from typing import List
 
 import xarray as xr
@@ -10,70 +8,34 @@ from psycopg2.extensions import connection
 
 from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
 from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
-from dataexport.export_types import SamplingExport
 from dataexport.sources.odm2.queries import (
     PointResult,
-    TimeseriesSamplingResult,
-    point_by_sampling_code,
-    timeseries_by_sampling_code,
 )
+from dataexport.sources.odm2.builder import NamedTimeseries
 
 
 def create(
-    conn: connection,
     uuid: str,
-    sampling_feature_code: str,
-    variable_codes: List[str],
-    station_name: str,
-    start_time: datetime,
-    end_time: datetime,
-) -> xr.Dataset:
-    """Export sios data from odm2 to xarray dataset
-
-    Map odm2 data into climate & forecast convention and return a xarray dataset.
-    """
-
-    point_info = point_by_sampling_code(conn, sampling_feature_code)
-    ds = dataset(conn, variable_codes, station_name, point_info, start_time, end_time)
-    ds.attrs["id"] = uuid
-
-    return ds
-
-
-def dataset(
-    conn: connection,
-    variable_codes: List[str],
+    named_timeseries: List[NamedTimeseries],
     station_name: str,
     point_info: PointResult,
-    start_time: datetime,
-    end_time: datetime,
 ) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
     Map odm2 data into climate & forecast convention and return a xarray dataset.
     """
 
-    query_by_time = partial(
-        timeseries_by_sampling_code,
-        conn=conn,
-        start_time=start_time,
-        end_time=end_time,
-    )
-
-    query_results = map(
-        lambda v: query_by_time(variable_code=v, sampling_feature_code=point_info.samplingfeaturecode),
-        variable_codes,
-    )
-
-    time_arrays = map(lambda qr: cftimearray(qr, point_info.latitude, point_info.longitude), query_results)
+    time_arrays = map(lambda ts: cftimearray(ts, point_info.latitude, point_info.longitude), named_timeseries)
 
     ds = timeseriesdataset(named_dataarrays=list(time_arrays), station_name=station_name)
+    ds.attrs["id"] = uuid
+
     logging.info("Created xarray dataset")
 
     return ds
 
 
-def add_acdd(ds: xr.Dataset, title: str, summary: str, projectname):
+def add_acdd(ds: xr.Dataset, projectname):
     """Add ACDD attributes to a xarray dataset
 
     Add attributes following the Attribute Convention for Data Discovery to a dataset
@@ -82,8 +44,8 @@ def add_acdd(ds: xr.Dataset, title: str, summary: str, projectname):
     ds.attrs.update(
         asdict(
             DatasetAttrs(
-                title=title,
-                summary=summary,
+                title="Test MSource/DigiVeivann Inlet",
+                summary="Test MSource/DigiVeivann Inlet",
                 keywords=[
                     "Land-based Platforms",
                     "EARTH SCIENCE > LAND SURFACE",
@@ -103,14 +65,14 @@ def add_acdd(ds: xr.Dataset, title: str, summary: str, projectname):
     return ds
 
 
-def cftimearray(timeseries_result: TimeseriesSamplingResult, latitude: float, longitude: float) -> xr.DataArray:
+def cftimearray(timeseries_result: NamedTimeseries, latitude: float, longitude: float) -> xr.DataArray:
     """Match timeserie data to C&F
 
     Match timeseries data to the climate and forecast convention based on the given variable code.
     Standard names are found at http://vocab.nerc.ac.uk/collection/P07/current/
     online unit list on https://ncics.org/portfolio/other-resources/udunits2/
     """
-    match timeseries_result.variable_code:
+    match timeseries_result.variable_name:
         case "Temp":
             array = dataarraybytime(
                 data=timeseries_result.values,

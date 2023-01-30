@@ -1,70 +1,35 @@
 import logging
 from dataclasses import asdict
 from datetime import datetime
-from functools import partial
 from typing import List
 
-import numpy as np
 import xarray as xr
 from psycopg2.extensions import connection
 
 from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
 from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
-from dataexport.export_types import ProjectExport
 from dataexport.sources.odm2.queries import (
-    PointProjectResult,
-    TimeseriesResult,
-    point_by_project,
-    timeseries_by_project,
+    PointResult,
 )
+from dataexport.sources.odm2.builder import NamedTimeseries
 
 
 def create(
-    conn: connection,
     uuid: str,
-    project_name: str,
-    project_station_code: str,
-    variable_codes: List[str],
-    start_time: datetime,
-    end_time: datetime,
+    timeseries: List[NamedTimeseries],
+    station_name: str,
+    point_info: PointResult,
 ) -> xr.Dataset:
     """Export sios data from odm2 to xarray dataset
 
     Map odm2 data into climate & forecast convention and return a xarray dataset.
     """
 
-    project_info = point_by_project(conn, project_name=project_name, project_station_code=project_station_code)
-    ds = dataset(conn, variable_codes, project_info, start_time, end_time)
+    time_arrays = map(lambda ts: cftimearray(ts, point_info.latitude, point_info.longitude), timeseries)
+
+    ds = timeseriesdataset(named_dataarrays=list(time_arrays), station_name=station_name)
     ds.attrs["id"] = uuid
-    return ds
 
-
-def dataset(
-    conn: connection,
-    variable_codes: List[str],
-    project_info: PointProjectResult,
-    start_time: datetime,
-    end_time: datetime,
-) -> xr.Dataset:
-    """Export sios data from odm2 to xarray dataset
-
-    Map odm2 data into climate & forecast convention and return a xarray dataset.
-    """
-
-    query_by_time = partial(
-        timeseries_by_project,
-        conn=conn,
-        project_name=project_info.projectname,
-        project_station_code=project_info.projectstationcode,
-        start_time=start_time,
-        end_time=end_time,
-    )
-
-    query_results = map(lambda vc: query_by_time(variable_code=vc), variable_codes)
-
-    time_arrays = map(lambda qr: cftimearray(qr, project_info.latitude, project_info.longitude), query_results)
-
-    ds = timeseriesdataset(named_dataarrays=list(time_arrays), station_name=project_info.projectstationname)
     logging.info("Created xarray dataset")
 
     return ds
@@ -100,14 +65,14 @@ def add_acdd(ds: xr.Dataset, title: str, summary, projectname: str):
     return ds
 
 
-def cftimearray(timeseries_result: TimeseriesResult, latitude: float, longitude: float) -> xr.DataArray:
+def cftimearray(timeseries_result: NamedTimeseries, latitude: float, longitude: float) -> xr.DataArray:
     """Match timeserie data to C&F
 
     Match timeseries data to the climate and forecast convention based on the given variable code.
     Standard names are found at http://vocab.nerc.ac.uk/collection/P07/current/
     online unit list on https://ncics.org/portfolio/other-resources/udunits2/
     """
-    match timeseries_result.variable_code:
+    match timeseries_result.variable_name:
         case "Temp":
             array = dataarraybytime(
                 data=timeseries_result.values,
