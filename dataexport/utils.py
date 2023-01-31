@@ -83,7 +83,7 @@ def save_local(ds: xr.Dataset, filepath: str):
     """Save to the local filesystem"""
 
     save_location = os.path.join(SETTINGS.storage_path, filepath)
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    ds.to_netcdf(filepath, unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
+    os.makedirs(os.path.dirname(save_location), exist_ok=True)
+    ds.to_netcdf(save_location, unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
 
     return save_location

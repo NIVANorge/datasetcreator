@@ -171,7 +171,7 @@ def run_export(
     logging.info(f"Start dumping for {time_intervals[0].start_time} -> {time_intervals[-1].end_time}")
 
     for interval in time_intervals:
-        logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
+        logging.info(f"Dumping {interval.start_time} < time <= {interval.end_time}")
         ts = extractor.fetch_slice(start_time=interval.start_time, end_time=interval.end_time)
         ds = dataset_builder.create(ts)
         if ds.dims["time"] > 0:
