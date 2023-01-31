@@ -57,7 +57,7 @@ class MSourceBuilder(TimeseriesDatasetBuilder):
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="levelvalue",
-                    standard_name="rainbed_level",
+                    standard_name="rainbed_water_level",
                     long_name="Rainbed Water Level",
                     units="m",
                 )
@@ -71,7 +71,7 @@ class MSourceBuilder(TimeseriesDatasetBuilder):
                 )
             case _:
                 logging.warning(f"Array definition not found for: {timeseries.variable_name}")
-                # raise RuntimeError("Unknown variable code")
+                raise RuntimeError(f"Array definition not found for: {timeseries.variable_name}")
 
         return array
 
@@ -153,5 +153,5 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                 )
             case _:
                 logging.warning(f"Array definition not found for: {timeseries.variable_code}")
-                # raise RuntimeError("Unknown variable code")
+                raise RuntimeError("Unknown variable code")
         return array
