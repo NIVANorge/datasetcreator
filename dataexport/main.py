@@ -150,8 +150,8 @@ def create_time_intervals(
     n_intervals: int,
 ) -> List[DatetimeInterval]:
     """Create timeintervals for each dataset slice
-    
-    If starting from scratch the start time provided by the extractor is used, else 
+
+    If starting from scratch the start time provided by the extractor is used, else
     the last timestamp from the thredds server is used.
     """
     start_time = extractor.start_time() if start_from_scratch else thredds.end_time(dataset_name)

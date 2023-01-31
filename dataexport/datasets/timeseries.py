@@ -66,7 +66,7 @@ class MSourceBuilder(TimeseriesDatasetBuilder):
                     name="turbidity",
                     standard_name="rainbed_turbidity",
                     long_name="Rainbed Water Turbidity",
-                    units="m",
+                    units="NTU",
                 )
             case _:
                 logging.warning(f"Array definition not found for: {timeseries.variable_name}")

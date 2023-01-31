@@ -15,18 +15,20 @@ class Settings(BaseSettings):
     db_password: Optional[str]
     database_url: Optional[str]
 
-    @property 
+    @property
     def database_url(self):
         database_url = f"postgresql:///{self.db_name}?host={self.db_host}&port={self.db_port}&user={self.db_user}"
         if self.db_password is not None:
-            database_url+=f"&password={self.db_password}"
+            database_url += f"&password={self.db_password}"
         return database_url
 
     @property
     def thredds_dataset_url(self):
         return f"{self.thredds_url}/thredds/dodsC/datasets"
+
     class Config:
         case_sensitive = False
         env_file = ".env"
+
 
 SETTINGS = Settings()
