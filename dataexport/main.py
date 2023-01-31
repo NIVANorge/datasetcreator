@@ -168,7 +168,7 @@ def run_export(
     time_intervals: List[DatetimeInterval],
 ):
 
-    logging.info(f"Start dumping for {time_intervals[0]} -> {time_intervals[-1]}")
+    logging.info(f"Start dumping for {time_intervals[0].start_time} -> {time_intervals[-1].end_time}")
 
     for interval in time_intervals:
         logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")

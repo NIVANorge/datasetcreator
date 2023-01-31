@@ -41,8 +41,8 @@ class TimeseriesDatasetBuilder(abc.ABC):
         return array.assign_coords(
             timeseriescoords(
                 time=timeseries.datetime,
-                latitude=timeseries.latitude,
-                longitude=timeseries.longitude,
+                latitude=timeseries.locations[0].latitude,
+                longitude=timeseries.locations[0].longitude,
             )
         )
 
