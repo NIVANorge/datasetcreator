@@ -16,7 +16,8 @@ class MSourceBuilder(TimeseriesDatasetBuilder):
 
         """Add ACDD attributes to a xarray dataset
 
-        Add attributes following the Attribute Convention for Data Discovery to a dataset
+        Add attributes following the Attribute Convention for Data Discovery to a dataset.
+        More information can be found here https://adc.met.no/node/96
         """
         return DatasetAttrs(
             title=self.title,
@@ -81,7 +82,8 @@ class SiosBuilder(TimeseriesDatasetBuilder):
 
         """Add ACDD attributes to a xarray dataset
 
-        Add attributes following the Attribute Convention for Data Discovery to a dataset
+        Add attributes following the Attribute Convention for Data Discovery to a dataset.
+        More information can be found here https://adc.met.no/node/96
         """
         return DatasetAttrs(
             title=self.title,
