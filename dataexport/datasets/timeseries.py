@@ -84,22 +84,22 @@ class SiosBuilder(TimeseriesDatasetBuilder):
         Add attributes following the Attribute Convention for Data Discovery to a dataset
         """
         return DatasetAttrs(
-                title=self.title,
-                summary=self.summary,
-                keywords=[
-                    "Water-based Platforms > Buoys > Moored > BUOYS",
-                    "EARTH SCIENCE > Oceans > Salinity/Density > Salinity",
-                ],
-                featureType=ds.attrs["featureType"],
-                date_created=str(datetime.now()),
-                project=self.project_name,
-                time_coverage_start=str(ds.time.min().values),
-                time_coverage_end=str(ds.time.max().values),
-                geospatial_lat_min=float(ds.latitude.min()),
-                geospatial_lat_max=float(ds.latitude.max()),
-                geospatial_lon_min=float(ds.longitude.min()),
-                geospatial_lon_max=float(ds.longitude.max()),
-            )
+            title=self.title,
+            summary=self.summary,
+            keywords=[
+                "Water-based Platforms > Buoys > Moored > BUOYS",
+                "EARTH SCIENCE > Oceans > Salinity/Density > Salinity",
+            ],
+            featureType=ds.attrs["featureType"],
+            date_created=str(datetime.now()),
+            project=self.project_name,
+            time_coverage_start=str(ds.time.min().values),
+            time_coverage_end=str(ds.time.max().values),
+            geospatial_lat_min=float(ds.latitude.min()),
+            geospatial_lat_max=float(ds.latitude.max()),
+            geospatial_lon_min=float(ds.longitude.min()),
+            geospatial_lon_max=float(ds.longitude.max()),
+        )
 
     def map_to_cfarray(self, timeseries: NamedTimeseries) -> xr.DataArray:
         """Match timeserie data to C&F

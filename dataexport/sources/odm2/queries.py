@@ -1,10 +1,12 @@
 import logging
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
+
+from dataexport.sources.base import Point
 
 
 def resultuuids_by_code(
@@ -42,7 +44,7 @@ def timeseries_by_resultuuid(
     end_time: datetime,
 ) -> TimeseriesResult:
     """Query a timeserie for a given result uuid
-    
+
     The timeseries is limited to start_time<t<=end_time.
     """
     query = """
@@ -100,16 +102,10 @@ def project_info(
     return ProjectResult(**res)
 
 
-@dataclass
-class PointResult:
-    longitude: float
-    latitude: float
-
-
 def point_by_sampling_code(
     conn: psycopg2.extensions.connection,
     sampling_feature_code: str,
-) -> PointResult:
+) -> Point:
     query = """
     SELECT 
         ST_X(sf.featuregeometry) as longitude,
@@ -121,7 +117,7 @@ def point_by_sampling_code(
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (sampling_feature_code,))
         res = cur.fetchone()
-    return PointResult(**res)
+    return Point(**res)
 
 
 def timestamp_by_code(
