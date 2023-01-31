@@ -4,15 +4,15 @@ from datetime import datetime, timedelta
 from functools import partial
 from typing import List
 
-import psycopg2
 import typer
+from sqlalchemy import create_engine
 
 from dataexport import datasets, thredds, utils
 from dataexport.config import SETTINGS
-from dataexport.sources import odm2, base
-from dataexport.utils import DatetimeInterval
-from dataexport.datasets.base import TimeseriesDatasetBuilder
 from dataexport.datasets import timeseries
+from dataexport.datasets.base import TimeseriesDatasetBuilder
+from dataexport.sources import base, odm2
+from dataexport.utils import DatetimeInterval
 
 app = typer.Typer()
 
@@ -33,9 +33,9 @@ def msource_inlet(
     """
 
     logging.info("Exporting MSOURCE dataset")
-    conn = psycopg2.connect(SETTINGS.database_url)
+    engine = create_engine(SETTINGS.database_url)
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
-        conn,
+        engine,
         sampling_feature_code="MSOURCE1",
         variable_codes=[
             "Temp",
@@ -58,7 +58,6 @@ def msource_inlet(
         timeseries_extractor, dataset_builder.dataset_name, start_from_scratch, every_n_hours, stop_after_n_files
     )
     run_export(timeseries_extractor, dataset_builder, time_intervals)
-    conn.close()
 
 
 @app.command()
@@ -71,9 +70,9 @@ def msource_outlet(
     """
 
     logging.info("Exporting MSOURCE dataset")
-    conn = psycopg2.connect(SETTINGS.database_url)
+    engine = create_engine(SETTINGS.database_url)
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
-        conn,
+        engine,
         sampling_feature_code="MSOURCE2",
         variable_codes=[
             "LevelValue",
@@ -95,7 +94,6 @@ def msource_outlet(
         timeseries_extractor, dataset_builder.dataset_name, start_from_scratch, every_n_hours, stop_after_n_files
     )
     run_export(timeseries_extractor, dataset_builder, time_intervals)
-    conn.close()
 
 
 @app.command()
@@ -106,9 +104,9 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
     """
 
     logging.info("Exporting SIOS dataset")
-    conn = psycopg2.connect(SETTINGS.database_url)
+    engine = create_engine(SETTINGS.database_url)
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
-        conn,
+        engine,
         sampling_feature_code="bbee7983-e91c-4282-9a5d-d0894a9b7cb0",
         variable_codes=[
             "Temp",
@@ -136,7 +134,7 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
         timeseries_extractor, dataset_builder.dataset_name, start_from_scratch, every_n_hours, stop_after_n_files
     )
     run_export(timeseries_extractor, dataset_builder, time_intervals)
-    conn.close()
+
 
 
 def create_time_intervals(

@@ -1,11 +1,13 @@
-import logging
-import xarray as xr
-from dataclasses import dataclass, asdict
 import abc
+import logging
+from dataclasses import asdict, dataclass
 from typing import List
-from dataexport.sources.odm2.extractor import NamedTimeseries
+
+import xarray as xr
+
 from dataexport.cfarray.base import DatasetAttrs
-from dataexport.cfarray.time_series import timeseriesdataset, timeseriescoords
+from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
+from dataexport.sources.odm2.extractor import NamedTimeseries
 
 
 @dataclass

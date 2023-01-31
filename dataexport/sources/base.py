@@ -1,7 +1,7 @@
-from typing import List
+import abc
 from dataclasses import dataclass
 from datetime import datetime
-import abc
+from typing import List
 
 
 @dataclass

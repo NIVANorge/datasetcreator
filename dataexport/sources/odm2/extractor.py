@@ -4,29 +4,29 @@ from datetime import datetime, timedelta
 from functools import partial
 from typing import List
 
-from psycopg2.extensions import connection
+from sqlalchemy import Engine
 
+from dataexport.sources.base import BaseExtractor, NamedTimeseries, Point
 from dataexport.sources.odm2.queries import (
+    point_by_sampling_code,
     resultuuids_by_code,
     timeseries_by_resultuuid,
-    point_by_sampling_code,
     timestamp_by_code,
 )
-from dataexport.sources.base import NamedTimeseries, BaseExtractor, Point
 
 
 @dataclass
 class TimeseriesExtractor(BaseExtractor):
-    conn: connection
+    engine: Engine
     sampling_feature_code: str
     variable_codes: str
     _point: Point = field(init=False)
     _resultuuids: List[str] = field(init=False)
 
     def __post_init__(self):
-        self._point = point_by_sampling_code(self.conn, self.sampling_feature_code)
+        self._point = point_by_sampling_code(self.engine, self.sampling_feature_code)
         self._resultuuids = [
-            resultuuids_by_code(self.conn, self.sampling_feature_code, vc) for vc in self.variable_codes
+            resultuuids_by_code(self.engine, self.sampling_feature_code, vc) for vc in self.variable_codes
         ]
 
     def fetch_slice(
@@ -41,7 +41,7 @@ class TimeseriesExtractor(BaseExtractor):
         """
         query_by_resultid = partial(
             timeseries_by_resultuuid,
-            conn=self.conn,
+            engine=self.engine,
             start_time=start_time,
             end_time=end_time,
         )
@@ -54,7 +54,7 @@ class TimeseriesExtractor(BaseExtractor):
         return named_timeseries
 
     def first_timestamp(self, is_asc: bool) -> datetime:
-        return timestamp_by_code(self.conn, self.sampling_feature_code, self.variable_codes, is_asc)
+        return timestamp_by_code(self.engine, self.sampling_feature_code, self.variable_codes, is_asc)
 
     def start_time(self) -> datetime:
         """Start time of timeseries

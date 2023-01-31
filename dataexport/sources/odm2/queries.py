@@ -4,15 +4,15 @@ from datetime import datetime
 from typing import List, Optional
 
 import psycopg2
-from psycopg2.extras import RealDictCursor
+from sqlalchemy import Engine
+from sqlalchemy.sql import text
 
 from dataexport.sources.base import Point
 
 
-def resultuuids_by_code(
-    conn: psycopg2.extensions.connection, sampling_feature_code: str, variable_code: str
-) -> List[str]:
-    query = """
+def resultuuids_by_code(engine: Engine, sampling_feature_code: str, variable_code: str) -> str:
+    query = text(
+        """
     SELECT
         r.resultuuid
     FROM
@@ -21,13 +21,13 @@ def resultuuids_by_code(
         JOIN odm2.featureactions f ON f.featureactionid = r.featureactionid
         JOIN odm2.samplingfeatures sf ON f.samplingfeatureid = sf.samplingfeatureid 
     WHERE
-        sf.samplingfeaturecode = %s
-        AND v.variablecode = %s
+        sf.samplingfeaturecode = :sampling_feature_code
+        AND v.variablecode = :variable_code
     """
-    with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute(query, (sampling_feature_code, variable_code))
-        res = cur.fetchone()
-    return res["resultuuid"]
+    ).bindparams(sampling_feature_code=sampling_feature_code, variable_code=variable_code)
+    with engine.connect() as conn:
+        res = conn.execute(query).fetchone()
+    return str(res[0])
 
 
 @dataclass
@@ -38,7 +38,7 @@ class TimeseriesResult:
 
 
 def timeseries_by_resultuuid(
-    conn: psycopg2.extensions.connection,
+    engine: Engine,
     result_uuid: str,
     start_time: datetime,
     end_time: datetime,
@@ -47,7 +47,8 @@ def timeseries_by_resultuuid(
 
     The timeseries is limited to start_time<t<=end_time.
     """
-    query = """
+    query = text(
+        """
     SELECT
         valuedatetime,
         datavalue
@@ -55,17 +56,19 @@ def timeseries_by_resultuuid(
         odm2.timeseriesresultvalues tsrv
         JOIN odm2.results r ON r.resultid = tsrv.resultid
     WHERE
-        r.resultuuid = %s
-        AND tsrv.valuedatetime > %s
-        AND tsrv.valuedatetime <= %s
+        r.resultuuid = :result_uuid
+        AND tsrv.valuedatetime > :start_time
+        AND tsrv.valuedatetime <= :end_time
     ORDER BY
         tsrv.valuedatetime ASC
     """
+    ).bindparams(result_uuid=result_uuid, start_time=start_time, end_time=end_time)
+
     logging.info(f"Querying timeseries for resultuuid {result_uuid}")
 
-    with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute(query, (result_uuid, start_time, end_time))
-        res = cur.fetchall()
+    with engine.connect() as conn:
+        res = conn.execute(query)
+        res_dict = res.mappings().all()
     return TimeseriesResult(
         result_uuid, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res]
     )
@@ -80,53 +83,57 @@ class ProjectResult:
 
 
 def project_info(
-    conn: psycopg2.extensions.connection,
+    engine: Engine,
     project_name: str,
     project_station_code: str,
 ) -> ProjectResult:
-    query = """
+    query = text(
+        """
     SELECT 
         p.projectname,
         p.projectdescription,
-        pr.projectstationname,
-        pr.projectstationcode,
+        ps.projectstationname,
+        ps.projectstationcode
     FROM odm2.projects p 
-    JOIN ON p.projectid = pr.projectid
+        JOIN odm2.projectstations ps ON ps.projectid = p.projectid
     WHERE 
-        p.projectname = %s
-        AND pr.projectstationcode = %s;
+        p.projectname = :project_name
+        AND ps.projectstationcode = :project_station_code;
     """
-    with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute(query, (project_name, project_station_code))
-        res = cur.fetchone()
-    return ProjectResult(**res)
+    ).bindparams(project_name=project_name, project_station_code=project_station_code)
+    with engine.connect() as conn:
+        res = conn.execute(query)
+        res_dict = res.mappings().one()
+    return ProjectResult(**res_dict)
 
 
 def point_by_sampling_code(
-    conn: psycopg2.extensions.connection,
+    engine: Engine,
     sampling_feature_code: str,
 ) -> Point:
-    query = """
+    query = text(
+        """
     SELECT 
         ST_X(sf.featuregeometry) as longitude,
         ST_Y(sf.featuregeometry) as latitude
     FROM odm2.samplingfeatures sf
     WHERE 
-        sf.samplingfeaturecode = %s
+        sf.samplingfeaturecode = :sampling_feature_code
     """
-    with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute(query, (sampling_feature_code,))
-        res = cur.fetchone()
-    return Point(**res)
+    ).bindparams(sampling_feature_code=sampling_feature_code)
+    with engine.connect() as conn:
+        res = conn.execute(query)
+        res_dict = res.mappings().one()
+    return Point(**res_dict)
 
 
 def timestamp_by_code(
-    conn: psycopg2.extensions.connection,
+    engine: Engine,
     sampling_feature_code: str,
     variable_codes: List[str],
     is_asc: bool,
 ) -> Optional[datetime]:
-    query = """
+    query_str = """
     SELECT
         valuedatetime
     FROM
@@ -136,13 +143,16 @@ def timestamp_by_code(
         JOIN odm2.samplingfeatures sf ON f.samplingfeatureid=sf.samplingfeatureid 
         JOIN odm2.variables v ON v.variableid=r.variableid
     WHERE
-        V.VARIABLECODE IN %s
-        AND SF.SAMPLINGFEATURECODE = %s
+        V.VARIABLECODE IN :variable_codes
+        AND SF.SAMPLINGFEATURECODE = :sampling_feature_code
     ORDER BY
         TSRV.VALUEDATETIME
     """
-    query += "ASC" if is_asc else "DESC"
-    with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute(query, (tuple(variable_codes), sampling_feature_code))
-        res = cur.fetchone()
-    return res["valuedatetime"] if res is not None else None
+    query_str += "ASC LIMIT 1" if is_asc else "DESC LIMIT 1"
+    query = text(query_str).bindparams(
+        variable_codes=tuple(variable_codes), sampling_feature_code=sampling_feature_code
+    )
+    with engine.connect() as conn:
+        res = conn.execute(query)
+        res_dict = res.mappings().one()
+    return res_dict["valuedatetime"]

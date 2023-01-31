@@ -1,7 +1,7 @@
 #%%
 from datetime import datetime, timedelta
 
-import psycopg2
+from sqlalchemy import create_engine
 
 from dataexport.config import SETTINGS
 from dataexport.sources.odm2.extractor import TimeseriesExtractor
@@ -10,10 +10,10 @@ from dataexport.cfarray.time_series import timeseriesdataset, timeseriescoords
 from dataexport.cfarray.base import DEFAULT_ENCODING
 
 #%%
-conn = psycopg2.connect(SETTINGS.database_url)
+engine = create_engine(SETTINGS.database_url)
 #%%
 start_time = datetime(2022, 9, 23)
-extractor = TimeseriesExtractor(conn, "MSOURCE1", ["Turbidity", "LevelValue"])
+extractor = TimeseriesExtractor(engine, "MSOURCE1", ["Turbidity", "LevelValue"])
 turbidity_res, level_res = extractor.fetch_slice(start_time, start_time + timedelta(days=1))
 #%%
 turbidity_array = dataarraybytime(

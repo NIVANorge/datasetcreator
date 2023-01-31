@@ -5,7 +5,6 @@ from datetime import datetime
 import xarray as xr
 
 from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
-
 from dataexport.datasets.base import TimeseriesDatasetBuilder
 from dataexport.sources.odm2.extractor import NamedTimeseries
 
