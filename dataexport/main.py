@@ -27,10 +27,9 @@ logging.basicConfig(
 def msource_inlet(
     every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False
 ):
-    """Export msource data from odm2 to netcdf
+    """Build an msource inlet dataset from data in odm2
 
-    Map odm2 data into climate & forecast convention
-    and store the data as netcdf.
+    The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
     """
 
     logging.info("Exporting MSOURCE dataset")
@@ -66,10 +65,9 @@ def msource_inlet(
 def msource_outlet(
     every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False
 ):
-    """Export msource data from odm2 to netcdf
+    """Build an msource outlet dataset from data in odm2
 
-    Map odm2 data into climate & forecast convention
-    and store the data as netcdf.
+    The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
     """
 
     logging.info("Exporting MSOURCE dataset")
@@ -102,10 +100,9 @@ def msource_outlet(
 
 @app.command()
 def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n_files: int = -1, acdd: bool = False):
-    """Export sios data from odm2 to netcdf
+    """Build test sios dataset from data in odm2
 
-    Map odm2 data into climate & forecast convention
-    and store the data as netcdf.
+    The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
     """
 
     logging.info("Exporting SIOS dataset")
