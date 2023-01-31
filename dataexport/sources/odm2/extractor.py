@@ -1,6 +1,6 @@
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from functools import partial
 from typing import List
 
@@ -44,8 +44,8 @@ class TimeseriesExtractor:
     ) -> List[NamedTimeseries]:
         """Create a Timeseries from ODM2
 
-        Create a timeseries from ODM2 based on samlingfeaturecode and variable code
-        limit to start and end time.
+        Create a timeseries from ODM2 based on samlingfeaturecode and variable code.
+        The timeseries is limited to start_time<t<=end_time.
         """
         query_by_resultid = partial(
             timeseries_by_resultuuid,
@@ -65,7 +65,15 @@ class TimeseriesExtractor:
         return timestamp_by_code(self.conn, self.sampling_feature_code, self.variable_codes, is_asc)
 
     def start_time(self) -> datetime:
-        return self.first_timestamp(is_asc=True)
+        """Start time of timeseries
+        
+        Padded with 1 minute
+        """
+        return self.first_timestamp(is_asc=True) - timedelta(minutes=1)
 
     def end_time(self) -> datetime:
-        return self.first_timestamp(is_asc=False)
+        """End time of timeseries
+        
+        Padded with 1 minute. 
+        """
+        return self.first_timestamp(is_asc=False) + timedelta(minutes=1)

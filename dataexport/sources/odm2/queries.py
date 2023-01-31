@@ -41,6 +41,10 @@ def timeseries_by_resultuuid(
     start_time: datetime,
     end_time: datetime,
 ) -> TimeseriesResult:
+    """Query a timeserie for a given result uuid
+    
+    The timeseries is limited to start_time<t<=end_time.
+    """
     query = """
     SELECT
         valuedatetime,
@@ -50,8 +54,8 @@ def timeseries_by_resultuuid(
         JOIN odm2.results r ON r.resultid = tsrv.resultid
     WHERE
         r.resultuuid = %s
-        AND tsrv.valuedatetime >= %s
-        AND tsrv.valuedatetime < %s
+        AND tsrv.valuedatetime > %s
+        AND tsrv.valuedatetime <= %s
     ORDER BY
         tsrv.valuedatetime ASC
     """
