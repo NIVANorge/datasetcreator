@@ -8,7 +8,7 @@ import psycopg2
 import typer
 
 from dataexport import datasets, thredds, utils
-from dataexport.config import DATABASE_URL
+from dataexport.config import SETTINGS
 from dataexport.sources import odm2, base
 from dataexport.utils import DatetimeInterval
 from dataexport.datasets.base import TimeseriesDatasetBuilder
@@ -34,7 +34,7 @@ def msource_inlet(
     """
 
     logging.info("Exporting MSOURCE dataset")
-    conn = psycopg2.connect(DATABASE_URL)
+    conn = psycopg2.connect(SETTINGS.database_url)
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         conn,
         sampling_feature_code="MSOURCE1",
@@ -73,7 +73,7 @@ def msource_outlet(
     """
 
     logging.info("Exporting MSOURCE dataset")
-    conn = psycopg2.connect(DATABASE_URL)
+    conn = psycopg2.connect(SETTINGS.database_url)
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         conn,
         sampling_feature_code="MSOURCE2",
@@ -109,7 +109,7 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
     """
 
     logging.info("Exporting SIOS dataset")
-    conn = psycopg2.connect(DATABASE_URL)
+    conn = psycopg2.connect(SETTINGS.database_url)
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         conn,
         sampling_feature_code="bbee7983-e91c-4282-9a5d-d0894a9b7cb0",

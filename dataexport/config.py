@@ -1,9 +1,10 @@
-from typing import Annotated
+from typing import Annotated, Optional
 
-from pydantic import BaseSettings, Field
+from pydantic import BaseSettings, Field, validator
 
 
 class Settings(BaseSettings):
+    db_name: str
     db_user: str
     db_host: str
     db_port: int = 5432
@@ -11,12 +12,21 @@ class Settings(BaseSettings):
     storage_path: Annotated[
         str, Field(description="A local storage path, or a gcs storage path", example="gs://nivatest-1-senda")
     ] = "./catalog"
+    db_password: Optional[str]
+    database_url: Optional[str]
 
+    @property 
+    def database_url(self):
+        database_url = f"postgresql:///{self.db_name}?host={self.db_host}&port={self.db_port}&user={self.db_user}"
+        if self.db_password is not None:
+            database_url+=f"&password={self.db_password}"
+        return database_url
+
+    @property
+    def thredds_dataset_url(self):
+        return f"{self.thredds_url}/thredds/dodsC/datasets"
     class Config:
         case_sensitive = False
         env_file = ".env"
 
-
 SETTINGS = Settings()
-THREDDS_DATASET_URL = f"{SETTINGS.thredds_url}/thredds/dodsC/datasets"
-DATABASE_URL = f"postgresql:///odm2?host={SETTINGS.db_host}&port={SETTINGS.db_port}&user={SETTINGS.db_user}"

@@ -6,11 +6,10 @@ import psycopg2
 
 from dataexport.cfarray.base import DEFAULT_ENCODING, dataarraybytime
 from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
-from dataexport.config import DATABASE_URL
-from dataexport.sources.odm2.queries import point_by_project, timeseries_by_project, timeseries_by_sampling_code
+from dataexport.config import SETTINGS
 
 #%%
-conn = psycopg2.connect(DATABASE_URL)
+conn = psycopg2.connect(SETTINGS.database_url)
 #%%
 end_time = datetime(2022, 10, 1)
 query_sios_by_time = partial(

@@ -6,7 +6,7 @@ import requests
 import xarray as xr
 
 from dataexport import utils
-from dataexport.config import THREDDS_DATASET_URL
+from dataexport.config import SETTINGS
 
 
 def dds_to_index(dds_time_text: str) -> int:
@@ -18,12 +18,11 @@ def last_index(dataset_name: str, variable: str) -> Optional[int]:
 
     Get the last index for a dataset on the thredds server
     """
-    res = requests.get(f"{THREDDS_DATASET_URL}/{dataset_name}.nc.dds?{variable}")
+    res = requests.get(f"{SETTINGS.thredds_dataset_url}/{dataset_name}.nc.dds?{variable}")
     res.raise_for_status()
     if res.text.startswith("Error"):
         logging.error(res.text)
         return None
-    print(res.text)
     return dds_to_index(res.text)
 
 
@@ -32,5 +31,5 @@ def end_time(dataset_name: str) -> datetime:
 
     Fetch the last timestamp for a dataset on the thredds server
     """
-    start_time = xr.open_dataset(f"{THREDDS_DATASET_URL}/{dataset_name}.nc").time.values[-1]
+    start_time = xr.open_dataset(f"{SETTINGS.thredds_dataset_url}/{dataset_name}.nc").time.values[-1]
     return utils.numpy_to_datetime(start_time)
