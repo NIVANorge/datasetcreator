@@ -11,6 +11,8 @@ from dataexport import datasets, thredds, utils
 from dataexport.config import DATABASE_URL
 from dataexport.sources import odm2
 from dataexport.utils import DatetimeInterval
+from dataexport.datasets.base import TimeseriesDatasetBuilder
+from dataexport.datasets import timeseries
 
 app = typer.Typer()
 
@@ -32,42 +34,52 @@ def msource_inlet(
     """
 
     logging.info("Exporting MSOURCE dataset")
-
-    dataset_name = "msource-inlet"
-    project_name = "Multisource"
-    sampling_feature_code = "MSOURCE1"
-    variable_codes = [
-        "Temp",
-        "LevelValue",
-        "Turbidity",
-    ]
-
     conn = psycopg2.connect(DATABASE_URL)
-    timeseries_slice_function = partial(
-        odm2.builder.timeseries,
-        conn=conn,
-        result_variable_list=odm2.builder.resultuuids(conn, sampling_feature_code, variable_codes),
+    timeseries_extractor = odm2.extractor.TimeseriesExtractor(
+        conn,
+        sampling_feature_code="MSOURCE1",
+        variable_codes=[
+            "Temp",
+            "LevelValue",
+            "Turbidity",
+        ],
     )
-    point_info = odm2.queries.point_by_sampling_code(conn, sampling_feature_code)
-    dataset_create_function = partial(
-        datasets.msource.create,
+
+    dataset_builder = timeseries.MSourceBuilder(
         uuid="268ac6d7-c991-48e6-8c9c-f554eb5a9516",
-        station_name=dataset_name,
-        point_info=point_info,
+        title="Test MSOURCE/DIGIVEIVANN Inlet",
+        summary="summary",
+        dataset_name="msource-inlet",
+        station_name="msource-inlet",
+        project_name="Multisource",
+        is_acdd=acdd
     )
-    timestamp_fetcher = partial(
-        odm2.queries.timestamp_by_code,
-        conn=conn,
-        variable_codes=variable_codes,
-        sampling_feature_code=sampling_feature_code,
+
+    start_time = (
+        timeseries_extractor.start_time() if start_from_scratch else thredds.end_time(dataset_builder.dataset_name)
     )
-    start_time = timestamp_fetcher(is_asc=True) if start_from_scratch else thredds.end_time(dataset_name)
-    end_time = timestamp_fetcher(is_asc=False)
+    end_time = timeseries_extractor.end_time()
     time_intervals = create_time_intervals(start_time, end_time, every_n_hours, stop_after_n_files)
-    acdd_function = lambda ds: datasets.msource.add_acdd(ds, project_name) if acdd else ds
-    dataset_save_function = partial(utils.save_dataset, project_name=project_name, filename=dataset_name)
-    run_export(timeseries_slice_function, dataset_create_function, dataset_save_function, acdd_function, time_intervals)
+    run_export(timeseries_extractor, dataset_builder, time_intervals)
     conn.close()
+
+
+def run_export(
+    extractor: odm2.extractor.TimeseriesExtractor,
+    dataset_builder: TimeseriesDatasetBuilder,
+    time_intervals: List[DatetimeInterval],
+):
+
+    logging.info(f"Start dumping for {time_intervals[0]} -> {time_intervals[-1]}")
+
+    for interval in time_intervals:
+        logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
+        ts = extractor.fetch_slice(start_time=interval.start_time, end_time=interval.end_time)
+        ds = dataset_builder.create(ts)
+        if ds.dims["time"] > 0:
+            utils.save_dataset(ds, dataset_builder.project_name, filename=dataset_builder.dataset_name)
+        else:
+            logging.info("Found no data for interval")
 
 
 @app.command()
@@ -195,26 +207,6 @@ def create_time_intervals(
     last_index = len(time_intervals) if stop_after_n_files < 0 else stop_after_n_files
 
     return time_intervals[0:last_index]
-
-
-def run_export(
-    timeseries_slice_function,
-    dataset_create_function,
-    dataset_save_function,
-    acdd_function,
-    time_intervals: List[DatetimeInterval],
-):
-
-    logging.info(f"Start dumping for {time_intervals[0]} -> {time_intervals[-1]}")
-
-    for interval in time_intervals:
-        logging.info(f"Dumping {interval.start_time} -> {interval.end_time}")
-        ts = timeseries_slice_function(start_time=interval.start_time, end_time=interval.end_time)
-        ds = dataset_create_function(named_timeseries=ts)
-        if ds.dims["time"] > 0:
-            dataset_save_function(ds=acdd_function(ds))
-        else:
-            logging.info("Found no data for interval")
 
 
 if __name__ == "__main__":

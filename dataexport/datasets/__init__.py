@@ -1,3 +1,3 @@
-from dataexport.datasets import msource, sios
+from dataexport.datasets import timeseries
 
-__all__ = ["msource", "sios"]
+__all__ = ["timeseries"]

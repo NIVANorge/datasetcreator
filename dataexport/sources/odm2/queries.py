@@ -7,19 +7,12 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 
 
-@dataclass
-class ResultVariableMap:
-    resultuuid: str
-    variablecode: str
-
-
 def resultuuids_by_code(
     conn: psycopg2.extensions.connection, sampling_feature_code: str, variable_code: str
 ) -> List[str]:
     query = """
     SELECT
-        r.resultuuid,
-        v.variablecode
+        r.resultuuid
     FROM
         ODM2.RESULTS r
         JOIN odm2.variables v ON v.variableid = r.variableid
@@ -32,7 +25,7 @@ def resultuuids_by_code(
     with conn, conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (sampling_feature_code, variable_code))
         res = cur.fetchone()
-    return ResultVariableMap(**res)
+    return res["resultuuid"]
 
 
 @dataclass
@@ -105,7 +98,6 @@ def project_info(
 
 @dataclass
 class PointResult:
-    samplingfeaturecode: str
     longitude: float
     latitude: float
 
@@ -116,7 +108,6 @@ def point_by_sampling_code(
 ) -> PointResult:
     query = """
     SELECT 
-        sf.samplingfeaturecode,
         ST_X(sf.featuregeometry) as longitude,
         ST_Y(sf.featuregeometry) as latitude
     FROM odm2.samplingfeatures sf

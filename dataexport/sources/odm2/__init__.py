@@ -1,3 +1,3 @@
-from dataexport.sources.odm2 import builder, queries
+from dataexport.sources.odm2 import extractor, queries
 
-__all__ = ["builder", "queries"]
+__all__ = ["extractor", "queries"]
