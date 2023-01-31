@@ -4,6 +4,6 @@ import pytest
 
 
 def pytest_generate_tests(metafunc):
-    os.environ["DB_HOST"] = "dbhost"
-    os.environ["DB_USER"] = "dbuser"
+    os.environ["DATABASE_URL"] = "dbhost"
+    os.environ["STORAGE_PATH"] = "./tests/data"
     os.environ["THREDDS_URL"] = "http://thredds"

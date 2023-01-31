@@ -1,4 +1,4 @@
-from dataexport.sources.odm2.queries import timeseries_by_sampling_code
+from dataexport.sources.odm2 import queries
 
 
 def test_timeseries_metadata():
