@@ -70,7 +70,7 @@ def timeseries_by_resultuuid(
         res = conn.execute(query)
         res_dict = res.mappings().all()
     return TimeseriesResult(
-        result_uuid, values=[r["datavalue"] for r in res], datetime=[r["valuedatetime"] for r in res]
+        result_uuid, values=[r["datavalue"] for r in res_dict], datetime=[r["valuedatetime"] for r in res_dict]
     )
 
 
