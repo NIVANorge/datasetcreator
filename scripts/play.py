@@ -3,11 +3,10 @@ from datetime import datetime, timedelta
 
 from sqlalchemy import create_engine
 
+from dataexport.cfarray.base import DEFAULT_ENCODING, dataarraybytime
+from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dataexport.config import SETTINGS
 from dataexport.sources.odm2.extractor import TimeseriesExtractor
-from dataexport.cfarray.base import dataarraybytime
-from dataexport.cfarray.time_series import timeseriesdataset, timeseriescoords
-from dataexport.cfarray.base import DEFAULT_ENCODING
 
 #%%
 engine = create_engine(SETTINGS.database_url)

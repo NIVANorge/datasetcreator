@@ -7,7 +7,7 @@ import xarray as xr
 
 from dataexport.cfarray.base import DatasetAttrs
 from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
-from dataexport.cfarray.trajectory import trajectorydataset, trajectorycoords
+from dataexport.cfarray.trajectory import trajectorycoords, trajectorydataset
 from dataexport.sources.base import NamedTimeArray, NamedTimeseries, NamedTrajectory
 
 

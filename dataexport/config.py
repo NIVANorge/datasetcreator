@@ -1,6 +1,6 @@
 from typing import Annotated, Optional
 
-from pydantic import BaseSettings, Field, validator
+from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
