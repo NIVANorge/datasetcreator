@@ -7,7 +7,7 @@ def test_example_trajectory():
 
     trajectory = NamedTrajectory(
         "Temp",
-        locations=[Point(10.70, 50.70), Point(10.70, 50.71), Point(10.70, 50.72)],
+        locations=[Point(10.71, 50.70), Point(10.70, 50.71), Point(10.70, 50.72)],
         values=[1, 2, 3],
         datetime_list=[datetime(1999, 10, 4), datetime(1999, 10, 5), datetime(1999, 10, 6)],
     )
