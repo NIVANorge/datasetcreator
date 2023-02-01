@@ -13074,3 +13074,6 @@ ALTER TABLE ONLY odm2.variables
 -- PostgreSQL database dump complete
 --
 
+UPDATE odm2.samplingfeatures
+SET  samplingfeaturetypecv='Site', samplingfeaturecode='MSOURCE1', samplingfeaturename=NULL, samplingfeaturedescription=NULL, samplingfeaturegeotypecv=NULL, featuregeometry='SRID=4326;POINT (10.7484615 59.943095)'::public.geometry, featuregeometrywkt=NULL, elevation_m=NULL, elevationdatumcv=NULL
+WHERE samplingfeatureid=15;

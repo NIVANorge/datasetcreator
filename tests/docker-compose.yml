@@ -3,7 +3,7 @@ services:
   test-odm2:
     build: "./data"
     ports:
-      - "32999:5432"
+      - "32998:5432"
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
@@ -19,4 +19,4 @@ services:
       image: hello-world
       depends_on:
           test-odm2:
-              condition: service_completed_successfully
+              condition: service_healthy

@@ -26,6 +26,7 @@ ipykernel = "^6.15.2"
 matplotlib = "^3.5.3"
 requests-mock = "^1.10.0"
 nc-time-axis = "^1.4.1"
+pytest-docker = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -44,3 +45,9 @@ line_length=120                # corresponds to -w  flag
 multi_line_output=3            # corresponds to -m  flag
 include_trailing_comma=true    # corresponds to -tc flag
 skip_glob = '^((?!py$).)*$'    # this makes sort all Python files
+
+[tool.pytest.ini_options]
+markers = [
+    "docker: marks tests to run with docker (deselect with '-m \"not docker\"')"
+]
+
