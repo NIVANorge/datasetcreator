@@ -1,6 +1,7 @@
-from dataexport.sources.base import NamedTrajectory, Point
-from dataexport.datasets.trajectories import ExampleTrajBuilder
 from datetime import datetime
+
+from dataexport.datasets.trajectories import ExampleTrajBuilder
+from dataexport.sources.base import NamedTrajectory, Point
 
 
 def test_example_trajectory():
