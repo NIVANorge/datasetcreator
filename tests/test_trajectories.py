@@ -18,5 +18,7 @@ def test_example_trajectory():
 
     ds = example_builder.create([trajectory])
 
-    assert ds.attrs["title"] == "title" 
+    assert ds.attrs["title"] == "title"
     assert len(ds.temperature) == 3
+    assert len(ds.longitude) == 3
+    assert all([actual == expected for actual, expected in zip(ds.longitude, [10.71, 10.70, 10.70])])
