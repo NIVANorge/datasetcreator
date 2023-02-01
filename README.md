@@ -35,4 +35,4 @@ A local `thredds` server that reads these files can be started using docker
 docker compose up
 ```
 
-and server is available on http://localhost/thredds/catalog/catalog.html. The local catalog config file can be found in [catalog.xml](./catalog/catalog.xml). Documentation for working with this configuration file can be found [here](https://docs.unidata.ucar.edu/tds/current/userguide/basic_config_catalog.html). The [ncml](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html) documentation can also be useful.
+The server is available on http://localhost/thredds/catalog/catalog.html. The local catalog config file can be found in [catalog.xml](./catalog/catalog.xml). Documentation for working with this configuration file can be found [here](https://docs.unidata.ucar.edu/tds/current/userguide/basic_config_catalog.html). The [ncml](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html) documentation can also be useful.
