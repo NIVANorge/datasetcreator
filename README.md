@@ -5,13 +5,17 @@ A small program to create Climate and forecast datasets with xarray and save to 
 ## Local development
 
 See [config.py](./dataexport/config.py) for enviroment variables and add them to the `.env` file.
-If using your own gcloud account you can export the credentials with this command
+If not passing the password in the database URI you can also use
 
 ```bash
-export PGPASSWORD=$(gcloud auth print-access-token)
+export PGPASSWORD="MY ACCESS TOKEN"
 ```
 
 The different datasets can be created by running the export commands, for example
+
+## Creating datasets
+
+The different entrypoints can be listed with `poetry run dataexport --help`, for example
 
 ```bash
 poetry run dataexport sios --start-from-scratch --stop-after-n-files 2
@@ -23,10 +27,12 @@ poetry run dataexport msource-outlet --start-from-scratch --stop-after-n-files 2
 
 by default if the enviroment variable `STORAGE_PATH` is not set, data will be saved locally to the `./catalog` folder.
 
+## Viewing datasets
+
 A local `thredds` server that reads these files can be started using docker
 
 ```base
 docker compose up
 ```
 
-and server is available on http://localhost/thredds/catalog/catalog.html
+and server is available on http://localhost/thredds/catalog/catalog.html. The local catalog config file can be found in [catalog.xml](./catalog/catalog.xml). Documentation for working with this configuration file can be found [here](https://docs.unidata.ucar.edu/tds/current/userguide/basic_config_catalog.html). The [ncml](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html) documentation can also be useful.
