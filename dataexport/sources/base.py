@@ -9,6 +9,7 @@ class Point:
     longitude: float
     latitude: float
 
+
 @dataclass
 class NamedTimeArray:
     variable_name: str
@@ -16,17 +17,19 @@ class NamedTimeArray:
     values: List[str | int | float]
     datetime: List[datetime]
 
+
 @dataclass
 class NamedTimeseries(NamedTimeArray):
     def __post_init__(self):
-        assert len(self.locations)==1, "Missing location"
+        assert len(self.locations) == 1, "Missing location"
         assert len(self.values) == len(self.datetime), "Arrays need to have same length"
 
 
 @dataclass
 class NamedTrajectory(NamedTimeArray):
     def __post_init__(self):
-        assert len(self.locations) == len(self.values) == len(self.datetime), "Arrays need to have same length"  
+        assert len(self.locations) == len(self.values) == len(self.datetime), "Arrays need to have same length"
+
 
 @dataclass
 class BaseExtractor(abc.ABC):

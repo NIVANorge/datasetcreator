@@ -136,7 +136,6 @@ def sios(every_n_hours: int = 24, start_from_scratch: bool = False, stop_after_n
     run_export(timeseries_extractor, dataset_builder, time_intervals)
 
 
-
 def create_time_intervals(
     extractor: base.BaseExtractor,
     dataset_name: str,
