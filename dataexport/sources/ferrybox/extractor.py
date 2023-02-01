@@ -1,12 +1,9 @@
 import logging
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from functools import partial
+from dataclasses import dataclass
+from datetime import datetime
 from typing import List
 
-from sqlalchemy import Engine
-
-from dataexport.sources.base import BaseExtractor, NamedTrajectory, Point
+from dataexport.sources.base import BaseExtractor, NamedTrajectory
 
 
 @dataclass
