@@ -1,0 +1,22 @@
+version: "3"
+services:
+  test-odm2:
+    build: "./data"
+    ports:
+      - "32999:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "odm2"
+    healthcheck:
+      test: "pg_isready -h localhost -p 5432 -q -U postgres"
+      interval: 2s
+      timeout: 5s
+      retries: 5
+
+  # this is a workaround to wait for postgres to finish healthcheck
+  wait-for-postgres:
+      image: hello-world
+      depends_on:
+          test-odm2:
+              condition: service_completed_successfully
