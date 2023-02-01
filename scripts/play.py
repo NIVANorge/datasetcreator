@@ -23,7 +23,7 @@ turbidity_array = dataarraybytime(
     units="NTU",
 ).assign_coords(
     timeseriescoords(
-        time=turbidity_res.datetime,
+        time=turbidity_res.datetime_list,
         latitude=turbidity_res.locations[0].latitude,
         longitude=turbidity_res.locations[0].longitude,
     )
@@ -37,7 +37,7 @@ level_array = dataarraybytime(
     units="m",
 ).assign_coords(
     timeseriescoords(
-        time=level_res.datetime,
+        time=level_res.datetime_list,
         latitude=level_res.locations[0].latitude,
         longitude=level_res.locations[0].longitude,
     )

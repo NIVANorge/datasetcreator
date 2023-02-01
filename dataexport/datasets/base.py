@@ -57,6 +57,7 @@ class DatasetBuilder(abc.ABC):
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
         pass
 
+
 @dataclass
 class TimeseriesDatasetBuilder(DatasetBuilder):
     def create(self, named_timeseries: List[NamedTimeseries]) -> xr.Dataset:
@@ -81,11 +82,12 @@ class TimeseriesDatasetBuilder(DatasetBuilder):
 
         return array.assign_coords(
             timeseriescoords(
-                time=timeseries.datetime,
+                time=timeseries.datetime_list,
                 latitude=timeseries.locations[0].latitude,
                 longitude=timeseries.locations[0].longitude,
             )
         )
+
 
 @dataclass
 class TrajectoryDatasetBuilder(DatasetBuilder):
@@ -110,7 +112,7 @@ class TrajectoryDatasetBuilder(DatasetBuilder):
 
         return array.assign_coords(
             trajectorycoords(
-                time=timeseries.datetime,
+                time=timeseries.datetime_list,
                 latitude=[loc.latitude for loc in timeseries.locations],
                 longitude=[loc.longitude for loc in timeseries.locations],
             )
