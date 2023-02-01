@@ -7,7 +7,7 @@ from typing import List
 import typer
 from sqlalchemy import create_engine
 
-from dataexport import datasets, thredds, utils
+from dataexport import thredds, utils
 from dataexport.config import SETTINGS
 from dataexport.datasets import timeseries
 from dataexport.datasets.base import TimeseriesDatasetBuilder
