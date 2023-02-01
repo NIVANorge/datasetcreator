@@ -149,8 +149,8 @@ def create_time_intervals(
     If starting from scratch the start time provided by the extractor is used, else
     the last timestamp from the thredds server is used.
     """
-    start_time = extractor.start_time() if start_from_scratch else thredds.end_time(dataset_name)
-    end_time = extractor.end_time()
+    start_time = extractor.first_timestamp() if start_from_scratch else thredds.end_time(dataset_name)
+    end_time = extractor.last_timestamp()
     time_intervals = utils.datetime_intervals(start_time, end_time, timedelta(hours=hourly_delta))
     last_index = len(time_intervals) if n_intervals < 1 else n_intervals
 

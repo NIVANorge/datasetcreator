@@ -9,14 +9,24 @@ class Point:
     longitude: float
     latitude: float
 
-
 @dataclass
-class NamedTimeseries:
+class NamedTimeArray:
     variable_name: str
     locations: List[Point]
     values: List[str | int | float]
     datetime: List[datetime]
 
+@dataclass
+class NamedTimeseries(NamedTimeArray):
+    def __post_init__(self):
+        assert len(self.locations)==1, "Missing location"
+        assert len(self.values) == len(self.datetime), "Arrays need to have same length"
+
+
+@dataclass
+class NamedTrajectory(NamedTimeArray):
+    def __post_init__(self):
+        assert len(self.locations) == len(self.values) == len(self.datetime), "Arrays need to have same length"  
 
 @dataclass
 class BaseExtractor(abc.ABC):
@@ -25,13 +35,15 @@ class BaseExtractor(abc.ABC):
         self,
         start_time: datetime,
         end_time: datetime,
-    ) -> List[NamedTimeseries]:
+    ) -> List[NamedTimeArray]:
         pass
 
     @abc.abstractmethod
-    def start_time(self) -> datetime:
+    def first_timestamp(self) -> datetime:
+        """The first timestamp for extraction"""
         pass
 
     @abc.abstractmethod
-    def end_time(self) -> datetime:
+    def last_timestamp(self) -> datetime:
+        """The last timestamp for extraction"""
         pass

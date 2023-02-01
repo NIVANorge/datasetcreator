@@ -53,19 +53,19 @@ class TimeseriesExtractor(BaseExtractor):
 
         return named_timeseries
 
-    def first_timestamp(self, is_asc: bool) -> datetime:
+    def _timestamp(self, is_asc: bool) -> datetime:
         return timestamp_by_code(self.engine, self.sampling_feature_code, self.variable_codes, is_asc)
 
-    def start_time(self) -> datetime:
-        """Start time of timeseries
+    def first_timestamp(self) -> datetime:
+        """The first timestamp for extraction
 
         Padded with 1 minute
         """
-        return self.first_timestamp(is_asc=True) - timedelta(minutes=1)
+        return self._timestamp(is_asc=True) - timedelta(minutes=1)
 
-    def end_time(self) -> datetime:
-        """End time of timeseries
+    def last_timestamp(self) -> datetime:
+        """The last timestamp for extraction
 
         Padded with 1 minute.
         """
-        return self.first_timestamp(is_asc=False) + timedelta(minutes=1)
+        return self._timestamp(is_asc=False) + timedelta(minutes=1)
