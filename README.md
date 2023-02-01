@@ -4,7 +4,7 @@ A small program to create Climate and forecast datasets with xarray and save to 
 
 ## Local development
 
-See [config.py](./dataexport/config.py) for enviroment variables and add them to you `.env` file.
+See [config.py](./dataexport/config.py) for enviroment variables and add them to the `.env` file.
 If using your own gcloud account you can export the credentials with this command
 
 ```bash
