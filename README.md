@@ -29,4 +29,4 @@ A local `thredds` server that reads these files can be started using docker
 docker compose up
 ```
 
-this will be available on http://localhost/thredds/catalog/catalog.html
+and server is available on http://localhost/thredds/catalog/catalog.html
