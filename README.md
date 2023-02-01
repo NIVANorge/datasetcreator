@@ -4,7 +4,12 @@ A small program to create Climate and forecast datasets with xarray and save to 
 
 ## Local development
 
-See [config.py](./dataexport/config.py) for variables to add to your `.env` file, also, if using your own gcloud account you can export the credentials with this command `export PGPASSWORD=$(gcloud auth print-access-token)`
+See [config.py](./dataexport/config.py) for enviroment variables and add them to you `.env` file.
+If using your own gcloud account you can export the credentials with this command
+
+```bash
+export PGPASSWORD=$(gcloud auth print-access-token)
+```
 
 The different datasets can be created by running the export commands, for example
 
@@ -17,7 +22,8 @@ poetry run dataexport msource-outlet --start-from-scratch --stop-after-n-files 2
 ```
 
 by default if the `.env` variable `STORAGE_PATH` is not set this will export locally to the `./catalog` folder.
-A local `thredds` server that reads these files can be started using
+
+A local `thredds` server that reads these files can be started using docker
 
 ```base
 docker compose up

@@ -31,10 +31,10 @@ def trajectorycoords(
     )
 
 
-def trajectorydataset(named_dataarrays: List[xr.DataArray], title: str, trajectory_name: str) -> xr.Dataset:
+def trajectorydataset(named_dataarrays: List[xr.DataArray], trajectory_name: str) -> xr.Dataset:
     """Trajectory dataset"""
     feature_type = "trajectory"
     ds = xr.merge(named_dataarrays + [idarray(feature_type + "_name", trajectory_name, feature_type + "_id")])
 
-    ds.attrs = {"title": title, "featureType": feature_type}
+    ds.attrs = {"featureType": feature_type}
     return ds
