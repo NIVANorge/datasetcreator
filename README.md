@@ -21,7 +21,7 @@ poetry run dataexport msource-inlet --start-from-scratch --stop-after-n-files 1 
 poetry run dataexport msource-outlet --start-from-scratch --stop-after-n-files 2 --acdd
 ```
 
-by default if the `.env` variable `STORAGE_PATH` is not set this will export locally to the `./catalog` folder.
+by default if the enviroment variable `STORAGE_PATH` is not set, data will be saved locally to the `./catalog` folder.
 
 A local `thredds` server that reads these files can be started using docker
 
