@@ -58,6 +58,8 @@ def timeseries_by_resultuuid(
         r.resultuuid = :result_uuid
         AND tsrv.valuedatetime > :start_time
         AND tsrv.valuedatetime <= :end_time
+        AND tsrv.qualitycodecv != 'Bad'
+        AND tsrv.censorcodecv != 'Discarded'
     ORDER BY
         tsrv.valuedatetime ASC
     """
