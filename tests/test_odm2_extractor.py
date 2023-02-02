@@ -6,12 +6,14 @@ from sqlalchemy.exc import NoResultFound
 
 from dataexport.sources import odm2
 
+
 @pytest.fixture(scope="module")
 def engine(docker_ip, docker_services):
     port = docker_services.port_for("test-odm2", 5432)
     host = docker_ip
     dsn = f"postgresql://postgres:postgres@{host}:{port}/odm2"
     return create_engine(dsn)
+
 
 @pytest.fixture
 def msource_extractor(engine) -> odm2.extractor.TimeseriesExtractor:
@@ -26,10 +28,12 @@ def msource_extractor(engine) -> odm2.extractor.TimeseriesExtractor:
     )
     return timeseries_extractor
 
+
 @pytest.mark.docker
 def test_timeseries_extractor_timestamps(msource_extractor):
     assert msource_extractor.first_timestamp() == datetime(2022, 9, 14, 14, 20) - timedelta(minutes=1)
     assert msource_extractor.last_timestamp() == datetime(2022, 9, 19, 10, 52, 30) + timedelta(minutes=1)
+
 
 @pytest.mark.docker
 def test__extractor_values(msource_extractor):

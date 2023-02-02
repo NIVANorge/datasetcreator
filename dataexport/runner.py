@@ -14,13 +14,13 @@ def create_time_intervals(
     start_from_thredds: bool,
     hourly_delta: int,
     n_intervals: int,
-    custom_start_time: Optional[datetime] = None
+    custom_start_time: Optional[datetime] = None,
 ) -> List[DatetimeInterval]:
     """Create timeintervals for a dataset
 
-    If starting from scratch the start time provided by the extractor is used, unless a custom start time 
+    If starting from scratch the start time provided by the extractor is used, unless a custom start time
     is passed. If the flag start_from_thredds is set, the export will continue from the last timestamp for the dataset
-    on the thredds server. 
+    on the thredds server.
     """
 
     if start_from_thredds:

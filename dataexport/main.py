@@ -52,7 +52,12 @@ def msource_inlet(
     )
 
     time_intervals = runner.create_time_intervals(
-        timeseries_extractor, dataset_builder.dataset_name, start_from_thredds, every_n_hours, stop_after_n_files
+        timeseries_extractor,
+        dataset_builder.dataset_name,
+        start_from_thredds,
+        every_n_hours,
+        stop_after_n_files,
+        custom_start_time=datetime(2022, 9, 23),
     )
     runner.export(timeseries_extractor, dataset_builder, time_intervals)
 
@@ -88,7 +93,12 @@ def msource_outlet(
     )
 
     time_intervals = runner.create_time_intervals(
-        timeseries_extractor, dataset_builder.dataset_name, start_from_thredds, every_n_hours, stop_after_n_files
+        timeseries_extractor,
+        dataset_builder.dataset_name,
+        start_from_thredds,
+        every_n_hours,
+        stop_after_n_files,
+        custom_start_time=datetime(2022, 9, 23),
     )
     runner.run_export(timeseries_extractor, dataset_builder, time_intervals)
 
