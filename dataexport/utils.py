@@ -57,7 +57,7 @@ def save_dataset(ds: xr.Dataset, project_name: str, filename: str):
     else:
         save_location = save_local(ds, filepath)
 
-    logging.info(f"Data {ds.time[0]} --> {ds.time[-1]} exported to {save_location}")
+    logging.info(f"Data {ds.time[0].values} --> {ds.time[-1].values} exported to {save_location}")
 
 
 def save_to_gcs(ds: xr.Dataset, filepath: str) -> str:
