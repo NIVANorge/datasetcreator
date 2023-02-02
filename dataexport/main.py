@@ -7,9 +7,8 @@ from sqlalchemy import create_engine
 
 from dataexport.config import SETTINGS
 from dataexport.datasets import timeseries
-
+from dataexport.runner import DataRunner
 from dataexport.sources import odm2
-from dataexport import runner
 
 app = typer.Typer()
 
@@ -21,16 +20,16 @@ logging.basicConfig(
 
 
 @app.command()
-def msource_inlet(
-    every_n_hours: int = 24, start_from_thredds: bool = False, stop_after_n_files: int = -1, acdd: bool = False
-):
+def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
     """Build an msource inlet dataset from data in odm2
 
     The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
     """
 
     logging.info("Exporting MSOURCE dataset")
+
     engine = create_engine(SETTINGS.database_url)
+
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
         sampling_feature_code="MSOURCE1",
@@ -51,27 +50,25 @@ def msource_inlet(
         is_acdd=acdd,
     )
 
-    time_intervals = runner.create_time_intervals(
-        timeseries_extractor,
-        dataset_builder.dataset_name,
-        start_from_thredds,
-        every_n_hours,
-        stop_after_n_files,
+    runner = DataRunner(
         custom_start_time=datetime(2022, 9, 23),
+        extractor=timeseries_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
     )
-    runner.export(timeseries_extractor, dataset_builder, time_intervals)
+    runner.start()
 
 
 @app.command()
-def msource_outlet(
-    every_n_hours: int = 24, start_from_thredds: bool = False, stop_after_n_files: int = -1, acdd: bool = False
-):
+def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
     """Build an msource outlet dataset from data in odm2
 
     The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
     """
 
     logging.info("Exporting MSOURCE dataset")
+
     engine = create_engine(SETTINGS.database_url)
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
@@ -92,19 +89,19 @@ def msource_outlet(
         is_acdd=acdd,
     )
 
-    time_intervals = runner.create_time_intervals(
-        timeseries_extractor,
-        dataset_builder.dataset_name,
-        start_from_thredds,
-        every_n_hours,
-        stop_after_n_files,
+    runner = DataRunner(
         custom_start_time=datetime(2022, 9, 23),
+        extractor=timeseries_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
     )
-    runner.export(timeseries_extractor, dataset_builder, time_intervals)
+
+    runner.start()
 
 
 @app.command()
-def sios(every_n_hours: int = 24, start_from_thredds: bool = False, stop_after_n_files: int = -1, acdd: bool = False):
+def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
     """Build test sios dataset from data in odm2
 
     The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
@@ -137,10 +134,14 @@ def sios(every_n_hours: int = 24, start_from_thredds: bool = False, stop_after_n
         is_acdd=acdd,
     )
 
-    time_intervals = runner.create_time_intervals(
-        timeseries_extractor, dataset_builder.dataset_name, start_from_thredds, every_n_hours, stop_after_n_files
+    runner = DataRunner(
+        extractor=timeseries_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
     )
-    runner.export(timeseries_extractor, dataset_builder, time_intervals)
+
+    runner.start()
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 catalog/**/*.nc
+catalog/**/*.restart.json
 # vscode
 .vscode/
 
