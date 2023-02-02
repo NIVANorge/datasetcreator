@@ -100,7 +100,7 @@ def msource_outlet(
         stop_after_n_files,
         custom_start_time=datetime(2022, 9, 23),
     )
-    runner.run_export(timeseries_extractor, dataset_builder, time_intervals)
+    runner.export(timeseries_extractor, dataset_builder, time_intervals)
 
 
 @app.command()
@@ -140,7 +140,7 @@ def sios(every_n_hours: int = 24, start_from_thredds: bool = False, stop_after_n
     time_intervals = runner.create_time_intervals(
         timeseries_extractor, dataset_builder.dataset_name, start_from_thredds, every_n_hours, stop_after_n_files
     )
-    runner.run_export(timeseries_extractor, dataset_builder, time_intervals)
+    runner.export(timeseries_extractor, dataset_builder, time_intervals)
 
 
 if __name__ == "__main__":
