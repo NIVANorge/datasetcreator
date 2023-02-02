@@ -14,8 +14,9 @@ RUN poetry config virtualenvs.create false && \
 
 FROM builder as test
 
-RUN poetry export --without-hashes --dev | pip install -r /dev/stdin
-RUN pytest .
+
+RUN poetry export --without-hashes --with dev | pip install -r /dev/stdin
+RUN pytest -m "not docker" .
 
 FROM base as prod
 
