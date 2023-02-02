@@ -1,24 +1,15 @@
 from datetime import datetime, timedelta
 
 import pytest
-from sqlalchemy import create_engine
 from sqlalchemy.exc import NoResultFound
 
 from dataexport.sources import odm2
 
 
-@pytest.fixture(scope="module")
-def engine(docker_ip, docker_services):
-    port = docker_services.port_for("test-odm2", 5432)
-    host = docker_ip
-    dsn = f"postgresql://postgres:postgres@{host}:{port}/odm2"
-    return create_engine(dsn)
-
-
 @pytest.fixture
-def msource_extractor(engine) -> odm2.extractor.TimeseriesExtractor:
+def msource_extractor(odm2engine) -> odm2.extractor.TimeseriesExtractor:
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
-        engine,
+        odm2engine,
         sampling_feature_code="MSOURCE1",
         variable_codes=[
             "Temp",
