@@ -45,7 +45,7 @@
         </group>
       </group>
       <aggregation dimName="time" type="joinExisting">
-        <scan location="/datasets/multisource" regExp=".*msource-inlet.nc" />
+        <scan location="/datasets/multisource/msource-inlet" regExp=".*msource-inlet.nc" />
       </aggregation>
     </netcdf>
   </dataset>
@@ -62,7 +62,7 @@
         </group>
       </group>
       <aggregation dimName="time" type="joinExisting">
-        <scan location="/datasets/multisource" regExp=".*msource-outlet.nc" />
+        <scan location="/datasets/multisource/msource-outlet" regExp=".*msource-outlet.nc" />
       </aggregation>
     </netcdf>
   </dataset>
