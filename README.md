@@ -25,7 +25,7 @@ poetry run dataexport msource-inlet --start-from-scratch --stop-after-n-files 1 
 poetry run dataexport msource-outlet --start-from-scratch --stop-after-n-files 2 --acdd
 ```
 
-by default if the enviroment variable `STORAGE_PATH` is not set, data will be saved locally to the `./catalog` folder.
+by default data will be saved to the `./catalog` folder, setting the enviroment variable `STORAGE_PATH` changes this.
 
 ## Viewing datasets
 
@@ -35,4 +35,8 @@ A local `thredds` server that reads these files can be started using docker
 docker compose up
 ```
 
-The server is available on http://localhost/thredds/catalog/catalog.html. The local catalog config file can be found in [catalog.xml](./catalog/catalog.xml). Documentation for working with this configuration file can be found [here](https://docs.unidata.ucar.edu/tds/current/userguide/basic_config_catalog.html). The [ncml](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html) documentation can also be useful.
+and accesses on http://localhost/thredds/catalog/catalog.html. 
+
+## Configuring datasets
+
+The local catalog config file can be found in [catalog.xml](./catalog/catalog.xml). Documentation for working with this configuration file can be found [here](https://docs.unidata.ucar.edu/tds/current/userguide/basic_config_catalog.html). The [ncml](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html) documentation can also be useful.
