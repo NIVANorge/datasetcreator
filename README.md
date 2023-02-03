@@ -45,19 +45,19 @@ The different entrypoints can be listed with `poetry run dataexport --help`. By 
 ### Examples
 
 ```bash
-poetry run dataexport sios --stop-after-n-files 2
+poetry run dscreator sios --stop-after-n-files 2
 # or
-poetry run dataexport msource-inlet --stop-after-n-files 1 --acdd
+poetry run dscreator msource-inlet --stop-after-n-files 1 --acdd
 # or
-poetry run dataexport msource-outlet --max-time-slice 240 --stop-after-n-files 2 --acdd
+poetry run dscreator msource-outlet --max-time-slice 240 --stop-after-n-files 2 --acdd
 ```
 
 ### Adding New Datasets
 
 Add an `app` to [main.py](./dataexport/main.py), that contains:
 
-- An `extractor` subclassed from `BaseExtractor` in [sources/base.py](./dataexport/sources/base.py). For example see [TimeseriesExtractor](./dataexport/sources/odm2/extractor.py)
-- A dataset builder subclassed from the appropriate class in [datasets/base.py](./dataexport/datasets/base.py). For example see [MSourceInletBuilder](./dataexport/datasets/timeseries/msource.py)
+- An `extractor`, subclassed from `BaseExtractor` in [sources/base.py](./dataexport/sources/base.py). For example see [TimeseriesExtractor](./dataexport/sources/odm2/extractor.py)
+- A dataset builder, subclassed from the appropriate class in [datasets/base.py](./dataexport/datasets/base.py). For example see [MSourceInletBuilder](./dataexport/datasets/timeseries/msource.py)
 
 ## Viewing datasets
 

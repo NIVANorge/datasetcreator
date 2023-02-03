@@ -16,15 +16,13 @@ class ExampleTrajBuilder(TrajectoryDatasetBuilder):
         """Add ACDD attributes to a xarray dataset
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset.
-        More information can be found here https://adc.met.no/node/96
+        More information can be found here https://adc.met.no/node/96.
+        A good viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
         """
         return DatasetAttrs(
             title="example",
             summary="summary",
-            keywords=[
-                "Land-based Platforms",
-                "EARTH SCIENCE > LAND SURFACE",
-            ],
+            keywords=",".join([]),
             keywords_vocabulary=",".join([]),
             featureType=ds.attrs["featureType"],
             date_created=str(datetime.now()),

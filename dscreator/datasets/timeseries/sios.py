@@ -16,21 +16,27 @@ class SiosBuilder(TimeseriesDatasetBuilder):
         """Add ACDD attributes to a xarray dataset
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset, also see https://adc.met.no/node/96.
-        For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. We can add keywords and 
-        also link to the vocabulary.
+        A good keywords viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer. 
+        For converting CF standard names erddap also contains a good converter for cf standard names.
         """
         return DatasetAttrs(
             title="SIOS sensor buoy in Adventfjorden",
             summary="Summary",
             keywords=",".join(
-                [
-                    "GCMDP:Platforms > Water-based Platforms > Buoys > Moored > BUOYS",
-                    "GCMDLOC:Locations > Geographic Region > Continent > EUROPE > NORWAY",
+                [   
+                    "GCMDSK:Earth Science > Oceans > Ocean Chemistry > Chlorophyll",
+                    "GCMDSK:Earth Science > Oceans > Salinity/Density > Conductivity",
+                    "GCMDSK:Earth Science > Oceans > Salinity/Density > Salinity",
+                    "GCMDSK:Earth Science > Oceans > Ocean Temperature > Water Temperature",
+                    "GCMDPLA:Water-based Platforms > Buoys > Moored > BUOYS",
+                    "GCMDLOC:OCEAN > ATLANTIC OCEAN > NORTH ATLANTIC OCEAN > SVALBARD AND JAN MAYEN",
                 ]
             ),
+                
             keywords_vocabulary=",".join(
                 [
-                    "GCMDP:GCMD Platforms:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/platforms",
+                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
+                    "GCMDPLA:GCMD Platforms:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/platforms",
                     "GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
                 ]
             ),
