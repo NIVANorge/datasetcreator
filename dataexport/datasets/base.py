@@ -42,14 +42,13 @@ class DatasetBuilder(abc.ABC):
         """
         pass
 
-    def add_acdd(self, ds: xr.Dataset) -> xr.Dataset:
+    def add_acdd(self, ds: xr.Dataset):
         """Add ACDD attributes to a xarray dataset
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset
         """
         logging.info(f"Adding ACDD attributes")
         ds.attrs.update(asdict(self.dataset_attributes(ds)))
-        return ds
 
     @abc.abstractmethod
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
@@ -58,6 +57,7 @@ class DatasetBuilder(abc.ABC):
 
 @dataclass
 class TimeseriesDatasetBuilder(DatasetBuilder):
+    
     def create(self, named_timeseries: List[NamedTimeseries]) -> xr.Dataset:
         """Entrypoint for creating a xarray dataset"""
 
@@ -66,9 +66,11 @@ class TimeseriesDatasetBuilder(DatasetBuilder):
         ds = timeseriesdataset(named_dataarrays=list(time_arrays), station_name=self.station_name)
         ds.attrs["id"] = self.uuid
 
-        logging.info("Created xarray dataset")
+        if self.is_acdd and ds.dims["time"]>0:
+            # need to have data to add acdd
+            self.add_acdd(ds)
 
-        return self.add_acdd(ds) if self.is_acdd else ds
+        return ds
 
     def cftimearray(self, timeseries: NamedTimeseries) -> xr.DataArray:
         """Convert a NamedTimeseries to a coordinated dataarray

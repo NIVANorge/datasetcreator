@@ -60,6 +60,7 @@ class DataRunner:
             ts = self.extractor.fetch_slice(start_time=interval.start_time, end_time=interval.end_time)
             ds = self.dataset_builder.create(ts)
             if ds.dims["time"] > 0:
+                logging.info("Saving dataset slice")
                 self.storage_handler.save_dataset(ds)
                 restart_dataset = ds
             else:
