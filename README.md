@@ -4,7 +4,7 @@ A small program to create Climate and forecast datasets with xarray and save to 
 
 ## Local development
 
-To get started run 
+To get started run
 
 ```bash
 poetry install
@@ -23,6 +23,20 @@ export PGPASSWORD="MY ACCESS TOKEN"
 ```
 
 For other options, see [config.py](./dataexport/config.py)
+
+### Testing
+
+A local static database for tests can be found [here](./tests/data/README.md). Run the tests with
+
+```bash
+poetry run pytest .
+```
+
+To skip docker tests use
+
+```bash
+poetry run pytest -m "not docker" .
+```
 
 ## Creating datasets
 
@@ -45,8 +59,6 @@ Add an `app` to [main.py](./dataexport/main.py), that contains:
 - An `extractor` subclassed from `BaseExtractor` in [sources/base.py](./dataexport/sources/base.py). For example see [TimeseriesExtractor](./dataexport/sources/odm2/extractor.py)
 - A dataset builder subclassed from the appropriate class in [datasets/base.py](./dataexport/datasets/base.py). For example see [MSourceInletBuilder](./dataexport/datasets/timeseries/msource.py)
 
-
-
 ## Viewing datasets
 
 A local `thredds` server that reads the files can be started using docker
@@ -55,12 +67,11 @@ A local `thredds` server that reads the files can be started using docker
 docker compose up
 ```
 
-and accesses on http://localhost/thredds/catalog/catalog.html. 
+and accesses on http://localhost/thredds/catalog/catalog.html.
 
 ### Configuring the view
 
 The local catalog config file can be found in [catalog.xml](./catalog/catalog.xml). Documentation for working with this configuration file can be found [here](https://docs.unidata.ucar.edu/tds/current/userguide/basic_config_catalog.html). The ncml [documentation](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html) can also be useful.
-
 
 ## Working with netCDF
 
