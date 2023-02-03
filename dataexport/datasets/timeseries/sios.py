@@ -21,8 +21,18 @@ class SiosBuilder(TimeseriesDatasetBuilder):
         return DatasetAttrs(
             title="SIOS sensor buoy in Adventfjorden",
             summary="Summary",
-            keywords="GCMDP:Platforms > Water-based Platforms>Buoys>Moored>BUOYS,GCMDLOC:Locations > Geographic Region > Continent > EUROPE > NORWAY",
-            keywords_vocabulary="GCMDP:GCMD Platforms:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/platforms, GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
+            keywords=",".join(
+                [
+                    "GCMDP:Platforms > Water-based Platforms>Buoys>Moored>BUOYS",
+                    "GCMDLOC:Locations > Geographic Region > Continent > EUROPE > NORWAY",
+                ]
+            ),
+            keywords_vocabulary=",".join(
+                [
+                    "GCMDP:GCMD Platforms:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/platforms",
+                    "GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
+                ]
+            ),
             featureType=ds.attrs["featureType"],
             date_created=str(datetime.now()),
             project=self.project_name,

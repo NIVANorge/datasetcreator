@@ -70,6 +70,7 @@ class DatasetAttrs:
     summary: str
     date_created: datetime
     keywords: str
+    keywords_vocabulary: str
     time_coverage_start: str
     time_coverage_end: str
     geospatial_lat_min: float
@@ -84,7 +85,6 @@ class DatasetAttrs:
     creator_email: str = "miljoinformatikk@niva.no"
     creator_url: str = "https://niva.no"
     data_owner: str = "Norwegian Institute for Water Research"
-    keywords_vocabulary: str = "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords, GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations"
     processing_level: str = "Missing data has been filled with fillValue."
     Conventions: str = "CF-1.7, ACDD-1.3"
     netcdf_version: str = "4"
