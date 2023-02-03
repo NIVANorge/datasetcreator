@@ -4,12 +4,25 @@ A small program to create Climate and forecast datasets with xarray and save to 
 
 ## Local development
 
-See [config.py](./dataexport/config.py) for enviroment variables and add them to the `.env` file.
-If not passing the password in the database URI you can also use
+To get started run 
+
+```bash
+poetry install
+```
+
+then for local development set the varible
+
+```.env
+DATABASE_URL=postgresql:///{DATABASE}?host={HOST}&port=5432&user={USERNAME}
+```
+
+in your `.env` file. If not passing the password in the database URL, you can also export the password outside the `.env` file with
 
 ```bash
 export PGPASSWORD="MY ACCESS TOKEN"
 ```
+
+For other options, see [config.py](./dataexport/config.py)
 
 ## Creating datasets
 
