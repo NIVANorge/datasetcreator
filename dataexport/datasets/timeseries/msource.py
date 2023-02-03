@@ -89,7 +89,8 @@ class MSourceOutletBuilder(MSourceInletBuilder):
         """Add ACDD attributes to a xarray dataset
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset, also see https://adc.met.no/node/96.
-        For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/.
+        For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. We can add keywords and 
+        also link to the vocabulary.
         """
         return DatasetAttrs(
             title="Test MSOURCE/DIGIVEIVANN Outlet",
@@ -97,7 +98,7 @@ class MSourceOutletBuilder(MSourceInletBuilder):
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
-                    "GCMDLOC:Locations > Geographic Region > Continent > EUROPE > NORWAY",
+                    "GCMDLOC:LOCATIONS > GEOGRAPHIC REGION > CONTINENT > EUROPE > NORWAY",
                 ]
             ),
             keywords_vocabulary=",".join(

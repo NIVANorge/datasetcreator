@@ -16,14 +16,15 @@ class SiosBuilder(TimeseriesDatasetBuilder):
         """Add ACDD attributes to a xarray dataset
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset, also see https://adc.met.no/node/96.
-        For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/.
+        For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. We can add keywords and 
+        also link to the vocabulary.
         """
         return DatasetAttrs(
             title="SIOS sensor buoy in Adventfjorden",
             summary="Summary",
             keywords=",".join(
                 [
-                    "GCMDP:Platforms > Water-based Platforms>Buoys>Moored>BUOYS",
+                    "GCMDP:Platforms > Water-based Platforms > Buoys > Moored > BUOYS",
                     "GCMDLOC:Locations > Geographic Region > Continent > EUROPE > NORWAY",
                 ]
             ),
