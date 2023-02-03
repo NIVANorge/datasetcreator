@@ -8,13 +8,6 @@ class Settings(BaseSettings):
     database_url: str
     # gs://nivatest-1-senda
     storage_path: str = "./catalog"
-    # http://localhost
-    thredds_url: str
-
-    @property
-    def thredds_dataset_url(self):
-        return f"{self.thredds_url}/thredds/dodsC/datasets"
-
     class Config:
         case_sensitive = False
         env_file = ".env"
