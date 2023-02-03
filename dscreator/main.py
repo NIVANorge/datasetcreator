@@ -5,10 +5,10 @@ from datetime import datetime
 import typer
 from sqlalchemy import create_engine
 
-from dataexport.config import SETTINGS
-from dataexport.datasets import timeseries
-from dataexport.runner import DataRunner
-from dataexport.sources import odm2
+from dscreator.config import SETTINGS
+from dscreator.datasets import timeseries
+from dscreator.runner import DataRunner
+from dscreator.sources import odm2
 
 app = typer.Typer()
 

@@ -3,11 +3,11 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-from dataexport import utils
-from dataexport.datasets.base import TimeseriesDatasetBuilder
-from dataexport.sources import base
-from dataexport.storage import BaseHandler, get_storage_handler
-from dataexport.utils import DatetimeInterval
+from dscreator import utils
+from dscreator.datasets.base import TimeseriesDatasetBuilder
+from dscreator.sources import base
+from dscreator.storage import BaseHandler, get_storage_handler
+from dscreator.utils import DatetimeInterval
 
 
 @dataclass

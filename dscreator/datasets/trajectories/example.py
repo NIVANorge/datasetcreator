@@ -4,9 +4,9 @@ from datetime import datetime
 
 import xarray as xr
 
-from dataexport.cfarray.base import DatasetAttrs, dataarraybytime
-from dataexport.datasets.base import TrajectoryDatasetBuilder
-from dataexport.sources.base import NamedTrajectory
+from dscreator.cfarray.base import DatasetAttrs, dataarraybytime
+from dscreator.datasets.base import TrajectoryDatasetBuilder
+from dscreator.sources.base import NamedTrajectory
 
 
 @dataclass
@@ -25,6 +25,7 @@ class ExampleTrajBuilder(TrajectoryDatasetBuilder):
                 "Land-based Platforms",
                 "EARTH SCIENCE > LAND SURFACE",
             ],
+            keywords_vocabulary=",".join([]),
             featureType=ds.attrs["featureType"],
             date_created=str(datetime.now()),
             project=self.project_name,
@@ -49,7 +50,7 @@ class ExampleTrajBuilder(TrajectoryDatasetBuilder):
                     data=timeseries.values,
                     name="temperature",
                     standard_name="example_temperature",
-                    long_name="example Temperature",
+                    long_name="Example Temperature",
                     units="degree_Celsius",
                 )
             case _:

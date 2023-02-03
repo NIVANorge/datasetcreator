@@ -5,10 +5,10 @@ from typing import List
 
 import xarray as xr
 
-from dataexport.cfarray.base import DatasetAttrs
-from dataexport.cfarray.time_series import timeseriescoords, timeseriesdataset
-from dataexport.cfarray.trajectory import trajectorycoords, trajectorydataset
-from dataexport.sources.base import NamedTimeArray, NamedTimeseries, NamedTrajectory
+from dscreator.cfarray.base import DatasetAttrs
+from dscreator.cfarray.time_series import timeseriescoords, timeseriesdataset
+from dscreator.cfarray.trajectory import trajectorycoords, trajectorydataset
+from dscreator.sources.base import NamedTimeArray, NamedTimeseries, NamedTrajectory
 
 
 @dataclass
@@ -97,9 +97,11 @@ class TrajectoryDatasetBuilder(DatasetBuilder):
         ds = trajectorydataset(named_dataarrays=list(time_arrays), trajectory_name=self.station_name)
         ds.attrs["id"] = self.uuid
 
-        logging.info("Created xarray dataset")
+        if self.is_acdd and ds.dims["time"] > 0:
+            # need to have data to add acdd
+            self.add_acdd(ds)
 
-        return self.add_acdd(ds) if self.is_acdd else ds
+        return ds
 
     def cftimearray(self, timeseries: NamedTrajectory) -> xr.DataArray:
         """Convert a NamedTimeseries to a coordinated dataarray

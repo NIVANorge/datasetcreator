@@ -1,4 +1,4 @@
-from dataexport import __version__
+from dscreator import __version__
 
 
 def test_version():

@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 from sqlalchemy.exc import NoResultFound
 
-from dataexport.sources.odm2 import queries
+from dscreator.sources.odm2 import queries
 
 
 @pytest.mark.docker

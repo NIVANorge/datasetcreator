@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "dataexport"
+name = "dscreator"
 version = "0.1.0"
 description = ""
 authors = ["Kim Nes Leirvik <kim.leirvik@niva.no>"]
@@ -33,7 +33,7 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-dataexport = 'dataexport.main:app'
+dscreator = 'dscreator.main:app'
 
 [tool.black]
 line-length = 120

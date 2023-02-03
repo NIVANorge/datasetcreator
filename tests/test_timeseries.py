@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from dataexport.datasets.timeseries import msource
-from dataexport.sources.base import NamedTimeseries, Point
+from dscreator.datasets.timeseries import msource
+from dscreator.sources.base import NamedTimeseries, Point
 
 
 def test_timeseries_builder():

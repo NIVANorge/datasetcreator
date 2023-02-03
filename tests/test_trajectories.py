@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from dataexport.datasets import trajectories
-from dataexport.sources.base import NamedTrajectory, Point
+from dscreator.datasets import trajectories
+from dscreator.sources.base import NamedTrajectory, Point
 
 
 def test_example_trajectory():
@@ -13,11 +13,11 @@ def test_example_trajectory():
     )
 
     example_builder = trajectories.example.ExampleTrajBuilder(
-        "uuid", "dataset_name", "trajectory_name", "project_name", True
+        "uuid", "dataset_name", "trajectory_name", "project_name", False
     )
 
     ds = example_builder.create([trajectory])
-
+    
     assert len(ds.temperature) == 3
     assert len(ds.longitude) == 3
     assert all([actual == expected for actual, expected in zip(ds.longitude, [10.71, 10.70, 10.70])])

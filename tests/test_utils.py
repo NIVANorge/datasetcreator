@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 import xarray as xr
 
-from dataexport import utils
+from dscreator import utils
 
 
 def test_numpy_to_datetime():

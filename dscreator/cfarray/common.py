@@ -3,7 +3,7 @@ from dataclasses import asdict, dataclass
 import numpy as np
 import xarray as xr
 
-from dataexport.cfarray.dims import DIMLESS
+from dscreator.cfarray.dims import DIMLESS
 
 
 @dataclass

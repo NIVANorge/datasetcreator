@@ -5,9 +5,9 @@ from typing import Any, List, Literal, Tuple, Union
 
 import xarray as xr
 
-from dataexport.cfarray.attributes import DatasetAttrs, VariableAttrs
-from dataexport.cfarray.common import wgs1984
-from dataexport.cfarray.dims import DEPTH, DIMLESS, TIME
+from dscreator.cfarray.attributes import DatasetAttrs, VariableAttrs
+from dscreator.cfarray.common import wgs1984
+from dscreator.cfarray.dims import DEPTH, DIMLESS, TIME
 
 
 def dataarray(

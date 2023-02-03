@@ -11,9 +11,9 @@ import numpy as np
 import xarray as xr
 from google.cloud import storage
 
-from dataexport import utils
-from dataexport.cfarray.base import DEFAULT_ENCODING
-from dataexport.config import SETTINGS
+from dscreator import utils
+from dscreator.cfarray.base import DEFAULT_ENCODING
+from dscreator.config import SETTINGS
 
 
 @dataclass

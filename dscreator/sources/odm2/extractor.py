@@ -6,8 +6,8 @@ from typing import List
 
 from sqlalchemy import Engine
 
-from dataexport.sources.base import BaseExtractor, NamedTimeseries, Point
-from dataexport.sources.odm2.queries import (
+from dscreator.sources.base import BaseExtractor, NamedTimeseries, Point
+from dscreator.sources.odm2.queries import (
     point_by_sampling_code,
     resultuuids_by_code,
     timeseries_by_resultuuid,

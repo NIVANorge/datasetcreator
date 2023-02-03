@@ -6,7 +6,7 @@ from typing import List, Optional
 from sqlalchemy import Engine
 from sqlalchemy.sql import text
 
-from dataexport.sources.base import Point
+from dscreator.sources.base import Point
 
 
 def resultuuids_by_code(engine: Engine, sampling_feature_code: str, variable_code: str) -> str:

@@ -5,9 +5,9 @@ from typing import List
 
 import xarray as xr
 
-from dataexport.cfarray.attributes import DepthAttrs, LatitudeAttrs, LongitudeAttrs, TimeAttrs
-from dataexport.cfarray.base import idarray
-from dataexport.cfarray.dims import DEPTH, DIMLESS
+from dscreator.cfarray.attributes import DepthAttrs, LatitudeAttrs, LongitudeAttrs, TimeAttrs
+from dscreator.cfarray.base import idarray
+from dscreator.cfarray.dims import DEPTH, DIMLESS
 
 
 @dataclass

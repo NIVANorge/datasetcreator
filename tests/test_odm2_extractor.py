@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import pytest
 from sqlalchemy.exc import NoResultFound
 
-from dataexport.sources import odm2
+from dscreator.sources import odm2
 
 
 @pytest.fixture

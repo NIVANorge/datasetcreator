@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import List
 
-from dataexport.sources.base import BaseExtractor, NamedTrajectory
+from dscreator.sources.base import BaseExtractor, NamedTrajectory
 
 
 @dataclass
