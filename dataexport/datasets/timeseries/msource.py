@@ -76,7 +76,7 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
 
 
 @dataclass
-class MSourceOutletBuilder(TimeseriesDatasetBuilder):
+class MSourceOutletBuilder(MSourceInletBuilder):
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
 
         """Add ACDD attributes to a xarray dataset
