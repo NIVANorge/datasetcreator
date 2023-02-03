@@ -13,7 +13,7 @@ def test_example_trajectory():
     )
 
     example_builder = trajectories.example.ExampleTrajBuilder(
-        "uuid", "dataset_name", "trajectory_name", "project_name", False
+        "uuid", "dataset_name", "trajectory_name", "project_name", True
     )
 
     ds = example_builder.create([trajectory])
