@@ -15,16 +15,14 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
 
         """Add ACDD attributes to a xarray dataset
 
-        Add attributes following the Attribute Convention for Data Discovery to a dataset.
-        More information can be found here https://adc.met.no/node/96
+        Add attributes following the Attribute Convention for Data Discovery to a dataset, also see https://adc.met.no/node/96.
+        For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/.
         """
         return DatasetAttrs(
             title="Test MSOURCE/DIGIVEIVANN Inlet",
             summary="Summary",
-            keywords=[
-                "Land-based Platforms",
-                "EARTH SCIENCE > LAND SURFACE",
-            ],
+            keywords= "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT,GCMDLOC:Locations > Geographic Region > Continent > EUROPE > NORWAY",
+            keywords_vocabulary = "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords, GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
             featureType=ds.attrs["featureType"],
             date_created=str(datetime.now()),
             project=self.project_name,
@@ -74,23 +72,20 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
 
         return array
 
-
+    
 @dataclass
 class MSourceOutletBuilder(MSourceInletBuilder):
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
-
         """Add ACDD attributes to a xarray dataset
 
-        Add attributes following the Attribute Convention for Data Discovery to a dataset.
-        More information can be found here https://adc.met.no/node/96
+        Add attributes following the Attribute Convention for Data Discovery to a dataset, also see https://adc.met.no/node/96.
+        For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/.
         """
         return DatasetAttrs(
             title="Test MSOURCE/DIGIVEIVANN Outlet",
             summary="Summary",
-            keywords=[
-                "Land-based Platforms",
-                "EARTH SCIENCE > LAND SURFACE",
-            ],
+            keywords= "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT,GCMDLOC:Locations > Geographic Region > Continent > EUROPE > NORWAY",
+            keywords_vocabulary = "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords,GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
             featureType=ds.attrs["featureType"],
             date_created=str(datetime.now()),
             project=self.project_name,

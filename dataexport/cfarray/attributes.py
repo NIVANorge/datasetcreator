@@ -69,7 +69,7 @@ class DatasetAttrs:
     title: str
     summary: str
     date_created: datetime
-    keywords: List[str]
+    keywords: str
     time_coverage_start: str
     time_coverage_end: str
     geospatial_lat_min: float
@@ -84,12 +84,12 @@ class DatasetAttrs:
     creator_email: str = "miljoinformatikk@niva.no"
     creator_url: str = "https://niva.no"
     data_owner: str = "Norwegian Institute for Water Research"
-    keywords_vocabulary: str = "GCM:GCMD Keywords"
+    keywords_vocabulary: str = "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords, GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations"
     processing_level: str = "Missing data has been filled with fillValue."
     Conventions: str = "CF-1.7, ACDD-1.3"
     netcdf_version: str = "4"
     publisher_name: str = "Norwegian Institute for Water Research"
     publisher_email: str = "miljoinformatikk@niva.no"
     publisher_url: str = "https://niva.no"
-    licence: str = 'Freely distributed. Must credit the source of data, e.g. "Data fra Norsk Institut for Vannforskning", "Based on data from the Norwegian Institute for Water Research". Data and products are licensed under Norwegian license for public data (NLOD) and Creative Commons Attribution 3.0 Norway.'
+    licence: str = "CC-BY-4.0"
     history: str = "Initial data"
