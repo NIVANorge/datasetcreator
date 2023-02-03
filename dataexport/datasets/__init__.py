@@ -1,3 +1,3 @@
-from dataexport.datasets import timeseries
+from dataexport.datasets import timeseries, trajectories
 
-__all__ = ["timeseries"]
+__all__ = ["timeseries", "trajectories"]

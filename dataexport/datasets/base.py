@@ -14,8 +14,6 @@ from dataexport.sources.base import NamedTimeArray, NamedTimeseries, NamedTrajec
 @dataclass
 class DatasetBuilder(abc.ABC):
     uuid: str
-    title: str
-    summary: str
     dataset_name: str
     station_name: str
     project_name: str

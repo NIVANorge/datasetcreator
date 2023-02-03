@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from dataexport.datasets.timeseries import MSourceBuilder
+from dataexport.datasets.timeseries import msource
 from dataexport.sources.base import NamedTimeseries, Point
 
 
@@ -13,11 +13,10 @@ def test_timeseries_builder():
         datetime_list=[datetime(1999, 10, 4), datetime(1999, 10, 5), datetime(1999, 10, 6)],
     )
 
-    example_builder = MSourceBuilder("uuid", "title", "summary", "dataset_name", "station_name", "project_name", True)
+    example_builder = msource.MSourceInletBuilder("uuid", "dataset_name", "station_name", "project_name", True)
 
     ds = example_builder.create([time_series])
 
-    assert ds.attrs["title"] == "title"
     assert len(ds.levelvalue) == 3
     assert ds.longitude == 10.70
     assert ds.latitude == 50.70

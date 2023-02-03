@@ -1,6 +1,6 @@
 import logging
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import typer
 from sqlalchemy import create_engine
@@ -40,10 +40,8 @@ def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
         ],
     )
 
-    dataset_builder = timeseries.MSourceBuilder(
+    dataset_builder = timeseries.msource.MSourceInletBuilder(
         uuid="268ac6d7-c991-48e6-8c9c-f554eb5a9516",
-        title="Test MSOURCE/DIGIVEIVANN Inlet",
-        summary="summary",
         dataset_name="msource-inlet",
         station_name="msource-inlet",
         project_name="Multisource",
@@ -79,10 +77,8 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
         ],
     )
 
-    dataset_builder = timeseries.MSourceBuilder(
+    dataset_builder = timeseries.msource.MSourceOutletBuilder(
         uuid="09eb5028-9bc7-4587-b8ff-0436bc00494a",
-        title="Test MSOURCE/DIGIVEIVANN Outlet",
-        summary="summary",
         dataset_name="msource-outlet",
         station_name="msource-outlet",
         project_name="Multisource",
@@ -124,10 +120,8 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
             # "fDOM",
         ],
     )
-    dataset_builder = timeseries.SiosBuilder(
+    dataset_builder = timeseries.sios.SiosBuilder(
         uuid="29b7de62-e1fa-4dce-90e4-7ff8a0931397",
-        title="SIOS sensor buoy in Adventfjorden",
-        summary="summary",
         dataset_name="sios",
         station_name="adventfjorden",
         project_name="SIOS",

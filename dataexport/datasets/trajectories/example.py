@@ -19,8 +19,8 @@ class ExampleTrajBuilder(TrajectoryDatasetBuilder):
         More information can be found here https://adc.met.no/node/96
         """
         return DatasetAttrs(
-            title=self.title,
-            summary=self.summary,
+            title="example",
+            summary="summary",
             keywords=[
                 "Land-based Platforms",
                 "EARTH SCIENCE > LAND SURFACE",

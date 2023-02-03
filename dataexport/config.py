@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     database_url: str
     # gs://nivatest-1-senda
     storage_path: str = "./catalog"
+
     class Config:
         case_sensitive = False
         env_file = ".env"
