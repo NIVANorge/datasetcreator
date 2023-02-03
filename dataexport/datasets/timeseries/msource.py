@@ -21,8 +21,8 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
         return DatasetAttrs(
             title="Test MSOURCE/DIGIVEIVANN Inlet",
             summary="Summary",
-            keywords= "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT,GCMDLOC:Locations > Geographic Region > Continent > EUROPE > NORWAY",
-            keywords_vocabulary = "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords, GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
+            keywords="GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT,GCMDLOC:Locations > Geographic Region > Continent > EUROPE > NORWAY",
+            keywords_vocabulary="GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords, GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
             featureType=ds.attrs["featureType"],
             date_created=str(datetime.now()),
             project=self.project_name,
@@ -72,7 +72,7 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
 
         return array
 
-    
+
 @dataclass
 class MSourceOutletBuilder(MSourceInletBuilder):
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
@@ -84,8 +84,8 @@ class MSourceOutletBuilder(MSourceInletBuilder):
         return DatasetAttrs(
             title="Test MSOURCE/DIGIVEIVANN Outlet",
             summary="Summary",
-            keywords= "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT,GCMDLOC:Locations > Geographic Region > Continent > EUROPE > NORWAY",
-            keywords_vocabulary = "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords,GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
+            keywords="GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT,GCMDLOC:Locations > Geographic Region > Continent > EUROPE > NORWAY",
+            keywords_vocabulary="GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords,GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
             featureType=ds.attrs["featureType"],
             date_created=str(datetime.now()),
             project=self.project_name,

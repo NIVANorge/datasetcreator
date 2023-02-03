@@ -57,7 +57,6 @@ class DatasetBuilder(abc.ABC):
 
 @dataclass
 class TimeseriesDatasetBuilder(DatasetBuilder):
-    
     def create(self, named_timeseries: List[NamedTimeseries]) -> xr.Dataset:
         """Entrypoint for creating a xarray dataset"""
 
@@ -66,7 +65,7 @@ class TimeseriesDatasetBuilder(DatasetBuilder):
         ds = timeseriesdataset(named_dataarrays=list(time_arrays), station_name=self.station_name)
         ds.attrs["id"] = self.uuid
 
-        if self.is_acdd and ds.dims["time"]>0:
+        if self.is_acdd and ds.dims["time"] > 0:
             # need to have data to add acdd
             self.add_acdd(ds)
 
