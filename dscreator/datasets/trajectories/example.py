@@ -51,6 +51,14 @@ class ExampleTrajBuilder(TrajectoryDatasetBuilder):
                     long_name="Example Temperature",
                     units="degree_Celsius",
                 )
+            case "Turbidity":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="turbidity",
+                    standard_name="example_turbidity",
+                    long_name="Example turbidity",
+                    units="degree_Celsius",
+                )
             case _:
                 logging.warning(f"Array definition not found for: {timeseries.variable_name}")
                 raise RuntimeError(f"Array definition not found for: {timeseries.variable_name}")
