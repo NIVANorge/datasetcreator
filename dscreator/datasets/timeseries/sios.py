@@ -16,14 +16,14 @@ class SiosBuilder(TimeseriesDatasetBuilder):
         """Add ACDD attributes to a xarray dataset
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset, also see https://adc.met.no/node/96.
-        A good keywords viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer. 
+        A good keywords viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer.
         For converting CF standard names erddap also contains a good converter for cf standard names.
         """
         return DatasetAttrs(
             title="SIOS sensor buoy in Adventfjorden",
             summary="Summary",
             keywords=",".join(
-                [   
+                [
                     "GCMDSK:Earth Science > Oceans > Ocean Chemistry > Chlorophyll",
                     "GCMDSK:Earth Science > Oceans > Salinity/Density > Conductivity",
                     "GCMDSK:Earth Science > Oceans > Salinity/Density > Salinity",
@@ -32,7 +32,6 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                     "GCMDLOC:OCEAN > ATLANTIC OCEAN > NORTH ATLANTIC OCEAN > SVALBARD AND JAN MAYEN",
                 ]
             ),
-                
             keywords_vocabulary=",".join(
                 [
                     "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",

@@ -17,7 +17,7 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset, also see https://adc.met.no/node/96.
         A good keywords viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
-        
+
         """
         return DatasetAttrs(
             title="Test MSOURCE/DIGIVEIVANN Inlet",
@@ -44,7 +44,7 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
         )
-    
+
     def map_to_cfarray(self, timeseries: NamedTimeseries) -> xr.DataArray:
         """Match timeserie data to C&F
 
@@ -90,7 +90,7 @@ class MSourceOutletBuilder(MSourceInletBuilder):
         """Add ACDD attributes to a xarray dataset
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset, also see https://adc.met.no/node/96.
-        For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. We can add keywords and 
+        For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. We can add keywords and
         also link to the vocabulary.
         """
         return DatasetAttrs(
