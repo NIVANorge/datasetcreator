@@ -1,3 +1,4 @@
+scripts/example*.nc
 catalog/**/*.nc
 catalog/**/*.restart.json
 # vscode
