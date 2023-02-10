@@ -1,3 +1,3 @@
-from dscreator.datasets.trajectories import example
+from dscreator.datasets.trajectories import ferrybox
 
-__all__ = ["example"]
+__all__ = ["ferrybox"]

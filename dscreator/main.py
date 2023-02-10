@@ -6,9 +6,9 @@ import typer
 from sqlalchemy import create_engine
 
 from dscreator.config import SETTINGS
-from dscreator.datasets import timeseries
+from dscreator.datasets import timeseries, trajectories
 from dscreator.runner import DataRunner
-from dscreator.sources import odm2
+from dscreator.sources import odm2, ferrybox
 
 app = typer.Typer()
 
@@ -130,6 +130,35 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
 
     runner = DataRunner(
         extractor=timeseries_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+    )
+
+    runner.start()
+
+
+@app.command()
+def rt_ferrybox_FA(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
+    """Build test ferrybox dataset from data in timescale db
+    The dataset tries to follow the climate & forecast convention and is dumped as netcdf
+    """
+
+    logging.info("Exporting rt_ferrybox_FA dataset")
+    engine = create_engine(SETTINGS.database_url)
+    trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
+        engine, "FA", ["Temperature"]
+    )
+    dataset_builder = trajectories.ferrybox.FerryboxTrajBuilder(
+        uuid="29b7de62-e1fa-4dce-90e4-7ff8a0931397",
+        dataset_name="rt_ferrybox_FA",
+        station_name="Color Fantasy",
+        project_name="NorSoop",
+        is_acdd=acdd,
+    )
+
+    runner = DataRunner(
+        extractor=trajectory_extractor,
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,

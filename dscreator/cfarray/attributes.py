@@ -79,6 +79,7 @@ class DatasetAttrs:
     geospatial_lon_max: float
     featureType: str
     project: str
+    calibration: str = "http://path/Document_describing_calibration.pdf"
     naming_authority: str = "no.niva"
     creator_type: str = "institution"
     creator_institution: str = "Norwegian Institute for Water Research"
@@ -93,3 +94,4 @@ class DatasetAttrs:
     publisher_url: str = "https://niva.no"
     licence: str = "CC-BY-4.0"
     history: str = "Initial data"
+

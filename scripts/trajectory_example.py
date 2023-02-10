@@ -56,7 +56,7 @@ turbidity = dataarraybytime(
 ds = trajectorydataset([temperature, turbidity], "trajectory_name")
 
 # %%
-ds
+print(ds)
 # %%
 ds.to_netcdf("example_trajectory.nc", encoding=DEFAULT_ENCODING)
 # run `ncdump example_trajectory.nc` on commandline to view text repr also
@@ -88,4 +88,5 @@ example_builder = trajectories.example.ExampleTrajBuilder(
 # %%
 ds = example_builder.create([trajectory])
 # %%
-ds
+
+print(ds.attrs)

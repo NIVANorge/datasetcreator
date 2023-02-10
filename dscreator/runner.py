@@ -1,10 +1,10 @@
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from dscreator import utils
-from dscreator.datasets.base import TimeseriesDatasetBuilder
+from dscreator.datasets.base import TimeseriesDatasetBuilder, TrajectoryDatasetBuilder
 from dscreator.sources import base
 from dscreator.storage import BaseHandler, get_storage_handler
 from dscreator.utils import DatetimeInterval
@@ -13,7 +13,7 @@ from dscreator.utils import DatetimeInterval
 @dataclass
 class DataRunner:
     extractor: base.BaseExtractor
-    dataset_builder: TimeseriesDatasetBuilder
+    dataset_builder: Union[TimeseriesDatasetBuilder, TrajectoryDatasetBuilder]
     hourly_delta: int
     n_intervals: int
     custom_start_time: Optional[datetime] = None

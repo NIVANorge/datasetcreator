@@ -10,7 +10,7 @@ from dscreator.sources.base import NamedTrajectory
 
 
 @dataclass
-class ExampleTrajBuilder(TrajectoryDatasetBuilder):
+class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
 
         """Add ACDD attributes to a xarray dataset
