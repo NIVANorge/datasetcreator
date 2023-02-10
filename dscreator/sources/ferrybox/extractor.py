@@ -13,11 +13,15 @@ class TrajectoryExtractor(BaseExtractor):
     engine: Engine
     platform_code: str
     variable_codes: List[str]
+    start_time: datetime
+    end_time: datetime
     _track: List[Point] = field(init=False)
+
     # _uuids: List[str] = field(init=False)
 
     def __post_init__(self):
-        self._track = get_track(self.engine, MAPPER[self.platform_code]["track"])
+        self._track = get_track(self.engine, MAPPER[self.platform_code]["track"],
+                                self.start_time, self.end_time).values
         # self._uuids = [MAPPER[self.platform_code][vc] for vc in self.variable_codes]
 
     def fetch_slice(
@@ -33,13 +37,11 @@ class TrajectoryExtractor(BaseExtractor):
         named_trajectories = []
         for vcode in self.variable_codes:
             res = query_ts(uuid=MAPPER[self.platform_code][vcode])
-            named_trajectories.append(NamedTrajectory(vcode, self._track.values, res.value, res.time))
+            named_trajectories.append(NamedTrajectory(vcode, self._track, res.values, res.datetime))
         return named_trajectories
 
     def first_timestamp(self) -> datetime:
-        """The first timestamp for extraction"""
-        pass
+        return datetime(2022, 12, 12, 16, 0, 0)
 
     def last_timestamp(self) -> datetime:
-        """The last timestamp for extraction"""
-        pass
+        return datetime(2022, 12, 12, 16, 30, 0)

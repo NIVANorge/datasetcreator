@@ -146,8 +146,10 @@ def rt_ferrybox_FA(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
 
     logging.info("Exporting rt_ferrybox_FA dataset")
     engine = create_engine(SETTINGS.database_url)
+    start_time = datetime(2022, 12, 12, 16, 0, 0)
+    end_time = datetime(2022, 12, 12, 16, 30, 0)
     trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
-        engine, "FA", ["Temperature"]
+        engine, "FA", ["Temperature"], start_time, end_time
     )
     dataset_builder = trajectories.ferrybox.FerryboxTrajBuilder(
         uuid="29b7de62-e1fa-4dce-90e4-7ff8a0931397",
