@@ -71,7 +71,7 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="chlorophylla",
-                    standard_name="mass_concentration_of_chlorophyll_a_in_sea_water",
+                    standard_name="rt_calibrated_mass_concentration_of_chlorophyll_a_in_sea_water",
                     long_name="Mass Concentration of Chlorophyll A in Sea Water",
                     units="mg/m^3",
                 )

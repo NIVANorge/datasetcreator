@@ -42,7 +42,7 @@ def get_track(
         res = conn.execute(query)
         res_dict = res.mappings().all()
     return TrackResult(
-        values=[Point(r["longitude"], r["longitude"]) for r in res_dict], datetime=[r["time"] for r in res_dict]
+        values=[Point(r["longitude"], r["latitude"]) for r in res_dict], datetime=[r["time"] for r in res_dict]
     )
 
 
