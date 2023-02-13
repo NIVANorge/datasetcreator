@@ -31,7 +31,6 @@ class NamedTrajectory(NamedTimeArray):
         assert len(self.locations) == len(self.values) == len(self.datetime_list), \
             f"Arrays need to have same length: loc {len(self.locations)}, val {len(self.values)} and dt {len(self.datetime_list)}"
 
-
 @dataclass
 class BaseExtractor(abc.ABC):
     @abc.abstractmethod

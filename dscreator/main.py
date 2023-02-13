@@ -147,8 +147,9 @@ def rt_ferrybox_FA(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     logging.info("Exporting rt_ferrybox_FA dataset")
     engine = create_engine(SETTINGS.database_url)
     trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
-        engine, "FA", ["Temperature", "Turbidity", "Oxygen", "cDOM", "Salinity", "Chlorophyll"]
+        engine, "FA",  ["Temperature", "Turbidity", "Oxygen", "cDOM", "Salinity", "Chlorophyll"]
     )
+    #
     dataset_builder = trajectories.ferrybox.FerryboxTrajBuilder(
         uuid="29b7de62-e1fa-4dce-90e4-7ff8a0931397",
         dataset_name="rt_ferrybox_FA",

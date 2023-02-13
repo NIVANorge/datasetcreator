@@ -74,7 +74,7 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
                     standard_name="mass_concentration_of_chlorophyll_a_in_sea_water",
                     long_name="Mass Concentration of Chlorophyll A in Sea Water",
                     units="mg/m^3",
-                ),
+                )
             case "Oxygen":
                 array = dataarraybytime(
                     data=timeseries.values,
@@ -82,7 +82,7 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
                     standard_name="sea_water_oxygen_saturation",
                     long_name="Sea Water Oxygen Saturation",
                     units="%",
-                ),
+                )
             case "cDOM":
                 array = dataarraybytime(
                     data=timeseries.values,
