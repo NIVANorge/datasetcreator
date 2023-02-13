@@ -2,7 +2,7 @@ import abc
 from dataclasses import dataclass
 from datetime import datetime
 from typing import List
-
+import logging
 
 @dataclass
 class Point:
@@ -22,13 +22,14 @@ class NamedTimeArray:
 class NamedTimeseries(NamedTimeArray):
     def __post_init__(self):
         assert len(self.locations) == 1, "Missing location"
-        assert len(self.values) == len(self.datetime_list), "Arrays need to have same length"
+        assert len(self.values) == len(self.datetime_list), f"Arrays need to have same length"
 
 
 @dataclass
 class NamedTrajectory(NamedTimeArray):
     def __post_init__(self):
-        assert len(self.locations) == len(self.values) == len(self.datetime_list), "Arrays need to have same length"
+        assert len(self.locations) == len(self.values) == len(self.datetime_list), \
+            f"Arrays need to have same length: loc {len(self.locations)}, val {len(self.values)} and dt {len(self.datetime_list)}"
 
 
 @dataclass

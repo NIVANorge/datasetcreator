@@ -155,5 +155,5 @@ def timestamp_by_code(
     )
     with engine.connect() as conn:
         res = conn.execute(query)
-        res_dict = res.mappings().one()
+        res_dict = res.mappings().on()
     return res_dict["valuedatetime"]

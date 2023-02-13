@@ -38,8 +38,6 @@ def get_track(
     """
     ).bindparams(track_uuid=track_uuid, start_time=start_time, end_time=end_time)
 
-    logging.info(f"Querying track for uuid {track_uuid}")
-
     with engine.connect() as conn:
         res = conn.execute(query)
         res_dict = res.mappings().all()
@@ -79,11 +77,33 @@ def get_ts(
     """
     ).bindparams(uuid=uuid, start_time=start_time, end_time=end_time)
 
-    logging.info(f"Querying ts for uuid {uuid}")
-
     with engine.connect() as conn:
         res = conn.execute(query)
         res_dict = res.mappings().all()
 
-    logging.info(f"res_dict {res_dict}")
     return TimeseriesResult(uuid=uuid, values=[a['value'] for a in res_dict], datetime=[a['time'] for a in res_dict])
+
+
+def get_time_by_uuids(
+        engine: Engine,
+        uuids: List[str],
+        is_asc: bool,
+) -> Optional[datetime]:
+    query_str = """
+    SELECT
+        time
+    FROM
+        ts
+    WHERE
+        ts.uuid IN :uuids
+    ORDER BY
+        time
+    """
+    query_str += "ASC LIMIT 1" if is_asc else "DESC LIMIT 1"
+    query = text(query_str).bindparams(
+        uuids=tuple(uuids)
+    )
+    with engine.connect() as conn:
+        res = conn.execute(query)
+        res_dict = res.mappings().one()
+    return res_dict["time"]

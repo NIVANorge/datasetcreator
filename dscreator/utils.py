@@ -4,7 +4,7 @@ from typing import List
 
 import numpy as np
 import xarray as xr
-
+import logging
 
 def numpy_to_datetime(dt: np.datetime64) -> datetime:
     """convert ns numpy.datetime64 to datetime"""
@@ -29,6 +29,7 @@ def datetime_intervals(start_time: datetime, end_time: datetime, delta: timedelt
 
     intervals = []
     current = start_time
+    logging.info(f"current {current} and end_time {end_time}")
     while current < end_time:
         intervals.append(DatetimeInterval(current, current + delta))
         current = intervals[-1].end_time
