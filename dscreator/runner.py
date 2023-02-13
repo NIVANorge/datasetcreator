@@ -59,6 +59,7 @@ class DataRunner:
             logging.info(f"Dumping {interval.start_time} < time <= {interval.end_time}")
             ts = self.extractor.fetch_slice(start_time=interval.start_time, end_time=interval.end_time)
             ds = self.dataset_builder.create(ts)
+            ds.attrs.update(self.dataset_builder.dataset_attributes(ds).__dict__)
             if ds.dims["time"] > 0:
                 logging.info("Saving dataset slice")
                 self.storage_handler.save_dataset(ds)
