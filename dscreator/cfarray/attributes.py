@@ -65,7 +65,7 @@ class DepthAttrs:
 
 
 @dataclass
-class DatasetAttrs:
+class DatasetAttrsBase:
     title: str
     summary: str
     date_created: datetime
@@ -79,6 +79,10 @@ class DatasetAttrs:
     geospatial_lon_max: float
     featureType: str
     project: str
+
+
+@dataclass
+class DatasetAttrsDefaults:
     naming_authority: str = "no.niva"
     creator_type: str = "institution"
     creator_institution: str = "Norwegian Institute for Water Research"
@@ -94,8 +98,18 @@ class DatasetAttrs:
     licence: str = "CC-BY-4.0"
     history: str = "Initial data"
 
-
+    
+@dataclass
+class DatasetAttrs(DatasetAttrsDefaults, DatasetAttrsBase):
+    pass
 
 @dataclass
-class FerryboxDatasetAttrs(DatasetAttrs):
-    metadata_link: str = "http://path/Document_describing_calibration.pdf"
+class FerryboxDatasetAttrsBase(DatasetAttrsBase):
+    metadata_link: str
+    ices_platform_code: str
+    platform_code: str
+    platform_name: str
+
+@dataclass
+class FerryboxDatasetAttrs(DatasetAttrsDefaults, FerryboxDatasetAttrsBase):
+    pass
