@@ -21,8 +21,10 @@ in your `.env` file. If not passing the password in the database URL, you can al
 ```bash
 export PGPASSWORD="MY ACCESS TOKEN"
 ```
-
 For other options, see [config.py](./dataexport/config.py)
+
+
+
 
 ### Testing
 
@@ -52,6 +54,7 @@ poetry run dscreator msource-inlet --stop-after-n-files 1 --acdd
 poetry run dscreator msource-outlet --max-time-slice 240 --stop-after-n-files 2 --acdd
 ```
 
+
 ### Adding New Datasets
 
 Add an `app` to [main.py](./dataexport/main.py), that contains:
@@ -76,3 +79,13 @@ The local catalog config file can be found in [catalog.xml](./catalog/catalog.xm
 ## Working with netCDF
 
 For most things [xarray](https://docs.xarray.dev/en/stable/) is a good choice. The command-line tool [ncdump](https://www.unidata.ucar.edu/software/netcdf/workshops/2011/utilities/Ncdump.html) is also quite nice for small things.
+
+
+### Ferrybox datasets
+
+Update  DATABASE_URL .env with tsb credentials on nivatest-1 cluster. Use host=localhost and
+port-forward to access timescaledb: kubectl port-forward timescale-0 8505:5432.
+Create test dataset for Color Fantasy:
+```bash
+poetry run dscreator rt-ferrybox-fa --stop-after-n-files 1 --acdd
+```
