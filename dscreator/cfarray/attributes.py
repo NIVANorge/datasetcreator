@@ -93,3 +93,9 @@ class DatasetAttrs:
     publisher_url: str = "https://niva.no"
     licence: str = "CC-BY-4.0"
     history: str = "Initial data"
+
+
+
+@dataclass
+class FerryboxDatasetAttrs(DatasetAttrs):
+    metadata_link: str = "http://path/Document_describing_calibration.pdf"

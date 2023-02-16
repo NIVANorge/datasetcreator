@@ -4,14 +4,15 @@ from datetime import datetime
 
 import xarray as xr
 
-from dscreator.cfarray.base import DatasetAttrs, dataarraybytime
+from dscreator.cfarray.base import dataarraybytime
+from dscreator.cfarray.attributes import FerryboxDatasetAttrs
 from dscreator.datasets.base import TrajectoryDatasetBuilder
 from dscreator.sources.base import NamedTrajectory
 
 
 @dataclass
-class ExampleTrajBuilder(TrajectoryDatasetBuilder):
-    def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
+class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
+    def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
 
         """Add ACDD attributes to a xarray dataset
 
@@ -19,7 +20,7 @@ class ExampleTrajBuilder(TrajectoryDatasetBuilder):
         More information can be found here https://adc.met.no/node/96.
         A good viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
         """
-        return DatasetAttrs(
+        return FerryboxDatasetAttrs(
             title="example",
             summary="summary",
             keywords=",".join([]),
@@ -43,21 +44,53 @@ class ExampleTrajBuilder(TrajectoryDatasetBuilder):
         online unit list on https://ncics.org/portfolio/other-resources/udunits2/
         """
         match timeseries.variable_name:
-            case "Temp":
+            case "Temperature":
                 array = dataarraybytime(
                     data=timeseries.values,
-                    name="temperature",
-                    standard_name="example_temperature",
-                    long_name="Example Temperature",
+                    name="sea_water_temperature",
+                    standard_name="sea_water_temperature",
+                    long_name="sea_water_temperature",
                     units="degree_Celsius",
                 )
             case "Turbidity":
                 array = dataarraybytime(
                     data=timeseries.values,
-                    name="turbidity",
-                    standard_name="example_turbidity",
-                    long_name="Example turbidity",
+                    name="sea_water_turbidity",
+                    standard_name="sea_water_turbidity",
+                    long_name="sea_water_turbidity",
                     units="degree_Celsius",
+                )
+            case "Salinity":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="salinity",
+                    standard_name="sea_water_salinity",
+                    long_name="Sea Water Salinity",
+                    units="PSU",
+                )
+            case "Chlorophyll":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="chlorophylla",
+                    standard_name="rt_calibrated_mass_concentration_of_chlorophyll_a_in_sea_water",
+                    long_name="Mass Concentration of Chlorophyll A in Sea Water",
+                    units="mg/m^3",
+                )
+            case "Oxygen":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="oxygen",
+                    standard_name="sea_water_oxygen_saturation",
+                    long_name="Sea Water Oxygen Saturation",
+                    units="%",
+                )
+            case "cDOM":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="cDOM",
+                    standard_name="",
+                    long_name="",
+                    units="mg/m^3",
                 )
             case _:
                 logging.warning(f"Array definition not found for: {timeseries.variable_name}")

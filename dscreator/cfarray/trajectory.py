@@ -4,7 +4,6 @@ from functools import partial
 from typing import List
 
 import xarray as xr
-
 from dscreator.cfarray.attributes import LatitudeAttrs, LongitudeAttrs, TimeAttrs
 from dscreator.cfarray.base import idarray
 from dscreator.cfarray.dims import TIME
