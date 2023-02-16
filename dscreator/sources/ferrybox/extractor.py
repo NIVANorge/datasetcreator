@@ -14,7 +14,6 @@ class TrajectoryExtractor(BaseExtractor):
     engine: Engine
     platform_code: str
     variable_codes: List[str]
-    _track: List[Point] = field(init=False)
 
     def fetch_slice(
             self,
@@ -28,11 +27,10 @@ class TrajectoryExtractor(BaseExtractor):
 
         named_trajectories = []
         track = get_track(self.engine, MAPPER[self.platform_code]["track"], start_time, end_time).values
-        self._track = track
         for vcode in self.variable_codes:
             res = query_ts(uuid=MAPPER[self.platform_code][vcode])
             if len(res.values) > 0:
-                named_trajectories.append(NamedTrajectory(vcode, self._track, res.values, res.datetime))
+                named_trajectories.append(NamedTrajectory(vcode, track, res.values, res.datetime))
             else:
                 logging.info(f"No values for {vcode} for time period ({start_time} : {end_time})")
                 # named_trajectories.append(NamedTrajectory(vcode, self._track, [None for i in range(res.datetime)],
