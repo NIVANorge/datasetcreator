@@ -5,7 +5,7 @@ from typing import List
 
 import xarray as xr
 
-from dscreator.cfarray.base import DatasetAttrs
+from dscreator.cfarray.attributes import DatasetAttrs
 from dscreator.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dscreator.cfarray.trajectory import trajectorycoords, trajectorydataset
 from dscreator.sources.base import NamedTimeArray, NamedTimeseries, NamedTrajectory

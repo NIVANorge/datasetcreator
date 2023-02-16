@@ -5,7 +5,7 @@ from datetime import datetime
 import xarray as xr
 
 from dscreator.cfarray.base import dataarraybytime
-from dscreator.cfarray.attributes import FerryboxDatasetAttrs
+from dscreator.cfarray.attributes import FerryboxDatasetAttrs, CFVariableAttrs
 from dscreator.datasets.base import TrajectoryDatasetBuilder
 from dscreator.sources.base import NamedTrajectory
 
@@ -48,49 +48,49 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="sea_water_temperature",
-                    standard_name="sea_water_temperature",
-                    long_name="sea_water_temperature",
-                    units="degree_Celsius",
+                    attrs=CFVariableAttrs(
+                        standard_name="sea_water_temperature", long_name="sea_water_temperature", units="degree_Celsius"
+                    ),
                 )
             case "Turbidity":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="sea_water_turbidity",
-                    standard_name="sea_water_turbidity",
-                    long_name="sea_water_turbidity",
-                    units="degree_Celsius",
+                    attrs=CFVariableAttrs(
+                        standard_name="sea_water_turbidity", long_name="sea_water_turbidity", units="degree_Celsius"
+                    ),
                 )
             case "Salinity":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="salinity",
-                    standard_name="sea_water_salinity",
-                    long_name="Sea Water Salinity",
-                    units="PSU",
+                    attrs=CFVariableAttrs(
+                        standard_name="sea_water_salinity", long_name="Sea Water Salinity", units="PSU"
+                    ),
                 )
             case "Chlorophyll":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="chlorophylla",
-                    standard_name="rt_calibrated_mass_concentration_of_chlorophyll_a_in_sea_water",
-                    long_name="Mass Concentration of Chlorophyll A in Sea Water",
-                    units="mg/m^3",
+                    attrs=CFVariableAttrs(
+                        standard_name="rt_calibrated_mass_concentration_of_chlorophyll_a_in_sea_water",
+                        long_name="Mass Concentration of Chlorophyll A in Sea Water",
+                        units="mg/m^3",
+                    ),
                 )
             case "Oxygen":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="oxygen",
-                    standard_name="sea_water_oxygen_saturation",
-                    long_name="Sea Water Oxygen Saturation",
-                    units="%",
+                    attrs=CFVariableAttrs(
+                        standard_name="sea_water_oxygen_saturation", long_name="Sea Water Oxygen Saturation", units="%"
+                    ),
                 )
             case "cDOM":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="cDOM",
-                    standard_name="",
-                    long_name="",
-                    units="mg/m^3",
+                    attrs=CFVariableAttrs(standard_name="", long_name="", units="mg/m^3"),
                 )
             case _:
                 logging.warning(f"Array definition not found for: {timeseries.variable_name}")

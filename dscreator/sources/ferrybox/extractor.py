@@ -16,9 +16,9 @@ class TrajectoryExtractor(BaseExtractor):
     variable_codes: List[str]
 
     def fetch_slice(
-            self,
-            start_time: datetime,
-            end_time: datetime,
+        self,
+        start_time: datetime,
+        end_time: datetime,
     ) -> List[NamedTrajectory]:
         """Create a Timeseries from tsb
         The timeseries is limited to start_time<t<=end_time.
@@ -38,16 +38,16 @@ class TrajectoryExtractor(BaseExtractor):
         return named_trajectories
 
     def _timestamp(self, is_asc: bool) -> datetime:
-        return get_time_by_uuids(self.engine, [MAPPER[self.platform_code][vcode] for vcode in self.variable_codes],
-                                 is_asc)
+        return get_time_by_uuids(
+            self.engine, [MAPPER[self.platform_code][vcode] for vcode in self.variable_codes], is_asc
+        )
 
     def first_timestamp(self) -> datetime:
         """The first timestamp for extraction
         Padded with 10 sec
         """
-        #return self._timestamp(is_asc=True) - timedelta(seconds=1)
+        # return self._timestamp(is_asc=True) - timedelta(seconds=1)
         return datetime(2022, 12, 12, 16, 0, 0)
-
 
     def last_timestamp(self) -> datetime:
         """The last timestamp for extraction

@@ -1,34 +1,22 @@
 from dataclasses import asdict
 from datetime import datetime
 from functools import partial
-from typing import Any, List, Literal, Tuple, Union
+from typing import Any, List, Literal, Tuple, Union, Optional
 
 import xarray as xr
 
-from dscreator.cfarray.attributes import VariableAttrs, DatasetAttrs
+from dscreator.cfarray.attributes import VariableAttrsBase
 from dscreator.cfarray.common import wgs1984
 from dscreator.cfarray.dims import DEPTH, DIMLESS, TIME
 
 
-def dataarray(
-    dims: Union[Tuple, str],
-    data: List[Any],
-    name: str,
-    standard_name: str,
-    long_name: str,
-    units: str,
-) -> xr.DataArray:
+def dataarray(dims: Union[Tuple, str], data: List[Any], name: str, attrs: VariableAttrsBase) -> xr.DataArray:
+
     return xr.DataArray(
         name=name,
         dims=dims,
         data=data,
-        attrs=asdict(
-            VariableAttrs(
-                standard_name=standard_name,
-                long_name=long_name,
-                units=units,
-            )
-        ),
+        attrs=asdict(attrs),
     )
 
 

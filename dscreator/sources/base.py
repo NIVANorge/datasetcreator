@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import List
 import logging
 
+
 @dataclass
 class Point:
     longitude: float
@@ -28,8 +29,10 @@ class NamedTimeseries(NamedTimeArray):
 @dataclass
 class NamedTrajectory(NamedTimeArray):
     def __post_init__(self):
-        assert len(self.locations) == len(self.values) == len(self.datetime_list), \
-            f"Arrays need to have same length: loc {len(self.locations)}, val {len(self.values)} and dt {len(self.datetime_list)}"
+        assert (
+            len(self.locations) == len(self.values) == len(self.datetime_list)
+        ), f"Arrays need to have same length: loc {len(self.locations)}, val {len(self.values)} and dt {len(self.datetime_list)}"
+
 
 @dataclass
 class BaseExtractor(abc.ABC):
