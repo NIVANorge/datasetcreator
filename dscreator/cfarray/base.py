@@ -5,7 +5,7 @@ from typing import Any, List, Literal, Tuple, Union
 
 import xarray as xr
 
-from dscreator.cfarray.attributes import DatasetAttrs, VariableAttrs
+from dscreator.cfarray.attributes import VariableAttrs, DatasetAttrs
 from dscreator.cfarray.common import wgs1984
 from dscreator.cfarray.dims import DEPTH, DIMLESS, TIME
 

@@ -79,7 +79,6 @@ class DatasetAttrs:
     geospatial_lon_max: float
     featureType: str
     project: str
-    calibration: str = "http://path/Document_describing_calibration.pdf"
     naming_authority: str = "no.niva"
     creator_type: str = "institution"
     creator_institution: str = "Norwegian Institute for Water Research"
@@ -96,3 +95,7 @@ class DatasetAttrs:
     history: str = "Initial data"
 
 
+
+@dataclass
+class FerryboxDatasetAttrs(DatasetAttrs):
+    metadata_link: str = "http://path/Document_describing_calibration.pdf"

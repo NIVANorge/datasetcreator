@@ -4,14 +4,15 @@ from datetime import datetime
 
 import xarray as xr
 
-from dscreator.cfarray.base import DatasetAttrs, dataarraybytime
+from dscreator.cfarray.base import dataarraybytime
+from dscreator.cfarray.attributes import FerryboxDatasetAttrs
 from dscreator.datasets.base import TrajectoryDatasetBuilder
 from dscreator.sources.base import NamedTrajectory
 
 
 @dataclass
 class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
-    def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
+    def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
 
         """Add ACDD attributes to a xarray dataset
 
@@ -19,7 +20,7 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
         More information can be found here https://adc.met.no/node/96.
         A good viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
         """
-        return DatasetAttrs(
+        return FerryboxDatasetAttrs(
             title="example",
             summary="summary",
             keywords=",".join([]),
