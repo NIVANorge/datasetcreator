@@ -4,10 +4,28 @@ from typing import List, Literal
 
 
 @dataclass
-class VariableAttrs:
+class VariableAttrsBase:
+    """CF variable attributes"""
+
+    long_name: str
+    units: str
+
+
+@dataclass
+class CFVariableAttrs(VariableAttrsBase):
+    """CF variable attributes
+
+    This can be used if there is a CF standard name for the variable
+    """
+
     standard_name: str
     long_name: str
     units: str
+
+
+@dataclass
+class VariableAttrs(VariableAttrsBase):
+    short_name: str
 
 
 @dataclass
