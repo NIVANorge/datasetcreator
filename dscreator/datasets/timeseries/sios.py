@@ -4,7 +4,9 @@ from datetime import datetime
 
 import xarray as xr
 
-from dscreator.cfarray.base import DatasetAttrs, dataarraybytime
+from dscreator.cfarray.base import dataarraybytime
+from dscreator.cfarray.attributes import DatasetAttrs
+from dscreator.cfarray.attributes import CFVariableAttrs
 from dscreator.datasets.base import TimeseriesDatasetBuilder
 from dscreator.sources.odm2.extractor import NamedTimeseries
 
@@ -62,41 +64,45 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="temperature",
-                    standard_name="sea_water_temperature",
-                    long_name="Sea Water Temperature",
-                    units="degree_Celsius",
+                    attrs=CFVariableAttrs(
+                        standard_name="sea_water_temperature", long_name="Sea Water Temperature", units="degree_Celsius"
+                    ),
                 )
             case "Turbidity":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="turbidity",
-                    standard_name="sea_water_turbidity",
-                    long_name="Sea Water Turbidity",
-                    units="NTU",
+                    attrs=CFVariableAttrs(
+                        standard_name="sea_water_turbidity", long_name="Sea Water Turbidity", units="NTU"
+                    ),
                 )
             case "Salinity":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="salinity",
-                    standard_name="sea_water_salinity",
-                    long_name="Sea Water Salinity",
-                    units="1e-3",
+                    attrs=CFVariableAttrs(
+                        standard_name="sea_water_salinity", long_name="Sea Water Salinity", units="1e-3"
+                    ),
                 )
             case "ChlaValue":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="chlorophylla",
-                    standard_name="mass_concentration_of_chlorophyll_a_in_sea_water",
-                    long_name="Mass Concentration of Chlorophyll A in Sea Water",
-                    units="µg/l",
+                    attrs=CFVariableAttrs(
+                        standard_name="mass_concentration_of_chlorophyll_a_in_sea_water",
+                        long_name="Mass Concentration of Chlorophyll A in Sea Water",
+                        units="µg/l",
+                    ),
                 )
             case "CondValue":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="conductivity",
-                    standard_name="sea_water_electrical_conductivity",
-                    long_name="Sea Water Conductivity",
-                    units="S/m",
+                    attrs=CFVariableAttrs(
+                        standard_name="sea_water_electrical_conductivity",
+                        long_name="Sea Water Conductivity",
+                        units="S/m",
+                    ),
                 )
             case _:
                 logging.warning(f"Array definition not found for: {timeseries.variable_code}")
