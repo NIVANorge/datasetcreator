@@ -6,6 +6,7 @@ import numpy as np
 import xarray as xr
 import logging
 
+
 def numpy_to_datetime(dt: np.datetime64) -> datetime:
     """convert ns numpy.datetime64 to datetime"""
     match dt.dtype:

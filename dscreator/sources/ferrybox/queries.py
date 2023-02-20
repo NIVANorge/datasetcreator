@@ -15,10 +15,10 @@ class TrackResult:
 
 
 def get_track(
-        engine: Engine,
-        track_uuid: str,
-        start_time: datetime,
-        end_time: datetime,
+    engine: Engine,
+    track_uuid: str,
+    start_time: datetime,
+    end_time: datetime,
 ) -> TrackResult:
     """Query track
     The timeseries is limited to start_time<t<=end_time.
@@ -54,10 +54,10 @@ class TimeseriesResult:
 
 
 def get_ts(
-        engine: Engine,
-        uuid: str,
-        start_time: datetime,
-        end_time: datetime,
+    engine: Engine,
+    uuid: str,
+    start_time: datetime,
+    end_time: datetime,
 ) -> TimeseriesResult:
     """Query track
     The timeseries is limited to start_time<t<=end_time.
@@ -81,13 +81,13 @@ def get_ts(
         res = conn.execute(query)
         res_dict = res.mappings().all()
 
-    return TimeseriesResult(uuid=uuid, values=[a['value'] for a in res_dict], datetime=[a['time'] for a in res_dict])
+    return TimeseriesResult(uuid=uuid, values=[a["value"] for a in res_dict], datetime=[a["time"] for a in res_dict])
 
 
 def get_time_by_uuids(
-        engine: Engine,
-        uuids: List[str],
-        is_asc: bool,
+    engine: Engine,
+    uuids: List[str],
+    is_asc: bool,
 ) -> Optional[datetime]:
     query_str = """
     SELECT
@@ -100,9 +100,7 @@ def get_time_by_uuids(
         time
     """
     query_str += "ASC LIMIT 1" if is_asc else "DESC LIMIT 1"
-    query = text(query_str).bindparams(
-        uuids=tuple(uuids)
-    )
+    query = text(query_str).bindparams(uuids=tuple(uuids))
     with engine.connect() as conn:
         res = conn.execute(query)
         res_dict = res.mappings().one()

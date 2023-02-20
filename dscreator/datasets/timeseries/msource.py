@@ -4,7 +4,8 @@ from datetime import datetime
 
 import xarray as xr
 
-from dscreator.cfarray.base import DatasetAttrs, dataarraybytime
+from dscreator.cfarray.base import dataarraybytime
+from dscreator.cfarray.attributes import DatasetAttrs, VariableAttrs
 from dscreator.datasets.base import TimeseriesDatasetBuilder
 from dscreator.sources.odm2.extractor import NamedTimeseries
 
@@ -57,25 +58,23 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="temperature",
-                    standard_name="rainbed_temperature",
-                    long_name="Rainbed Water Temperature",
-                    units="degree_Celsius",
+                    attrs=VariableAttrs(
+                        short_name="rainbed_temperature", long_name="Rainbed Water Temperature", units="degree_Celsius"
+                    ),
                 )
             case "LevelValue":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="levelvalue",
-                    standard_name="rainbed_water_level",
-                    long_name="Rainbed Water Level",
-                    units="m",
+                    attrs=VariableAttrs(short_name="rainbed_water_level", long_name="Rainbed Water Level", units="m"),
                 )
             case "Turbidity":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="turbidity",
-                    standard_name="rainbed_turbidity",
-                    long_name="Rainbed Water Turbidity",
-                    units="NTU",
+                    attrs=VariableAttrs(
+                        short_name="rainbed_turbidity", long_name="Rainbed Water Turbidity", units="NTU"
+                    ),
                 )
             case _:
                 logging.warning(f"Array definition not found for: {timeseries.variable_name}")
