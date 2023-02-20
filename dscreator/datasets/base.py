@@ -113,7 +113,7 @@ class TrajectoryDatasetBuilder(DatasetBuilder):
 
         return array.assign_coords(
             trajectorycoords(
-                time=timeseries.datetime_list,
+                time=timeseries.gps_time,
                 latitude=[loc.latitude for loc in timeseries.locations],
                 longitude=[loc.longitude for loc in timeseries.locations],
             )
