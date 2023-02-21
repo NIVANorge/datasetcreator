@@ -5,7 +5,7 @@ from typing import List
 from sqlalchemy import Engine
 from functools import partial
 from dscreator.sources.ferrybox.uuid_variable_code_mapper import MAPPER
-from dscreator.sources.base import BaseExtractor, NamedTrajectory, Point
+from dscreator.sources.base import BaseExtractor, NamedTrajectory, Point, NamedTimeArray
 from dscreator.sources.ferrybox.queries import get_track, get_ts, get_time_by_uuids
 
 
@@ -19,28 +19,28 @@ class TrajectoryExtractor(BaseExtractor):
         self,
         start_time: datetime,
         end_time: datetime,
-    ) -> List[NamedTrajectory]:
+    ) -> NamedTrajectory:
         """Create a Timeseries from tsb
         The timeseries is limited to start_time<t<=end_time.
         """
         query_ts = partial(get_ts, engine=self.engine, start_time=start_time, end_time=end_time)
 
-        named_trajectories = []
+        named_timearrays = []
         track = get_track(self.engine, MAPPER[self.platform_code]["track"], start_time, end_time)
-        loc = track.values
         track_datetime = track.datetime
         for vcode in self.variable_codes:
             res = query_ts(uuid=MAPPER[self.platform_code][vcode])
             if len(res.values) > 0:
                 logging.info(f"fetching vcode {vcode}")
                 values = [res.values[res.datetime.index(dt)] if dt in res.datetime else None for dt in track_datetime]
-                logging.info(f"values {values}")
-                named_trajectories.append(NamedTrajectory(vcode, loc, values, track_datetime))
+                named_timearrays.append(NamedTimeArray(vcode, values))
             else:
                 logging.info(f"No values for {vcode} for time period ({start_time} : {end_time})")
-                # named_trajectories.append(NamedTrajectory(vcode, self._track, [None for i in range(res.datetime)],
-                #                                           res.datetime))
-        return named_trajectories
+                named_timearrays.append(NamedTimeArray(vcode, [None for x in range(len(track_datetime))]))
+        # values = [ts.values for ts in named_timearrays]
+        track_values = track.values
+
+        return NamedTrajectory(array_list=named_timearrays, datetime_list=track_datetime, locations=track_values)
 
     def _timestamp(self, is_asc: bool) -> datetime:
         return get_time_by_uuids(

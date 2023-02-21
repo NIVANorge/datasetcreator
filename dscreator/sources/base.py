@@ -14,7 +14,7 @@ class Point:
 @dataclass
 class NamedTimeArray:
     variable_name: str
-    values: List[str | int | float]
+    values: List[str | int | float | None]
 
 
 @dataclass

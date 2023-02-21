@@ -90,11 +90,18 @@ class TimeseriesDatasetBuilder(DatasetBuilder):
 
 @dataclass
 class TrajectoryDatasetBuilder(DatasetBuilder):
-    def create(self, named_timeseries: List[NamedTrajectory]) -> xr.Dataset:
+    def create(self, named_trajectory: NamedTrajectory) -> xr.Dataset:
         """Entrypoint for creating a xarray dataset"""
 
-        time_arrays = map(self.cftimearray, named_timeseries)
+        time_arrays = map(self.cftimearray, named_trajectory.array_list)
         ds = trajectorydataset(named_dataarrays=list(time_arrays), trajectory_name=self.station_name)
+        ds = ds.assign_coords(
+            trajectorycoords(
+                time=named_trajectory.datetime_list,
+                latitude=[loc.latitude for loc in named_trajectory.locations],
+                longitude=[loc.longitude for loc in named_trajectory.locations],
+            )
+        )
         ds.attrs["id"] = self.uuid
 
         if self.is_acdd and ds.dims["time"] > 0:
@@ -103,7 +110,7 @@ class TrajectoryDatasetBuilder(DatasetBuilder):
 
         return ds
 
-    def cftimearray(self, timeseries: NamedTrajectory) -> xr.DataArray:
+    def cftimearray(self, timeseries: NamedTimeArray) -> xr.DataArray:
         """Convert a NamedTimeseries to a coordinated dataarray
 
         The variables names are also mapped to C&F variables if possible.
@@ -111,10 +118,11 @@ class TrajectoryDatasetBuilder(DatasetBuilder):
 
         array = self.map_to_cfarray(timeseries)
 
-        return array.assign_coords(
-            trajectorycoords(
-                time=timeseries.datetime_list,
-                latitude=[loc.latitude for loc in timeseries.locations],
-                longitude=[loc.longitude for loc in timeseries.locations],
-            )
-        )
+        return array
+        #     .assign_coords(
+        #     trajectorycoords(
+        #         time=timeseries.datetime_list,
+        #         latitude=[loc.latitude for loc in timeseries.locations],
+        #         longitude=[loc.longitude for loc in timeseries.locations],
+        #     )
+        # )
