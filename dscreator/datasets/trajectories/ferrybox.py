@@ -21,8 +21,8 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
         A good viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
         """
         return FerryboxDatasetAttrs(
-            title="Dataset with core measurements",
-            summary="summary",
+            title="Ferrybox on MS Color Fantasy",
+            summary="Ferry sailing from Oslo to Kiel. For more information see: https://www.colorline.no/oslo-kiel/fakta.",
             keywords=",".join([]),
             keywords_vocabulary=",".join([]),
             featureType=ds.attrs["featureType"],
