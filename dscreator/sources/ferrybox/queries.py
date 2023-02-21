@@ -33,6 +33,7 @@ def get_track(
         track.uuid = :track_uuid
         AND track.time > :start_time
         AND track.time <= :end_time
+        AND track.qc = 1
     ORDER BY
         track.time ASC
     """
@@ -72,6 +73,7 @@ def get_ts(
         ts.uuid = :uuid
         AND ts.time > :start_time
         AND ts.time <= :end_time
+        AND ts.qc = 1
     ORDER BY
         ts.time ASC
     """
