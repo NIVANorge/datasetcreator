@@ -14,24 +14,27 @@ class Point:
 @dataclass
 class NamedTimeArray:
     variable_name: str
-    locations: List[Point]
     values: List[str | int | float]
+
+
+@dataclass
+class NamedTrajectory:
+    array_list: List[NamedTimeArray]
     datetime_list: List[datetime]
+    locations: List[Point]
+    def __post_init__(self):
+        assert (
+                len(self.locations) == len(self.array_list[0].values) == len(self.datetime_list)
+        ), f"Arrays need to have same length: loc {len(self.locations)}, val {self.array_list[0].values} and dt {len(self.datetime_list)}"
 
 
 @dataclass
 class NamedTimeseries(NamedTimeArray):
+    locations: List[Point]
+    datetime_list: List[datetime]
     def __post_init__(self):
         assert len(self.locations) == 1, "Missing location"
         assert len(self.values) == len(self.datetime_list), f"Arrays need to have same length"
-
-
-@dataclass
-class NamedTrajectory(NamedTimeArray):
-    def __post_init__(self):
-        assert (
-            len(self.locations) == len(self.values) == len(self.datetime_list)
-        ), f"Arrays need to have same length: loc {len(self.locations)}, val {len(self.values)} and dt {len(self.datetime_list)}"
 
 
 @dataclass
