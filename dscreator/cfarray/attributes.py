@@ -103,7 +103,7 @@ class DatasetAttrsBase:
 class DatasetAttrsDefaults:
     naming_authority: str = "no.niva"
     creator_type: str = "institution"
-    institution: str = "Norwegian Institute for Water Research"
+    creator_institution: str = "Norwegian Institute for Water Research"
     creator_email: str = "miljoinformatikk@niva.no"
     creator_url: str = "https://niva.no"
     data_owner: str = "Norwegian Institute for Water Research"
@@ -132,6 +132,7 @@ class FerryboxDatasetAttrsBase(DatasetAttrsBase):
 class FerryboxDatasetAttrs(DatasetAttrsDefaults, FerryboxDatasetAttrsBase):
     processing_level: str = "Automated Quality Control applied"
     source: str = "Ferryboxes"
-    license: str = "These data follow MyOcean standards; they are public and free of charge. User assumes all risk for use of data. User must display citation in any publication or product using data. User must contact PI prior to any commercial use of data. More on: http://www.myocean.eu/data_policy"
-    Conventions: str = "CF-1.6 OceanSITES-Manual-1.2, Copernicus-InSituTAC-SRD-1.3, Copernicus-InSituTAC-ParametersList-3.0.0"
+    license: str = "These data are public and free of charge. User assumes all risk for use of data. " \
+                   "User must display citation in any publication or product using data. " \
+                   "User must contact NIVA prior to any commercial use of data. "
 
