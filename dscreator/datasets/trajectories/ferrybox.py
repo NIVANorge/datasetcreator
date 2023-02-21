@@ -21,12 +21,12 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
         A good viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
         """
         return FerryboxDatasetAttrs(
-            title="example",
+            title="Dataset with core measurements",
             summary="summary",
             keywords=",".join([]),
             keywords_vocabulary=",".join([]),
             featureType=ds.attrs["featureType"],
-            metadata_link="Link",
+            metadata_link="http://path/Document_describing_calibration.pdf",
             ices_platform_code="LMSD",
             platform_code="FA",
             platform_name="COLOR FANTASY",
