@@ -15,7 +15,6 @@ class Point:
 class NamedTimeArray:
     variable_name: str
     locations: List[Point]
-    gps_time: List[datetime]
     values: List[str | int | float]
     datetime_list: List[datetime]
 
@@ -30,12 +29,9 @@ class NamedTimeseries(NamedTimeArray):
 @dataclass
 class NamedTrajectory(NamedTimeArray):
     def __post_init__(self):
-        values = [self.values[self.datetime_list.index(dt)] if dt in self.datetime_list else None for dt in self.gps_time ]
-        self.values = values
-        logging.info(f"values {values}")
         assert (
-            len(self.locations) == len(self.values) == len(self.gps_time)
-        ), f"Arrays need to have same length: loc {len(self.locations)}, val {len(self.values)} and dt {len(self.gps_time)}"
+            len(self.locations) == len(self.values) == len(self.datetime_list)
+        ), f"Arrays need to have same length: loc {len(self.locations)}, val {len(self.values)} and dt {len(self.datetime_list)}"
 
 
 @dataclass

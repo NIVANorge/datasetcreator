@@ -28,12 +28,14 @@ class TrajectoryExtractor(BaseExtractor):
         named_trajectories = []
         track = get_track(self.engine, MAPPER[self.platform_code]["track"], start_time, end_time)
         loc = track.values
-        gps_time = track.datetime
+        track_datetime = track.datetime
         for vcode in self.variable_codes:
             res = query_ts(uuid=MAPPER[self.platform_code][vcode])
             if len(res.values) > 0:
                 logging.info(f"fetching vcode {vcode}")
-                named_trajectories.append(NamedTrajectory(vcode, loc, gps_time, res.values, res.datetime))
+                values = [res.values[res.datetime.index(dt)] if dt in res.datetime else None for dt in track_datetime]
+                logging.info(f"values {values}")
+                named_trajectories.append(NamedTrajectory(vcode, loc, values, track_datetime))
             else:
                 logging.info(f"No values for {vcode} for time period ({start_time} : {end_time})")
                 # named_trajectories.append(NamedTrajectory(vcode, self._track, [None for i in range(res.datetime)],
