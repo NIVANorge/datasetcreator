@@ -12,14 +12,37 @@ class Point:
 
 
 @dataclass
-class NamedTimeArray:
+class NamedArray:
+    """A single named array"""
     variable_name: str
     values: List[str | int | float | None]
 
 
 @dataclass
-class NamedTrajectory:
-    array_list: List[NamedTimeArray]
+class NamedTimeArray(NamedArray):
+    """A named time array 
+
+    An array of values with a corresponding list of timestamps
+    """
+    datetime_list: List[datetime]
+    locations: List[Point]
+
+    def __post_init__(self):
+        assert len(self.datetime_list) == len(self.values)
+
+
+@dataclass
+class FeatureBase:
+    array_list: List[NamedArray]
+
+
+@dataclass
+class NamedTrajectory(FeatureBase):
+    """Class to build a trajectory
+    
+    The goal is to create a single CF trajectory. To do this each array needs to be aligned
+    to the location array, along the time dimension.
+    """
     datetime_list: List[datetime]
     locations: List[Point]
 
@@ -30,13 +53,13 @@ class NamedTrajectory:
 
 
 @dataclass
-class NamedTimeseries(NamedTimeArray):
-    locations: List[Point]
-    datetime_list: List[datetime]
-
-    def __post_init__(self):
-        assert len(self.locations) == 1, "Missing location"
-        assert len(self.values) == len(self.datetime_list), f"Arrays need to have same length"
+class NamedTimeseries(FeatureBase):
+    """Class to build a timeseries
+    
+    The goal is to create a single CF timeseries. For this each array needs to be aligned
+    to the timearray. 
+    """
+    array_list: List[NamedTimeArray]
 
 
 @dataclass
@@ -46,7 +69,7 @@ class BaseExtractor(abc.ABC):
         self,
         start_time: datetime,
         end_time: datetime,
-    ) -> List[NamedTimeArray]:
+    ) -> List[FeatureBase]:
         pass
 
     @abc.abstractmethod
