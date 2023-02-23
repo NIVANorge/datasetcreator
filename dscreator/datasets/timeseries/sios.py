@@ -41,6 +41,7 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                     "GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
                 ]
             ),
+            iso_topic_category="oceans",
             featureType=ds.attrs["featureType"],
             date_created=str(datetime.now()),
             project=self.project_name,
