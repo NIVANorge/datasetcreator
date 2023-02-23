@@ -5,7 +5,7 @@ from typing import List
 from sqlalchemy import Engine
 from functools import partial
 from dscreator.sources.ferrybox.uuid_variable_code_mapper import MAPPER
-from dscreator.sources.base import BaseExtractor, NamedTrajectory, Point, NamedTimeArray
+from dscreator.sources.base import BaseExtractor, NamedTrajectory, Point, NamedArray
 from dscreator.sources.ferrybox.queries import get_track, get_ts, get_time_by_uuids
 
 
@@ -33,10 +33,10 @@ class TrajectoryExtractor(BaseExtractor):
             if len(res.values) > 0:
                 logging.info(f"fetching vcode {vcode}")
                 values = [res.values[res.datetime.index(dt)] if dt in res.datetime else None for dt in track_datetime]
-                named_timearrays.append(NamedTimeArray(vcode, values))
+                named_timearrays.append(NamedArray(vcode, values))
             else:
                 logging.info(f"No values for {vcode} for time period ({start_time} : {end_time})")
-                named_timearrays.append(NamedTimeArray(vcode, [None for x in range(len(track_datetime))]))
+                named_timearrays.append(NamedArray(vcode, [None for x in range(len(track_datetime))]))
         # Get indices of all None values
         i_None = [[i for i, v in enumerate(ts.values) if v is None] for ts in named_timearrays]
         # If None appears for all measurements, it means there is no valid data
@@ -44,7 +44,7 @@ class TrajectoryExtractor(BaseExtractor):
             set([index for index in i_None[0] for j in range(1, len(named_timearrays)) if index in i_None[j]])
         )
         named_timearrays = [
-            NamedTimeArray(nta.variable_name, [v for i, v in enumerate(nta.values) if i not in i_noData])
+            NamedArray(nta.variable_name, [v for i, v in enumerate(nta.values) if i not in i_noData])
             for nta in named_timearrays
         ]
         track_values = [tv for i, tv in enumerate(track.values) if i not in i_noData]

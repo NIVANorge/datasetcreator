@@ -6,7 +6,7 @@ from typing import List
 
 from sqlalchemy import Engine
 
-from dscreator.sources.base import BaseExtractor, NamedTimeseries, Point
+from dscreator.sources.base import BaseExtractor, NamedTimeseries, Point, NamedTimeArray
 from dscreator.sources.odm2.queries import (
     point_by_sampling_code,
     resultuuids_by_code,
@@ -49,9 +49,9 @@ class TimeseriesExtractor(BaseExtractor):
         named_timeseries = []
         for ruuid, vname in zip(self._resultuuids, self.variable_codes):
             res = query_by_resultid(result_uuid=ruuid)
-            named_timeseries.append(NamedTimeseries(vname, [self._point], res.values, res.datetime))
+            named_timeseries.append(NamedTimeArray(vname, res.values, datetime_list=res.datetime, locations=[self._point]))
 
-        return named_timeseries
+        return NamedTimeseries(array_list=named_timeseries)
 
     def _timestamp(self, is_asc: bool) -> datetime:
         return timestamp_by_code(self.engine, self.sampling_feature_code, self.variable_codes, is_asc)

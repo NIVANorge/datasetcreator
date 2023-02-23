@@ -8,7 +8,7 @@ import xarray as xr
 from dscreator.cfarray.attributes import DatasetAttrs
 from dscreator.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dscreator.cfarray.trajectory import trajectorycoords, trajectorydataset
-from dscreator.sources.base import NamedTimeArray, NamedTimeseries, NamedTrajectory
+from dscreator.sources.base import FeatureBase, NamedTimeseries, NamedTrajectory, NamedArray, NamedTimeArray
 
 
 @dataclass
@@ -20,12 +20,12 @@ class DatasetBuilder(abc.ABC):
     is_acdd: bool
 
     @abc.abstractmethod
-    def create(self, named_timeseries: List[NamedTimeArray]) -> xr.Dataset:
+    def create(self, named_timeseries: FeatureBase) -> xr.Dataset:
         """Entrypoint for creating a xarray dataset"""
         pass
 
     @abc.abstractmethod
-    def cftimearray(self, timeseries: NamedTimeArray) -> xr.DataArray:
+    def cftimearray(self, timeseries: NamedArray) -> xr.DataArray:
         """Convert a NamedTimearray to a coordinated dataarray
 
         The variables names are also mapped to C&F variables if possible.
@@ -33,7 +33,7 @@ class DatasetBuilder(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def map_to_cfarray(self, timeseries: NamedTimeArray) -> xr.DataArray:
+    def map_to_cfarray(self, timeseries: NamedArray) -> xr.DataArray:
         """Match timeserie data to C&F
 
         Match timeseries data to the climate and forecast convention based on the given variable code.
@@ -57,10 +57,10 @@ class DatasetBuilder(abc.ABC):
 
 @dataclass
 class TimeseriesDatasetBuilder(DatasetBuilder):
-    def create(self, named_timeseries: List[NamedTimeseries]) -> xr.Dataset:
+    def create(self, named_timeseries: NamedTimeseries) -> xr.Dataset:
         """Entrypoint for creating a xarray dataset"""
 
-        time_arrays = map(self.cftimearray, named_timeseries)
+        time_arrays = map(self.cftimearray, named_timeseries.array_list)
 
         ds = timeseriesdataset(named_dataarrays=list(time_arrays), station_name=self.station_name)
         ds.attrs["id"] = self.uuid
@@ -71,7 +71,7 @@ class TimeseriesDatasetBuilder(DatasetBuilder):
 
         return ds
 
-    def cftimearray(self, timeseries: NamedTimeseries) -> xr.DataArray:
+    def cftimearray(self, timeseries: NamedTimeArray) -> xr.DataArray:
         """Convert a NamedTimeseries to a coordinated dataarray
 
         The variables names are also mapped to C&F variables if possible.
@@ -110,7 +110,7 @@ class TrajectoryDatasetBuilder(DatasetBuilder):
 
         return ds
 
-    def cftimearray(self, timeseries: NamedTimeArray) -> xr.DataArray:
+    def cftimearray(self, timeseries: NamedArray) -> xr.DataArray:
         """Convert a NamedTimeseries to a coordinated dataarray
 
         The variables names are also mapped to C&F variables if possible.
