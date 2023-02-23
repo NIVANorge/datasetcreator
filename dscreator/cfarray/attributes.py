@@ -113,7 +113,8 @@ class DatasetAttrsDefaults:
     publisher_name: str = "Norwegian Institute for Water Research"
     publisher_email: str = "miljoinformatikk@niva.no"
     publisher_url: str = "https://niva.no"
-    licence: str = "CC-BY-4.0"
+    # From https://spdx.org/licenses/
+    licence: str = "https://spdx.org/licenses/CC-BY-4.0.html (CC-BY-4.0)"
     history: str = "Initial data"
 
 
