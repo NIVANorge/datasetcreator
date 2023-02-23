@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List, Literal
 
@@ -104,6 +104,8 @@ class DatasetAttrsDefaults:
     naming_authority: str = "no.niva"
     creator_type: str = "institution"
     creator_institution: str = "Norwegian Institute for Water Research"
+    institution: str = "Norwegian Institute for Water Research"
+    institution_short_name: str = "NIVA"
     creator_email: str = "miljoinformatikk@niva.no"
     creator_url: str = "https://niva.no"
     data_owner: str = "Norwegian Institute for Water Research"
@@ -114,7 +116,9 @@ class DatasetAttrsDefaults:
     publisher_email: str = "miljoinformatikk@niva.no"
     publisher_url: str = "https://niva.no"
     # From https://spdx.org/licenses/
-    licence: str = "https://spdx.org/licenses/CC-BY-4.0.html (CC-BY-4.0)"
+    license: str = "https://spdx.org/licenses/CC-BY-4.0.html (CC-BY-4.0)"
+    # See https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#iso-topic-categories
+    iso_topic_category: str = "Not available"
     history: str = "Initial data"
 
 
