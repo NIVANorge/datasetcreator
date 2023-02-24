@@ -4,6 +4,7 @@ from dscreator.datasets.timeseries import msource
 from dscreator.sources.base import NamedTimeseries, Point, NamedTimeArray
 import numpy as np
 
+
 def test_timeseries_builder():
 
     array1 = NamedTimeArray(

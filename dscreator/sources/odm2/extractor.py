@@ -49,7 +49,9 @@ class TimeseriesExtractor(BaseExtractor):
         named_timeseries = []
         for ruuid, vname in zip(self._resultuuids, self.variable_codes):
             res = query_by_resultid(result_uuid=ruuid)
-            named_timeseries.append(NamedTimeArray(vname, res.values, datetime_list=res.datetime, locations=[self._point]))
+            named_timeseries.append(
+                NamedTimeArray(vname, res.values, datetime_list=res.datetime, locations=[self._point])
+            )
 
         return NamedTimeseries(array_list=named_timeseries)
 

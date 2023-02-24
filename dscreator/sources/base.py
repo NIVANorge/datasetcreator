@@ -14,16 +14,18 @@ class Point:
 @dataclass
 class NamedArray:
     """A single named array"""
+
     variable_name: str
     values: List[str | int | float | None]
 
 
 @dataclass
 class NamedTimeArray(NamedArray):
-    """A named time array 
+    """A named time array
 
     An array of values with a corresponding list of timestamps
     """
+
     datetime_list: List[datetime]
     locations: List[Point]
 
@@ -39,10 +41,11 @@ class FeatureBase:
 @dataclass
 class NamedTrajectory(FeatureBase):
     """Class to build a trajectory
-    
+
     The goal is to create a single CF trajectory. To do this each array needs to be aligned
     to the location array, along the time dimension.
     """
+
     datetime_list: List[datetime]
     locations: List[Point]
 
@@ -55,10 +58,11 @@ class NamedTrajectory(FeatureBase):
 @dataclass
 class NamedTimeseries(FeatureBase):
     """Class to build a timeseries
-    
+
     The goal is to create a single CF timeseries. For this each array needs to be aligned
-    to the timearray. 
+    to the timearray.
     """
+
     array_list: List[NamedTimeArray]
 
 
