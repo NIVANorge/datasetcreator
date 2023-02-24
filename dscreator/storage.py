@@ -40,7 +40,12 @@ class BaseHandler(abc.ABC):
 
     def dataset_to_filename(self, ds: xr.Dataset):
         first_timestamp = np.datetime_as_string(ds.time[0], timezone="UTC", unit="s").replace(":", "")
-        return os.path.join(self.workdir, f"{first_timestamp}_{self.dataset_name.lower()}.nc")
+
+        filename = f"{first_timestamp}_"
+        if "Conventions" in ds.attrs and "ACDD" in ds.attrs["Conventions"]:
+            filename += "acdd_"
+        filename += f"{self.dataset_name.lower()}.nc"
+        return os.path.join(self.workdir, filename)
 
     def _restart_dict(self, ds: xr.Dataset) -> dict:
         return {"end_time": utils.numpy_to_datetime(ds.time[-1].values).isoformat()}
@@ -96,7 +101,7 @@ class GCSStorageHandler(BaseHandler):
         bucket = storage_client.bucket(self.bucket_name)
         blob = bucket.blob(self.restart_filepath)
         blob.upload_from_string(json.dumps(self._restart_dict(ds)))
-        logging.info(f"Saved restart info to bucket gs://{bucket}/{self.restart_filepath}")
+        logging.info(f"Saved restart info to bucket gs://{self.bucket_name}/{self.restart_filepath}")
 
     def open_restart(self) -> Optional[RestartInfo]:
         """Fetch restart info from the given storage"""
