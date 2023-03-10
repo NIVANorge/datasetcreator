@@ -9,6 +9,7 @@ from dscreator.cfarray.attributes import DatasetAttrs
 from dscreator.cfarray.attributes import CFVariableAttrs
 from dscreator.datasets.base import TimeseriesDatasetBuilder
 from dscreator.sources.odm2.extractor import NamedTimeseries
+from dscreator import utils
 
 
 @dataclass
@@ -45,8 +46,8 @@ class SiosBuilder(TimeseriesDatasetBuilder):
             featureType=ds.attrs["featureType"],
             date_created=str(datetime.now()),
             project=self.project_name,
-            time_coverage_start=str(ds.time.min().values),
-            time_coverage_end=str(ds.time.max().values),
+            time_coverage_start=utils.to_isoformat(ds.time.min().values),
+            time_coverage_end=utils.to_isoformat(ds.time.max().values),
             geospatial_lat_min=float(ds.latitude.min()),
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),

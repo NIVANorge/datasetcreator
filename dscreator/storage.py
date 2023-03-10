@@ -39,7 +39,7 @@ class BaseHandler(abc.ABC):
         self.restart_filepath = os.path.join(self.workdir, "." + self.dataset_name + ".restart.json")
 
     def dataset_to_filename(self, ds: xr.Dataset):
-        first_timestamp = np.datetime_as_string(ds.time[0], timezone="UTC", unit="s").replace(":", "")
+        first_timestamp = utils.to_isoformat(ds.time[0].values).replace(":", "-")
 
         filename = f"{first_timestamp}_"
         if "Conventions" in ds.attrs and "ACDD" in ds.attrs["Conventions"]:
@@ -48,10 +48,10 @@ class BaseHandler(abc.ABC):
         return os.path.join(self.workdir, filename)
 
     def _restart_dict(self, ds: xr.Dataset) -> dict:
-        return {"end_time": utils.numpy_to_datetime(ds.time[-1].values).isoformat()}
+        return {"end_time": utils.to_isoformat(ds.time[-1].values)}
 
     def _restart_info(self, raw_dict: dict) -> RestartInfo:
-        end_time = datetime.fromisoformat(raw_dict["end_time"])
+        end_time = utils.from_isoformat(raw_dict["end_time"])
         return RestartInfo(end_time)
 
     @abc.abstractmethod

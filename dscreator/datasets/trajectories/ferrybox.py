@@ -8,6 +8,7 @@ from dscreator.cfarray.base import dataarraybytime
 from dscreator.cfarray.attributes import FerryboxDatasetAttrs, CFVariableAttrs
 from dscreator.datasets.base import TrajectoryDatasetBuilder
 from dscreator.sources.base import NamedTrajectory
+from dscreator import utils
 
 
 @dataclass
@@ -32,8 +33,8 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
             platform_name="COLOR FANTASY",
             date_created=str(datetime.now()),
             project=self.project_name,
-            time_coverage_start=str(ds.time.min().values),
-            time_coverage_end=str(ds.time.max().values),
+            time_coverage_start=utils.to_isoformat(ds.time.min().values),
+            time_coverage_end=utils.to_isoformat(ds.time.max().values),
             geospatial_lat_min=float(ds.latitude.min()),
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),

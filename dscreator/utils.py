@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Union
+import pytz
 
 import numpy as np
 import xarray as xr
@@ -17,6 +18,20 @@ def numpy_to_datetime(dt: np.datetime64) -> datetime:
         case "datetime64[ns]":
             factor = 1e9
     return datetime.utcfromtimestamp(dt.astype(int) / factor)
+
+
+def to_isoformat(date_time: Union[np.datetime64, datetime]) -> str:
+    """Convert datetime to iso str"""
+    if isinstance(date_time, np.datetime64):
+        dt = numpy_to_datetime(date_time)
+    else:
+        dt = date_time
+    return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def from_isoformat(iso_str: str) -> datetime:
+    """Convert iso str to datetime"""
+    return datetime.strptime(iso_str, "%Y-%m-%dT%H:%M:%SZ")
 
 
 @dataclass

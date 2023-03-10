@@ -23,12 +23,14 @@ split
 # %%
 split.to_traj_gdf()
 # %%
-#assumes you have a 5 sub trajectories
+# assumes you have a 5 sub trajectories
 fig, axes = plt.subplots(nrows=1, ncols=5)
 for i, traj in enumerate(split.trajectories[0:5]):
     traj.plot(ax=axes[i], linewidth=5.0, capstyle="round", column="sea_water_temperature", vmax=20)
 #%%
 # Assume there is two trajectories, if there are many
 # plotting can be a bit slow
-split.trajectories[1].hvplot(c='salinity', title=ds.attrs["title"], line_width=2, frame_width=700, frame_height=500, colorbar=True)
+split.trajectories[1].hvplot(
+    c="salinity", title=ds.attrs["title"], line_width=2, frame_width=700, frame_height=500, colorbar=True
+)
 # %%
