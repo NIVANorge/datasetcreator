@@ -119,13 +119,23 @@ class DatasetAttrsDefaults:
     license: str = "http://spdx.org/licenses/CC-BY-4.0"
     # See https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#iso-topic-categories
     iso_topic_category: str = "Not available"
-    history: str = "Initial data"
+    history: str = "Built with dscreator"
 
 
 @dataclass
 class DatasetAttrs(DatasetAttrsDefaults, DatasetAttrsBase):
     pass
 
+
+@dataclass
+class NorDatasetAttrsBase(DatasetAttrsBase):
+    title_no: str
+    summary_no: str
+
+
+@dataclass
+class NorDatasetAttrs(DatasetAttrsDefaults, NorDatasetAttrsBase):
+    pass
 
 @dataclass
 class FerryboxDatasetAttrsBase(DatasetAttrsBase):

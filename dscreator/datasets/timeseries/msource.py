@@ -5,14 +5,15 @@ from datetime import datetime
 import xarray as xr
 
 from dscreator.cfarray.base import dataarraybytime
-from dscreator.cfarray.attributes import DatasetAttrs, VariableAttrs
+from dscreator.cfarray.attributes import NorDatasetAttrs, VariableAttrs
 from dscreator.datasets.base import TimeseriesDatasetBuilder
 from dscreator.sources.odm2.extractor import NamedTimeseries
+from dscreator import utils
 
 
 @dataclass
 class MSourceInletBuilder(TimeseriesDatasetBuilder):
-    def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
+    def dataset_attributes(self, ds: xr.Dataset) -> NorDatasetAttrs:
 
         """Add ACDD attributes to a xarray dataset
 
@@ -20,9 +21,11 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
         A good keywords viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
 
         """
-        return DatasetAttrs(
-            title="Test MSOURCE/DIGIVEIVANN Inlet",
-            summary="Summary",
+        return NorDatasetAttrs(
+            title="MSOURCE/DIGIVEIVANN Inlet",
+            title_no="MSOURCE/DIGIVEIVANN Innløp",
+            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing rainbeds as a nature-based cleaning solution for contaminated stormwater.",
+            summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann.",
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
@@ -39,8 +42,8 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
             featureType=ds.attrs["featureType"],
             date_created=str(datetime.now()),
             project=self.project_name,
-            time_coverage_start=str(ds.time.min().values),
-            time_coverage_end=str(ds.time.max().values),
+            time_coverage_start=utils.to_isoformat(ds.time.min().values),
+            time_coverage_end=utils.to_isoformat(ds.time.max().values),
             geospatial_lat_min=float(ds.latitude.min()),
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),
@@ -86,16 +89,18 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
 
 @dataclass
 class MSourceOutletBuilder(MSourceInletBuilder):
-    def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
+    def dataset_attributes(self, ds: xr.Dataset) -> NorDatasetAttrs:
         """Add ACDD attributes to a xarray dataset
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset, also see https://adc.met.no/node/96.
         For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. We can add keywords and
         also link to the vocabulary.
         """
-        return DatasetAttrs(
-            title="Test MSOURCE/DIGIVEIVANN Outlet",
-            summary="Summary",
+        return NorDatasetAttrs(
+            title="MSOURCE/DIGIVEIVANN Outlet",
+            title_no="MSOURCE/DIGIVEIVANN Utløp",
+            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing rainbeds as a nature-based cleaning solution for contaminated stormwater.",
+            summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann.",
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
@@ -112,8 +117,8 @@ class MSourceOutletBuilder(MSourceInletBuilder):
             featureType=ds.attrs["featureType"],
             date_created=str(datetime.now()),
             project=self.project_name,
-            time_coverage_start=str(ds.time.min().values),
-            time_coverage_end=str(ds.time.max().values),
+            time_coverage_start=utils.to_isoformat(ds.time.min().values),
+            time_coverage_end=utils.to_isoformat(ds.time.max().values),
             geospatial_lat_min=float(ds.latitude.min()),
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),
