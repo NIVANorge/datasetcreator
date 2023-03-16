@@ -1,9 +1,9 @@
+notebooks/data/*
 scripts/example*.nc
 catalog/**/*.nc
 catalog/**/*.restart.json
 # vscode
-.vscode/
-
+.vscode/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
