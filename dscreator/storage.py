@@ -5,7 +5,7 @@ import os
 import tempfile
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timedelta
-from typing import Optional, List
+from typing import Optional, List, Dict
 
 import numpy as np
 import xarray as xr
@@ -31,6 +31,8 @@ class BaseHandler(abc.ABC):
 
     project_name: str
     dataset_name: str
+    filename_prefix: str
+    encoding: Dict
     workdir: str = field(init=False)
     restart_filepath: str = field(init=False)
     unlimited_dims: List[str]
@@ -40,18 +42,18 @@ class BaseHandler(abc.ABC):
         self.restart_filepath = os.path.join(self.workdir, "." + self.dataset_name + ".restart.json")
 
     def save_netcdf(self, ds: xr.Dataset, filename: str):
-        encoding = None
+        encoding = self.encoding
         if "time" in ds:
-            encoding = TIME_ENCODING
+            encoding.update(TIME_ENCODING)
         ds.to_netcdf(filename, unlimited_dims=self.unlimited_dims, encoding=encoding)
 
     def dataset_to_filename(self, ds: xr.Dataset):
-        if "time" in ds:
-            prefix = utils.to_isoformat(ds.time[0].values).replace(":", "-")
-        elif "time_coverage_start" in ds.attrs:
-            prefix = ds.attrs["time_coverage_start"].replace(":", "-")
-        else:
-            raise RuntimeError("Missing prefix")
+        prefix = self.filename_prefix
+        if prefix is None:
+            if "time" in ds:
+                prefix = utils.to_isoformat(ds.time[0].values).replace(":", "-")
+            else:
+                prefix = ds.attrs["time_coverage_start"].replace(":", "-")
 
         filename = f"{prefix}_"
         if "Conventions" in ds.attrs and "ACDD" in ds.attrs["Conventions"]:
@@ -178,15 +180,35 @@ class LocalStorageHandler(BaseHandler):
         raise RuntimeError("Failing due to missing restart file")
 
 
-def get_storage_handler(project_name: str, dataset_name: str, unlimited_dims: Optional[List] = None) -> BaseHandler:
+def get_storage_handler(
+    project_name: str,
+    dataset_name: str,
+    filename_prefix: Optional[str] = None,
+    encoding: Optional[Dict] = None,
+    unlimited_dims: Optional[List] = None,
+) -> BaseHandler:
+    """Helper for storage handler
+
+    filename_prefix(optional): a prefix for the filename for dynamic data it is infered from the 'time' dimension
+    encoding (optional): extra encoding for data variables, 'time' will use global encoding
+    """
     if unlimited_dims is None:
         unlimited_dims = []
+
     if SETTINGS.storage_path.startswith("gs://"):
         return GCSStorageHandler(
             project_name=project_name,
             dataset_name=dataset_name,
+            filename_prefix=filename_prefix,
+            encoding=encoding,
             unlimited_dims=unlimited_dims,
             bucket_name=SETTINGS.storage_path.removeprefix("gs://"),
         )
     else:
-        return LocalStorageHandler(project_name=project_name, dataset_name=dataset_name, unlimited_dims=unlimited_dims)
+        return LocalStorageHandler(
+            project_name=project_name,
+            dataset_name=dataset_name,
+            filename_prefix=filename_prefix,
+            encoding=encoding,
+            unlimited_dims=unlimited_dims,
+        )
