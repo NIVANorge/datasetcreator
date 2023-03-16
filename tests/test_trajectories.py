@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from dscreator.datasets import trajectories
-from dscreator.sources.base import NamedTrajectory, Point, NamedArray
+from dscreator.sources.base import NamedArray, NamedTrajectory, Point
 
 
 def test_ferrybox_trajectory():

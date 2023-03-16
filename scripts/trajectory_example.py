@@ -4,8 +4,8 @@
 # %%
 from datetime import datetime
 
-from dscreator.cfarray.base import dataarraybytime, TIME_ENCODING
 from dscreator.cfarray.attributes import CFVariableAttrs
+from dscreator.cfarray.base import TIME_ENCODING, dataarraybytime
 from dscreator.cfarray.trajectory import trajectorycoords, trajectorydataset
 
 # %% Creating just a xarray dataset
@@ -75,7 +75,6 @@ from datetime import datetime
 
 from dscreator.datasets import trajectories
 from dscreator.sources.base import NamedTrajectory, Point
-
 
 # %%
 # Example input to the trajectory builder

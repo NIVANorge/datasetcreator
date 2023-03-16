@@ -1,12 +1,14 @@
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import List
-from sqlalchemy import Engine
 from functools import partial
+from typing import List
+
+from sqlalchemy import Engine
+
+from dscreator.sources.base import BaseExtractor, NamedArray, NamedTrajectory, Point
+from dscreator.sources.ferrybox.queries import get_time_by_uuids, get_track, get_ts
 from dscreator.sources.ferrybox.uuid_variable_code_mapper import MAPPER
-from dscreator.sources.base import BaseExtractor, NamedTrajectory, Point, NamedArray
-from dscreator.sources.ferrybox.queries import get_track, get_ts, get_time_by_uuids
 
 
 @dataclass

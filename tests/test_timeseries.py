@@ -1,8 +1,9 @@
 from datetime import datetime
 
-from dscreator.datasets.timeseries import msource
-from dscreator.sources.base import NamedTimeseries, Point, NamedTimeArray
 import numpy as np
+
+from dscreator.datasets.timeseries import msource
+from dscreator.sources.base import NamedTimeArray, NamedTimeseries, Point
 
 
 def test_timeseries_builder():

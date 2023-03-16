@@ -8,7 +8,7 @@ import xarray as xr
 from dscreator.cfarray.attributes import DatasetAttrsDiscrete
 from dscreator.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dscreator.cfarray.trajectory import trajectorycoords, trajectorydataset
-from dscreator.sources.base import FeatureBase, NamedTimeseries, NamedTrajectory, NamedArray, NamedTimeArray
+from dscreator.sources.base import FeatureBase, NamedArray, NamedTimeArray, NamedTimeseries, NamedTrajectory
 
 
 @dataclass

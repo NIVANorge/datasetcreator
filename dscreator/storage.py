@@ -3,11 +3,10 @@ import json
 import logging
 import os
 import tempfile
-from dataclasses import asdict, dataclass, field
-from datetime import datetime, timedelta
-from typing import Optional, List, Dict
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import Dict, List, Optional
 
-import numpy as np
 import xarray as xr
 from google.cloud import storage
 
@@ -187,10 +186,13 @@ def get_storage_handler(
     encoding: Optional[Dict] = None,
     unlimited_dims: Optional[List] = None,
 ) -> BaseHandler:
-    """Helper for storage handler
+    """Return either cloud handler or local handler
+
+    Wrapper that selects storage handler based on 'SETTINGS.storage_path' env variable.
 
     filename_prefix(optional): a prefix for the filename for dynamic data it is infered from the 'time' dimension
-    encoding (optional): extra encoding for data variables, 'time' will use global encoding
+    encoding (optional): extra encoding for data variables, 'time' will use default from TIME_ENCODING. 
+                         Try to avoid int64 encoding since it can be troublesome for some clients
     """
     if unlimited_dims is None:
         unlimited_dims = []

@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from dscreator.config import SETTINGS
 from dscreator.datasets import timeseries, trajectories
 from dscreator.runner import DataRunner
-from dscreator.sources import odm2, ferrybox
+from dscreator.sources import ferrybox, odm2
 
 app = typer.Typer()
 

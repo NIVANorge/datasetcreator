@@ -1,11 +1,11 @@
+import logging
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import List, Union
-import pytz
 
 import numpy as np
+import pytz
 import xarray as xr
-import logging
 
 
 def numpy_to_datetime(dt: np.datetime64) -> datetime:

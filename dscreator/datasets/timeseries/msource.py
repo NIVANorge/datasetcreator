@@ -4,11 +4,11 @@ from datetime import datetime
 
 import xarray as xr
 
-from dscreator.cfarray.base import dataarraybytime
+from dscreator import utils
 from dscreator.cfarray.attributes import DatasetAttrsDiscrete, VariableAttrs
+from dscreator.cfarray.base import dataarraybytime
 from dscreator.datasets.base import TimeseriesDatasetBuilder
 from dscreator.sources.odm2.extractor import NamedTimeseries
-from dscreator import utils
 
 
 @dataclass

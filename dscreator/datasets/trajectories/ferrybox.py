@@ -4,11 +4,11 @@ from datetime import datetime
 
 import xarray as xr
 
+from dscreator import utils
+from dscreator.cfarray.attributes import CFVariableAttrs, FerryboxDatasetAttrs
 from dscreator.cfarray.base import dataarraybytime
-from dscreator.cfarray.attributes import FerryboxDatasetAttrs, CFVariableAttrs
 from dscreator.datasets.base import TrajectoryDatasetBuilder
 from dscreator.sources.base import NamedTrajectory
-from dscreator import utils
 
 
 @dataclass

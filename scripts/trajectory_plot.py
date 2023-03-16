@@ -2,12 +2,13 @@
 # Install extra dependecies with:
 # `poetry install
 
+from datetime import timedelta
+
+import holoviews as hv
+import matplotlib.pyplot as plt
+import movingpandas as mpd
 # %%
 import xarray as xr
-import movingpandas as mpd
-import holoviews as hv
-from datetime import timedelta
-import matplotlib.pyplot as plt
 
 # %% Or replace with you path to example trajectory
 ds = xr.open_dataset("../catalog/datasets/norsoop/rt_ferrybox_FA/2022-12-12T160100Z_acdd_rt_ferrybox_fa.nc")

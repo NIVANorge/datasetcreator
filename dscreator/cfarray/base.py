@@ -1,7 +1,7 @@
 from dataclasses import asdict
 from datetime import datetime
 from functools import partial
-from typing import Any, List, Literal, Tuple, Union, Optional
+from typing import Any, List, Literal, Optional, Tuple, Union
 
 import xarray as xr
 

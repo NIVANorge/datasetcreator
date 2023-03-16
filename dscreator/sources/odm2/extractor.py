@@ -6,7 +6,7 @@ from typing import List
 
 from sqlalchemy import Engine
 
-from dscreator.sources.base import BaseExtractor, NamedTimeseries, Point, NamedTimeArray
+from dscreator.sources.base import BaseExtractor, NamedTimeArray, NamedTimeseries, Point
 from dscreator.sources.odm2.queries import (
     point_by_sampling_code,
     resultuuids_by_code,

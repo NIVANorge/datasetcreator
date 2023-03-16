@@ -2,10 +2,11 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from typing import List, Optional
-from dscreator.sources.base import Point
 
 from sqlalchemy import Engine
 from sqlalchemy.sql import text
+
+from dscreator.sources.base import Point
 
 
 @dataclass
