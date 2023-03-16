@@ -95,9 +95,21 @@ class DatasetAttrsBase:
     geospatial_lat_max: float
     geospatial_lon_min: float
     geospatial_lon_max: float
-    featureType: str
     project: str
 
+@dataclass
+class NorDatasetAttrsBase(DatasetAttrsBase):
+    title_no: str
+    summary_no: str
+
+@dataclass
+class DatasetAttrsDiscreteBase(DatasetAttrsBase):
+    featureType: str
+
+@dataclass
+class DatasetAttrsGridBase(DatasetAttrsBase):
+    # See, https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#spatial-representation
+    spatial_representation: str
 
 @dataclass
 class DatasetAttrsDefaults:
@@ -123,22 +135,17 @@ class DatasetAttrsDefaults:
 
 
 @dataclass
-class DatasetAttrs(DatasetAttrsDefaults, DatasetAttrsBase):
+class DatasetAttrsDiscrete(DatasetAttrsDefaults, DatasetAttrsDiscreteBase, NorDatasetAttrsBase):
     pass
 
 
 @dataclass
-class NorDatasetAttrsBase(DatasetAttrsBase):
-    title_no: str
-    summary_no: str
-
-
-@dataclass
-class NorDatasetAttrs(DatasetAttrsDefaults, NorDatasetAttrsBase):
+class DatasetAttrsGrid(DatasetAttrsDefaults, DatasetAttrsGridBase, NorDatasetAttrsBase):
     pass
 
+
 @dataclass
-class FerryboxDatasetAttrsBase(DatasetAttrsBase):
+class FerryboxDatasetAttrsBase(DatasetAttrsDiscreteBase):
     ices_platform_code: str
     platform_code: str
     platform_name: str

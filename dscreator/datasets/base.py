@@ -5,7 +5,7 @@ from typing import List
 
 import xarray as xr
 
-from dscreator.cfarray.attributes import DatasetAttrs
+from dscreator.cfarray.attributes import DatasetAttrsDiscrete
 from dscreator.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dscreator.cfarray.trajectory import trajectorycoords, trajectorydataset
 from dscreator.sources.base import FeatureBase, NamedTimeseries, NamedTrajectory, NamedArray, NamedTimeArray
@@ -51,7 +51,7 @@ class DatasetBuilder(abc.ABC):
         ds.attrs.update(asdict(self.dataset_attributes(ds)))
 
     @abc.abstractmethod
-    def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
+    def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
         pass
 
 

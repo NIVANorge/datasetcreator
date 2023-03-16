@@ -5,7 +5,7 @@ from datetime import datetime
 import xarray as xr
 
 from dscreator.cfarray.base import dataarraybytime
-from dscreator.cfarray.attributes import NorDatasetAttrs, VariableAttrs
+from dscreator.cfarray.attributes import DatasetAttrsDiscrete, VariableAttrs
 from dscreator.datasets.base import TimeseriesDatasetBuilder
 from dscreator.sources.odm2.extractor import NamedTimeseries
 from dscreator import utils
@@ -13,7 +13,7 @@ from dscreator import utils
 
 @dataclass
 class MSourceInletBuilder(TimeseriesDatasetBuilder):
-    def dataset_attributes(self, ds: xr.Dataset) -> NorDatasetAttrs:
+    def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
 
         """Add ACDD attributes to a xarray dataset
 
@@ -21,7 +21,7 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
         A good keywords viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
 
         """
-        return NorDatasetAttrs(
+        return DatasetAttrsDiscrete(
             title="MSOURCE/DIGIVEIVANN Inlet",
             title_no="MSOURCE/DIGIVEIVANN Innløp",
             summary="In the MULTISOURCE/DigiVEIVANN project, we are testing rainbeds as a nature-based cleaning solution for contaminated stormwater.",
@@ -89,14 +89,14 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
 
 @dataclass
 class MSourceOutletBuilder(MSourceInletBuilder):
-    def dataset_attributes(self, ds: xr.Dataset) -> NorDatasetAttrs:
+    def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
         """Add ACDD attributes to a xarray dataset
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset, also see https://adc.met.no/node/96.
         For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. We can add keywords and
         also link to the vocabulary.
         """
-        return NorDatasetAttrs(
+        return DatasetAttrsDiscrete(
             title="MSOURCE/DIGIVEIVANN Outlet",
             title_no="MSOURCE/DIGIVEIVANN Utløp",
             summary="In the MULTISOURCE/DigiVEIVANN project, we are testing rainbeds as a nature-based cleaning solution for contaminated stormwater.",

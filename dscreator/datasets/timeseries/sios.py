@@ -5,7 +5,7 @@ from datetime import datetime
 import xarray as xr
 
 from dscreator.cfarray.base import dataarraybytime
-from dscreator.cfarray.attributes import DatasetAttrs
+from dscreator.cfarray.attributes import DatasetAttrsDiscrete
 from dscreator.cfarray.attributes import CFVariableAttrs
 from dscreator.datasets.base import TimeseriesDatasetBuilder
 from dscreator.sources.odm2.extractor import NamedTimeseries
@@ -14,7 +14,7 @@ from dscreator import utils
 
 @dataclass
 class SiosBuilder(TimeseriesDatasetBuilder):
-    def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrs:
+    def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
 
         """Add ACDD attributes to a xarray dataset
 
@@ -22,9 +22,11 @@ class SiosBuilder(TimeseriesDatasetBuilder):
         A good keywords viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer.
         For converting CF standard names erddap also contains a good converter for cf standard names.
         """
-        return DatasetAttrs(
+        return DatasetAttrsDiscrete(
             title="SIOS sensor buoy in Adventfjorden",
             summary="Summary",
+            title_no="SIOS sensor bøye i Adventfjorden",
+            summary_no="Oppsummering",
             keywords=",".join(
                 [
                     "GCMDSK:Earth Science > Oceans > Ocean Chemistry > Chlorophyll",
