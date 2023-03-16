@@ -22,7 +22,7 @@ rioxarray = "^0.13.4"
 [tool.poetry.group.dev.dependencies]
 pytest = "^6.2.5"
 isort = "^5.10.1"
-black = "^22.8.0"
+black = {extras = ["jupyter"], version = "^23.1.0"}
 ipykernel = "^6.15.2"
 matplotlib = "^3.5.3"
 requests-mock = "^1.10.0"
