@@ -31,7 +31,16 @@
     <service name="ncml" serviceType="NCML" base="/thredds/ncml/" />
     <service name="uddc" serviceType="UDDC" base="/thredds/uddc/" />
   </service>
+  <service name="maps" base="" serviceType="compound">
+    <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/" />
+    <service name="wms" serviceType="WMS" base="/thredds/wms/" />
+    <service name="iso" serviceType="ISO" base="/thredds/iso/" />
+    <service name="ncml" serviceType="NCML" base="/thredds/ncml/" />
+    <service name="uddc" serviceType="UDDC" base="/thredds/uddc/" />
+  </service>
   <datasetRoot path="datasets" location="/datasets" />
+  <dataset ID="samplewms" name="Test WMS" urlPath="datasets/limits/acid-nitrogen/2012-01-01T00-00-00Z_acdd_acid-nitrogen.nc" serviceName="timeseries">
+  </dataset>
   <dataset name="Test MSOURCE/DIGIVEIVANN Inlet" ID="testmsourceinlet" serviceName="timeseries"
     urlPath="datasets/msource-inlet.nc">
     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
