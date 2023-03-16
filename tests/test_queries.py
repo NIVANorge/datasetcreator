@@ -8,7 +8,6 @@ from dscreator.sources.odm2 import queries
 
 @pytest.mark.docker
 def test_point_by_sampling_code_success(odm2engine):
-
     point = queries.point_by_sampling_code(odm2engine, "MSOURCE1")
     assert point.longitude == 10.7484615
     assert point.latitude == 59.943095
@@ -16,7 +15,6 @@ def test_point_by_sampling_code_success(odm2engine):
 
 @pytest.mark.docker
 def test_point_by_sampling_code_not_there(odm2engine):
-
     with pytest.raises(NoResultFound):
         point = queries.point_by_sampling_code(odm2engine, "Not There")
 

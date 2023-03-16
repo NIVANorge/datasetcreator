@@ -5,14 +5,14 @@ import os
 import tempfile
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, List
 
 import numpy as np
 import xarray as xr
 from google.cloud import storage
 
 from dscreator import utils
-from dscreator.cfarray.base import DEFAULT_ENCODING
+from dscreator.cfarray.base import TIME_ENCODING
 from dscreator.config import SETTINGS
 
 
@@ -33,15 +33,27 @@ class BaseHandler(abc.ABC):
     dataset_name: str
     workdir: str = field(init=False)
     restart_filepath: str = field(init=False)
+    unlimited_dims: List[str]
 
     def __post_init__(self):
         self.workdir = os.path.join("datasets", self.project_name.lower(), self.dataset_name)
         self.restart_filepath = os.path.join(self.workdir, "." + self.dataset_name + ".restart.json")
 
-    def dataset_to_filename(self, ds: xr.Dataset):
-        first_timestamp = utils.to_isoformat(ds.time[0].values).replace(":", "-")
+    def save_netcdf(self, ds: xr.Dataset, filename: str):
+        encoding = None
+        if "time" in ds:
+            encoding = TIME_ENCODING
+        ds.to_netcdf(filename, unlimited_dims=self.unlimited_dims, encoding=encoding)
 
-        filename = f"{first_timestamp}_"
+    def dataset_to_filename(self, ds: xr.Dataset):
+        if "time" in ds:
+            prefix = utils.to_isoformat(ds.time[0].values).replace(":", "-")
+        elif "time_coverage_start" in ds.attrs:
+            prefix = ds.attrs["time_coverage_start"].replace(":", "-")
+        else:
+            raise RuntimeError("Missing prefix")
+
+        filename = f"{prefix}_"
         if "Conventions" in ds.attrs and "ACDD" in ds.attrs["Conventions"]:
             filename += "acdd_"
         filename += f"{self.dataset_name.lower()}.nc"
@@ -86,7 +98,7 @@ class GCSStorageHandler(BaseHandler):
         filepath = self.dataset_to_filename(ds)
 
         tmp_file = tempfile.NamedTemporaryFile()
-        ds.to_netcdf(tmp_file.name, unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
+        self.save_netcdf(ds, tmp_file.name)
         bucket = storage_client.bucket(self.bucket_name)
         blob = bucket.blob(filepath)
         blob.upload_from_filename(tmp_file.name)
@@ -131,9 +143,9 @@ class LocalStorageHandler(BaseHandler):
 
         save_location = os.path.join(SETTINGS.storage_path, filepath)
         os.makedirs(os.path.dirname(save_location), exist_ok=True)
-        ds.to_netcdf(save_location, unlimited_dims=["time"], encoding=DEFAULT_ENCODING)
+        self.save_netcdf(ds, save_location)
 
-        logging.info(f"Data {ds.time[0].values} --> {ds.time[-1].values} exported to {save_location}")
+        logging.info(f"Exported to {save_location}")
 
     def save_restart(self, ds: xr.Dataset):
         """Fetch restart info from the given storage"""
@@ -166,8 +178,15 @@ class LocalStorageHandler(BaseHandler):
         raise RuntimeError("Failing due to missing restart file")
 
 
-def get_storage_handler(project_name: str, dataset_name: str) -> BaseHandler:
+def get_storage_handler(project_name: str, dataset_name: str, unlimited_dims: Optional[List] = None) -> BaseHandler:
+    if unlimited_dims is None:
+        unlimited_dims = []
     if SETTINGS.storage_path.startswith("gs://"):
-        return GCSStorageHandler(project_name, dataset_name, bucket_name=SETTINGS.storage_path.removeprefix("gs://"))
+        return GCSStorageHandler(
+            project_name=project_name,
+            dataset_name=dataset_name,
+            unlimited_dims=unlimited_dims,
+            bucket_name=SETTINGS.storage_path.removeprefix("gs://"),
+        )
     else:
-        return LocalStorageHandler(project_name, dataset_name)
+        return LocalStorageHandler(project_name=project_name, dataset_name=dataset_name, unlimited_dims=unlimited_dims)

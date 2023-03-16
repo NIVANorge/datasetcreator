@@ -14,7 +14,6 @@ from dscreator import utils
 @dataclass
 class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
     def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
-
         """Add ACDD attributes to a xarray dataset
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset.

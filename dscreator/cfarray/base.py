@@ -11,7 +11,6 @@ from dscreator.cfarray.dims import DEPTH, DIMLESS, TIME
 
 
 def dataarray(dims: Union[Tuple, str], data: List[Any], name: str, attrs: VariableAttrsBase) -> xr.DataArray:
-
     return xr.DataArray(
         name=name,
         dims=dims,
@@ -32,4 +31,4 @@ def idarray(name: str, id: str, cf_role: str):
     return xr.DataArray(id, dims=DIMLESS, name=name, attrs=attrs)
 
 
-DEFAULT_ENCODING = {"time": {"dtype": "int32", "units": "seconds since 1970-01-01 00:00:00"}}
+TIME_ENCODING = {"time": {"dtype": "int32", "units": "seconds since 1970-01-01 00:00:00"}}

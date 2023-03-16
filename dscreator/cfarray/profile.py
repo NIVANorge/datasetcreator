@@ -35,7 +35,6 @@ def depthcoords(
 
 
 def profiledataset(named_dataarrays: List[xr.DataArray], title: str, profile_name: str) -> xr.Dataset:
-
     feature_type = "profile"
     ds = xr.merge(named_dataarrays + [idarray(feature_type + "_name", profile_name, feature_type + "_id")])
 

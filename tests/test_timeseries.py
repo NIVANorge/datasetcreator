@@ -6,7 +6,6 @@ import numpy as np
 
 
 def test_timeseries_builder():
-
     array1 = NamedTimeArray(
         "LevelValue",
         values=[1, 2, 3],

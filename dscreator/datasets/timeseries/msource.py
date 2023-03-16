@@ -14,7 +14,6 @@ from dscreator import utils
 @dataclass
 class MSourceInletBuilder(TimeseriesDatasetBuilder):
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
-
         """Add ACDD attributes to a xarray dataset
 
         Add attributes following the Attribute Convention for Data Discovery to a dataset, also see https://adc.met.no/node/96.

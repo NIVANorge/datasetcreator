@@ -97,19 +97,23 @@ class DatasetAttrsBase:
     geospatial_lon_max: float
     project: str
 
+
 @dataclass
 class NorDatasetAttrsBase(DatasetAttrsBase):
     title_no: str
     summary_no: str
 
+
 @dataclass
 class DatasetAttrsDiscreteBase(DatasetAttrsBase):
     featureType: str
+
 
 @dataclass
 class DatasetAttrsGridBase(DatasetAttrsBase):
     # See, https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#spatial-representation
     spatial_representation: str
+
 
 @dataclass
 class DatasetAttrsDefaults:

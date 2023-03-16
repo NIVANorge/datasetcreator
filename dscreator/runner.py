@@ -27,7 +27,9 @@ class DataRunner:
         custom start time.
         """
         self.storage_handler = get_storage_handler(
-            project_name=self.dataset_builder.project_name, dataset_name=self.dataset_builder.dataset_name
+            project_name=self.dataset_builder.project_name,
+            dataset_name=self.dataset_builder.dataset_name,
+            unlimited_dims=["time"],
         )
         restart_info = self.storage_handler.open_restart()
 
@@ -60,7 +62,7 @@ class DataRunner:
             ts = self.extractor.fetch_slice(start_time=interval.start_time, end_time=interval.end_time)
             ds = self.dataset_builder.create(ts)
             if ds.dims["time"] > 0:
-                logging.info("Saving dataset slice")
+                logging.info(f"Saving dataset slice {ds.time[0].values} --> {ds.time[-1].values}")
                 self.storage_handler.save_dataset(ds)
                 restart_dataset = ds
             else:

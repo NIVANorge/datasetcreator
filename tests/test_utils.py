@@ -53,7 +53,6 @@ def test_from_isotime():
     ],
 )
 def test_time_interval(start_time, end_time, delta, expected):
-
     intervals = utils.datetime_intervals(start_time, end_time, delta)
     assert len(intervals) == expected
     assert intervals[0].start_time == start_time

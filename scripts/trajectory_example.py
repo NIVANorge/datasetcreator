@@ -4,7 +4,7 @@
 # %%
 from datetime import datetime
 
-from dscreator.cfarray.base import dataarraybytime, DEFAULT_ENCODING
+from dscreator.cfarray.base import dataarraybytime, TIME_ENCODING
 from dscreator.cfarray.attributes import CFVariableAttrs
 from dscreator.cfarray.trajectory import trajectorycoords, trajectorydataset
 
@@ -25,7 +25,7 @@ time = list(
 )
 
 
-#%%
+# %%
 temperature = dataarraybytime(
     name="temperature",
     data=[2, None, 5, 7],
@@ -41,7 +41,7 @@ temperature = dataarraybytime(
         longitude=longitudes,
     )
 )
-#%%
+# %%
 turbidity = dataarraybytime(
     name="turbidity",
     data=[None, 1, 5, 7],
@@ -58,19 +58,19 @@ ds = trajectorydataset([temperature, turbidity], "trajectory_name")
 
 # %%
 print(ds)
-#%%
+# %%
 
 ds.temperature.plot()
 
 # %%
-ds.to_netcdf("example_trajectory.nc", encoding=DEFAULT_ENCODING)
+ds.to_netcdf("example_trajectory.nc", encoding=TIME_ENCODING)
 # run `ncdump example_trajectory.nc` on commandline to view text repr also
 
 # %%
 
 # Example TrajectoryExtractor
 # also see tests/test_trajectories.py
-#%%
+# %%
 from datetime import datetime
 
 from dscreator.datasets import trajectories
