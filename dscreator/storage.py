@@ -96,12 +96,14 @@ class GCSStorageHandler(BaseHandler):
         """Save the dataset to a gcs bucket"""
 
         storage_client = storage.Client()
+
         filepath = self.dataset_to_filename(ds)
 
         tmp_file = tempfile.NamedTemporaryFile()
         self.save_netcdf(ds, tmp_file.name)
         bucket = storage_client.bucket(self.bucket_name)
         blob = bucket.blob(filepath)
+        blob.chunk_size = 5 * 1024 * 1024 # Set 5 MB blob size
         blob.upload_from_filename(tmp_file.name)
         tmp_file.close()
         save_location = os.path.join(SETTINGS.storage_path, filepath)
@@ -194,6 +196,9 @@ def get_storage_handler(
     encoding (optional): extra encoding for data variables, 'time' will use default from TIME_ENCODING. 
                          Try to avoid int64 encoding since it can be troublesome for some clients
     """
+
+    if encoding is None:
+        encoding = {}
     if unlimited_dims is None:
         unlimited_dims = []
 
