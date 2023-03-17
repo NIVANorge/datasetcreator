@@ -1,7 +1,8 @@
 version: '3.5'
 services:
   thredds:
-    image: europe-west1-docker.pkg.dev/niva-cd/images/thredds:latest
+    image: unidata/thredds-docker:5.5-SNAPSHOT
+    #image: europe-west1-docker.pkg.dev/niva-cd/images/thredds:latest
     ports:
       - "80:8080"
       - "443:8443"
