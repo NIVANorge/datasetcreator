@@ -39,7 +39,7 @@
     <service name="uddc" serviceType="UDDC" base="/thredds/uddc/" />
   </service>
   <datasetRoot path="datasets" location="/datasets" />
-  <dataset ID="samplewms" name="Test WMS" urlPath="datasets/limits/acid-nitrogen/2012-01-01T00-00-00Z_acdd_acid-nitrogen.nc" serviceName="timeseries">
+  <dataset ID="samplewms" name="Test WMS" urlPath="datasets/exceedance-limits/fab-sswc-exceed/2012-2016_acdd_fab-sswc-exceed.nc" serviceName="maps">
   </dataset>
   <dataset name="Test MSOURCE/DIGIVEIVANN Inlet" ID="testmsourceinlet" serviceName="timeseries"
     urlPath="datasets/msource-inlet.nc">
