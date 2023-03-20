@@ -108,7 +108,6 @@ class GCSStorageHandler(BaseHandler):
         tmp_file.close()
         save_location = os.path.join(SETTINGS.storage_path, filepath)
 
-        logging.info(f"Data {ds.time[0].values} --> {ds.time[-1].values} exported to {save_location}")
 
     def save_restart(self, ds: xr.Dataset):
         """Fetch restart info from the given storage"""
