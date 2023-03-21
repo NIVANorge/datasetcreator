@@ -110,19 +110,12 @@ class TrajectoryDatasetBuilder(DatasetBuilder):
 
         return ds
 
-    def cftimearray(self, timeseries: NamedArray) -> xr.DataArray:
-        """Convert a NamedTimeseries to a coordinated dataarray
+    def cftimearray(self, array: NamedArray) -> xr.DataArray:
+        """Convert a NamedArray to a cf array
 
         The variables names are also mapped to C&F variables if possible.
         """
 
-        array = self.map_to_cfarray(timeseries)
+        cf_array = self.map_to_cfarray(array)
 
-        return array
-        #     .assign_coords(
-        #     trajectorycoords(
-        #         time=timeseries.datetime_list,
-        #         latitude=[loc.latitude for loc in timeseries.locations],
-        #         longitude=[loc.longitude for loc in timeseries.locations],
-        #     )
-        # )
+        return cf_array
