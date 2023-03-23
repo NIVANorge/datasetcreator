@@ -23,7 +23,7 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
         return DatasetAttrsDiscrete(
             title="MSOURCE/DIGIVEIVANN Inlet",
             title_no="MSOURCE/DIGIVEIVANN Innløp",
-            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing rainbeds as a nature-based cleaning solution for contaminated stormwater.",
+            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing rain garden as a nature-based cleaning solution for contaminated stormwater.",
             summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann.",
             keywords=",".join(
                 [
@@ -62,21 +62,22 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
                     data=timeseries.values,
                     name="temperature",
                     attrs=VariableAttrs(
-                        short_name="rainbed_temperature", long_name="Rainbed Water Temperature", units="degree_Celsius"
+                        short_name="temperature", long_name="Rain Garden Water Temperature", units="degree_Celsius"
                     ),
                 )
+                array.attrs["comment"] = "An operational parameter affected by a heating device during winter"
             case "LevelValue":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="levelvalue",
-                    attrs=VariableAttrs(short_name="rainbed_water_level", long_name="Rainbed Water Level", units="m"),
+                    attrs=VariableAttrs(short_name="water_level", long_name="Water Level Weir Box", units="m"),
                 )
             case "Turbidity":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="turbidity",
                     attrs=VariableAttrs(
-                        short_name="rainbed_turbidity", long_name="Rainbed Water Turbidity", units="NTU"
+                        short_name="turbidity", long_name="Rain Garden Water Turbidity", units="NTU"
                     ),
                 )
             case _:
@@ -98,7 +99,7 @@ class MSourceOutletBuilder(MSourceInletBuilder):
         return DatasetAttrsDiscrete(
             title="MSOURCE/DIGIVEIVANN Outlet",
             title_no="MSOURCE/DIGIVEIVANN Utløp",
-            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing rainbeds as a nature-based cleaning solution for contaminated stormwater.",
+            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing raingardens as a nature-based cleaning solution for contaminated stormwater.",
             summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann.",
             keywords=",".join(
                 [
@@ -123,3 +124,33 @@ class MSourceOutletBuilder(MSourceInletBuilder):
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
         )
+
+
+    def map_to_cfarray(self, timeseries: NamedTimeseries) -> xr.DataArray:
+        """Match timeserie data to C&F
+
+        Match timeseries data to the climate and forecast convention based on the given variable code.
+        Standard names are found at http://vocab.nerc.ac.uk/collection/P07/current/
+        online unit list on https://ncics.org/portfolio/other-resources/udunits2/
+        """
+        match timeseries.variable_name:
+            case "LevelValue":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="levelvalue",
+                    attrs=VariableAttrs(short_name="water_level", long_name="Water Level Manhole", units="m"),
+                )
+            case "Turbidity":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="turbidity",
+                    attrs=VariableAttrs(
+                        short_name="turbidity", long_name="Rain Garden Water Turbidity", units="NTU"
+                    ),
+                )
+                
+            case _:
+                logging.warning(f"Array definition not found for: {timeseries.variable_name}")
+                raise RuntimeError(f"Array definition not found for: {timeseries.variable_name}")
+
+        return array
