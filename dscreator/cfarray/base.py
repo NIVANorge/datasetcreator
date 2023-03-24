@@ -29,6 +29,3 @@ def idarray(name: str, id: str, cf_role: str):
         "cf_role": cf_role,
     }
     return xr.DataArray(id, dims=DIMLESS, name=name, attrs=attrs)
-
-
-TIME_ENCODING = {"time": {"dtype": "int32", "units": "seconds since 1970-01-01 00:00:00"}}

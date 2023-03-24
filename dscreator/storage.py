@@ -11,7 +11,7 @@ import xarray as xr
 from google.cloud import storage
 
 from dscreator import utils
-from dscreator.cfarray.base import TIME_ENCODING
+from dscreator.encoding import default_encoding
 from dscreator.config import SETTINGS
 
 
@@ -31,7 +31,6 @@ class BaseHandler(abc.ABC):
     project_name: str
     dataset_name: str
     filename_prefix: str
-    encoding: Dict
     workdir: str = field(init=False)
     restart_filepath: str = field(init=False)
     unlimited_dims: List[str]
@@ -40,10 +39,9 @@ class BaseHandler(abc.ABC):
         self.workdir = os.path.join("datasets", self.project_name.lower(), self.dataset_name)
         self.restart_filepath = os.path.join(self.workdir, "." + self.dataset_name + ".restart.json")
 
-    def save_netcdf(self, ds: xr.Dataset, filename: str):
-        encoding = self.encoding
-        if "time" in ds:
-            encoding.update(TIME_ENCODING)
+    def save_netcdf(self, ds: xr.Dataset, filename: str, encoding: Optional[Dict]=None):
+        if encoding is None:
+            encoding = default_encoding(ds)
         ds.to_netcdf(filename, unlimited_dims=self.unlimited_dims, encoding=encoding)
 
     def dataset_to_filename(self, ds: xr.Dataset):
@@ -184,7 +182,6 @@ def get_storage_handler(
     project_name: str,
     dataset_name: str,
     filename_prefix: Optional[str] = None,
-    encoding: Optional[Dict] = None,
     unlimited_dims: Optional[List] = None,
 ) -> BaseHandler:
     """Return either cloud handler or local handler
@@ -196,8 +193,6 @@ def get_storage_handler(
                          Try to avoid int64 encoding since it can be troublesome for some clients
     """
 
-    if encoding is None:
-        encoding = {}
     if unlimited_dims is None:
         unlimited_dims = []
 
@@ -206,7 +201,6 @@ def get_storage_handler(
             project_name=project_name,
             dataset_name=dataset_name,
             filename_prefix=filename_prefix,
-            encoding=encoding,
             unlimited_dims=unlimited_dims,
             bucket_name=SETTINGS.storage_path.removeprefix("gs://"),
         )
@@ -215,6 +209,5 @@ def get_storage_handler(
             project_name=project_name,
             dataset_name=dataset_name,
             filename_prefix=filename_prefix,
-            encoding=encoding,
             unlimited_dims=unlimited_dims,
         )
