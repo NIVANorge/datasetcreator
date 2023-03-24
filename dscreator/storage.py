@@ -66,7 +66,7 @@ class BaseHandler(abc.ABC):
         return RestartInfo(end_time)
 
     @abc.abstractmethod
-    def save_dataset(self, ds: xr.Dataset):
+    def save_dataset(self, ds: xr.Dataset, encoding: Optional[Dict] = None):
         pass
 
     @abc.abstractmethod
@@ -90,7 +90,7 @@ class GCSStorageHandler(BaseHandler):
 
     bucket_name: str
 
-    def save_dataset(self, ds: xr.Dataset):
+    def save_dataset(self, ds: xr.Dataset, encoding: Optional[Dict] = None) -> str:
         """Save the dataset to a gcs bucket"""
 
         storage_client = storage.Client()
@@ -98,13 +98,14 @@ class GCSStorageHandler(BaseHandler):
         filepath = self.dataset_to_filename(ds)
 
         tmp_file = tempfile.NamedTemporaryFile()
-        self.save_netcdf(ds, tmp_file.name)
+        self.save_netcdf(ds, tmp_file.name, encoding)
         bucket = storage_client.bucket(self.bucket_name)
         blob = bucket.blob(filepath)
         blob.chunk_size = 5 * 1024 * 1024 # Set 5 MB blob size
         blob.upload_from_filename(tmp_file.name)
         tmp_file.close()
-        save_location = os.path.join(SETTINGS.storage_path, filepath)
+
+        return os.path.join(SETTINGS.storage_path, filepath)
 
 
     def save_restart(self, ds: xr.Dataset):
@@ -136,16 +137,16 @@ class LocalStorageHandler(BaseHandler):
     The filename starts with the timestamps followed with underscore dataset_name.
     """
 
-    def save_dataset(self, ds: xr.Dataset):
+    def save_dataset(self, ds: xr.Dataset, encoding: Optional[Dict] = None) -> str:
         """Save the dataset to the local filesystem"""
 
         filepath = self.dataset_to_filename(ds)
 
         save_location = os.path.join(SETTINGS.storage_path, filepath)
         os.makedirs(os.path.dirname(save_location), exist_ok=True)
-        self.save_netcdf(ds, save_location)
+        self.save_netcdf(ds, save_location, encoding)
 
-        logging.info(f"Exported to {save_location}")
+        return save_location
 
     def save_restart(self, ds: xr.Dataset):
         """Fetch restart info from the given storage"""
