@@ -2,7 +2,7 @@ FROM python:3.10-slim as base
 
 WORKDIR /app
 COPY pyproject.toml poetry.lock README.md ./
-COPY dataexport dataexport/
+COPY dscreator dscreator/
 COPY tests tests/
 
 FROM base as builder
@@ -30,4 +30,4 @@ ARG GIT_COMMIT_ID=unknown
 LABEL git_commit_id=$GIT_COMMIT_ID
 ENV GIT_COMMIT_ID=$GIT_COMMIT_ID
 
-ENTRYPOINT ["dataexport"]
+ENTRYPOINT ["dscreator"]
