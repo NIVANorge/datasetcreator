@@ -8,7 +8,6 @@ on:
       - 'dscreator/**'
 env:
   IMAGE_NAME: dscreator
-
 jobs:
   build:
     runs-on: ubuntu-latest
