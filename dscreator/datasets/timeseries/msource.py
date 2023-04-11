@@ -20,6 +20,7 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
         A good keywords viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
 
         """
+
         return DatasetAttrsDiscrete(
             title="MULTISOURCE/DIGIVEIVANN Inlet",
             title_no="MULTISOURCE/DIGIVEIVANN Innløp",
@@ -28,6 +29,9 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
+                    "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > WATER MANAGEMENT > WATER STORAGE",
+                    "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > WATER MANAGEMENT > STORMWATER MANAGEMENT",
+                    "GCMDSK:EARTH SCIENCE > BIOSPHERE > ECOSYSTEMS > ANTHROPOGENIC/HUMAN INFLUENCED ECOSYSTEMS > URBAN LANDS > ROADSIDE",
                     "GCMDLOC:CONTINENT > EUROPE > NORTHERN EUROPE > SCANDINAVIA > NORWAY",
                 ]
             ),
@@ -96,6 +100,7 @@ class MSourceOutletBuilder(MSourceInletBuilder):
         For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. We can add keywords and
         also link to the vocabulary.
         """
+         
         return DatasetAttrsDiscrete(
             title="MULTISOURCE/DIGIVEIVANN Outlet",
             title_no="MULTISOURCE/DIGIVEIVANN Utløp",
@@ -104,6 +109,9 @@ class MSourceOutletBuilder(MSourceInletBuilder):
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
+                    "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > WATER MANAGEMENT > WATER STORAGE",
+                    "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > WATER MANAGEMENT > STORMWATER MANAGEMENT",
+                    "GCMDSK:EARTH SCIENCE > BIOSPHERE > ECOSYSTEMS > ANTHROPOGENIC/HUMAN INFLUENCED ECOSYSTEMS > URBAN LANDS > ROADSIDE",
                     "GCMDLOC:CONTINENT > EUROPE > NORTHERN EUROPE > SCANDINAVIA > NORWAY",
                 ]
             ),
