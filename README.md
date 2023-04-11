@@ -54,7 +54,7 @@ poetry run dscreator msource-outlet --max-time-slice 240 --stop-after-n-files 2 
 
 ### Adding New Datasets
 
-For dynamic datasets add and `app` to [main.py](./dscreator/main.py), that contains:
+For dynamic datasets add an `app` to [main.py](./dscreator/main.py), that contains:
 
 - An `extractor`, subclassed from `BaseExtractor` in [sources/base.py](./dscreator/sources/base.py). For example see [TimeseriesExtractor](./dscreator/sources/odm2/extractor.py)
 - A dataset builder, subclassed from the appropriate class in [datasets/base.py](./dscreator/datasets/base.py). For example see [MSourceInletBuilder](./dscreator/datasets/timeseries/msource.py)
