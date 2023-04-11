@@ -21,9 +21,9 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
 
         """
         return DatasetAttrsDiscrete(
-            title="MSOURCE/DIGIVEIVANN Inlet",
-            title_no="MSOURCE/DIGIVEIVANN Innløp",
-            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing rain garden as a nature-based cleaning solution for contaminated stormwater.",
+            title="MULTISOURCE/DIGIVEIVANN Inlet",
+            title_no="MULTISOURCE/DIGIVEIVANN Innløp",
+            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing a rain garden as a nature-based solution for water treatment (NBSWT) to treat road runoff.",
             summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann.",
             keywords=",".join(
                 [
@@ -97,9 +97,9 @@ class MSourceOutletBuilder(MSourceInletBuilder):
         also link to the vocabulary.
         """
         return DatasetAttrsDiscrete(
-            title="MSOURCE/DIGIVEIVANN Outlet",
-            title_no="MSOURCE/DIGIVEIVANN Utløp",
-            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing raingardens as a nature-based cleaning solution for contaminated stormwater.",
+            title="MULTISOURCE/DIGIVEIVANN Outlet",
+            title_no="MULTISOURCE/DIGIVEIVANN Utløp",
+            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing a rain garden as a nature-based solution for water treatment (NBSWT) to treat road runoff.",
             summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann.",
             keywords=",".join(
                 [
