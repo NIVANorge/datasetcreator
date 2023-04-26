@@ -40,22 +40,22 @@ class AltitudeAttrs:
 @dataclass
 class LatitudeAttrs:
     standard_name: str = "latitude"
+    long_name: str = "latitude"
     units: str = "degree_north"
     valid_min: float = -90.0
     valid_max: float = 90.0
     axis: str = "Y"
-    grid_mapping: str = "crs"
     coordinate_reference_frame: str = "urn:ogc:def:crs:EPSG::4326"
 
 
 @dataclass
 class LongitudeAttrs:
     standard_name: str = "longitude"
+    long_name: str = "longitude"
     units: str = "degree_east"
     valid_min: float = -180.0
     valid_max: float = 180.0
     axis: str = "X"
-    grid_mapping: str = "crs"
     coordinate_reference_frame: str = "urn:ogc:def:crs:EPSG::4326"
 
 

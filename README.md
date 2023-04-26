@@ -1,6 +1,6 @@
 # Dataset Creator
 
-A small program to create Climate and forecast datasets with xarray and save to various formats, currently netcdf.
+A program to create Climate and Forecast datasets with xarray.
 
 ## Local development
 
@@ -21,10 +21,8 @@ in your `.env` file. If not passing the password in the database URL, you can al
 ```bash
 export PGPASSWORD="MY ACCESS TOKEN"
 ```
-For other options, see [config.py](./dataexport/config.py)
 
-
-
+also see [config.py](./dscreator/config.py)
 
 ### Testing
 
@@ -42,7 +40,7 @@ poetry run pytest -m "not docker" .
 
 ## Creating datasets
 
-The different entrypoints can be listed with `poetry run dataexport --help`. By default data will be saved to the `./catalog` folder, setting the enviroment variable `STORAGE_PATH` changes this. The program will restart from the last point in time using a restart file from the give storage location.
+The different entrypoints can be listed with `poetry run dscreator --help`. By default data will be saved to the `./catalog` folder, setting the enviroment variable `STORAGE_PATH` changes this. The program will restart from the last point in time using a restart file from the give storage location.
 
 ### Examples
 
@@ -54,13 +52,14 @@ poetry run dscreator msource-inlet --stop-after-n-files 1 --acdd
 poetry run dscreator msource-outlet --max-time-slice 240 --stop-after-n-files 2 --acdd
 ```
 
-
 ### Adding New Datasets
 
-Add an `app` to [main.py](./dataexport/main.py), that contains:
+For dynamic datasets add an `app` to [main.py](./dscreator/main.py), that contains:
 
-- An `extractor`, subclassed from `BaseExtractor` in [sources/base.py](./dataexport/sources/base.py). For example see [TimeseriesExtractor](./dataexport/sources/odm2/extractor.py)
-- A dataset builder, subclassed from the appropriate class in [datasets/base.py](./dataexport/datasets/base.py). For example see [MSourceInletBuilder](./dataexport/datasets/timeseries/msource.py)
+- An `extractor`, subclassed from `BaseExtractor` in [sources/base.py](./dscreator/sources/base.py). For example see [TimeseriesExtractor](./dscreator/sources/odm2/extractor.py)
+- A dataset builder, subclassed from the appropriate class in [datasets/base.py](./dscreator/datasets/base.py). For example see [MSourceInletBuilder](./dscreator/datasets/timeseries/msource.py)
+
+It is also possible to use a notebook, as done for [limit.ipynb](./notebooks/limits.ipynb).
 
 ## Viewing datasets
 
@@ -70,7 +69,7 @@ A local `thredds` server that reads the files can be started using docker
 docker compose up
 ```
 
-and accesses on http://localhost/thredds/catalog/catalog.html.
+and accessed on http://localhost/thredds/catalog/catalog.html.
 
 ### Configuring the view
 
@@ -80,12 +79,12 @@ The local catalog config file can be found in [catalog.xml](./catalog/catalog.xm
 
 For most things [xarray](https://docs.xarray.dev/en/stable/) is a good choice. The command-line tool [ncdump](https://www.unidata.ucar.edu/software/netcdf/workshops/2011/utilities/Ncdump.html) is also quite nice for small things.
 
-
 ### Ferrybox datasets
 
-Update  DATABASE_URL .env with tsb credentials on nivatest-1 cluster. Use host=localhost and
+Update DATABASE_URL .env with tsb credentials on nivatest-1 cluster. Use host=localhost and
 port-forward to access timescaledb: kubectl port-forward timescale-0 8505:5432.
 Create test dataset for Color Fantasy:
+
 ```bash
 poetry run dscreator rt-ferrybox-fa --stop-after-n-files 1 --acdd
 ```

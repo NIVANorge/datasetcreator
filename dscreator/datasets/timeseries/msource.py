@@ -20,14 +20,18 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
         A good keywords viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
 
         """
+
         return DatasetAttrsDiscrete(
-            title="MSOURCE/DIGIVEIVANN Inlet",
-            title_no="MSOURCE/DIGIVEIVANN Innløp",
-            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing rain garden as a nature-based cleaning solution for contaminated stormwater.",
+            title="MULTISOURCE/DIGIVEIVANN Inlet",
+            title_no="MULTISOURCE/DIGIVEIVANN Innløp",
+            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing a rain garden as a nature-based solution for water treatment (NBSWT) to treat road runoff.",
             summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann.",
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
+                    "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > WATER MANAGEMENT > WATER STORAGE",
+                    "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > WATER MANAGEMENT > STORMWATER MANAGEMENT",
+                    "GCMDSK:EARTH SCIENCE > BIOSPHERE > ECOSYSTEMS > ANTHROPOGENIC/HUMAN INFLUENCED ECOSYSTEMS > URBAN LANDS > ROADSIDE",
                     "GCMDLOC:CONTINENT > EUROPE > NORTHERN EUROPE > SCANDINAVIA > NORWAY",
                 ]
             ),
@@ -96,14 +100,18 @@ class MSourceOutletBuilder(MSourceInletBuilder):
         For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. We can add keywords and
         also link to the vocabulary.
         """
+         
         return DatasetAttrsDiscrete(
-            title="MSOURCE/DIGIVEIVANN Outlet",
-            title_no="MSOURCE/DIGIVEIVANN Utløp",
-            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing raingardens as a nature-based cleaning solution for contaminated stormwater.",
+            title="MULTISOURCE/DIGIVEIVANN Outlet",
+            title_no="MULTISOURCE/DIGIVEIVANN Utløp",
+            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing a rain garden as a nature-based solution for water treatment (NBSWT) to treat road runoff.",
             summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann.",
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
+                    "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > WATER MANAGEMENT > WATER STORAGE",
+                    "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > WATER MANAGEMENT > STORMWATER MANAGEMENT",
+                    "GCMDSK:EARTH SCIENCE > BIOSPHERE > ECOSYSTEMS > ANTHROPOGENIC/HUMAN INFLUENCED ECOSYSTEMS > URBAN LANDS > ROADSIDE",
                     "GCMDLOC:CONTINENT > EUROPE > NORTHERN EUROPE > SCANDINAVIA > NORWAY",
                 ]
             ),
