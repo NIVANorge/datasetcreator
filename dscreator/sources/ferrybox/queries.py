@@ -34,7 +34,6 @@ def get_track(
         track.uuid = :track_uuid
         AND track.time > :start_time
         AND track.time <= :end_time
-        AND track.qc = 1
     ORDER BY
         track.time ASC
     """
