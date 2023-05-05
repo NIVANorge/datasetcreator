@@ -30,8 +30,19 @@ class TrajectoryExtractor(BaseExtractor):
         named_timearrays = []
         track = get_track(self.engine, MAPPER[self.platform_code]["track"], start_time, end_time)
         track_datetime = list(track.datetime)
+        def get_uuid(vcode):
+            uuids = MAPPER[self.platform_code][vcode]
+            if type(uuids) is str:
+                return uuids
+            elif type(uuids) is list:
+                times = [datetime.strptime(a[0], '%Y-%m-%dT%H:%M:%S') for a in uuids]
+                t = next(x[0] for x in enumerate(times) if x[1] > end_time)
+                logging.info(f"uuid is {uuids[t][1]}")
+                return uuids[t][1]
+            else:
+                logging.error("Unknown type of measurement, cannot map to uuid")
         for vcode in self.variable_codes:
-            res = query_ts(uuid=MAPPER[self.platform_code][vcode])
+            res = query_ts(uuid=get_uuid(vcode))
             if len(res.values) > 0:
                 logging.info(f"fetching vcode {vcode}")
                 values = [res.values[res.datetime.index(dt)] if dt in res.datetime else None for dt in track_datetime]
