@@ -21,7 +21,7 @@ jobs:
 
     - name: Docker meta
       id: meta
-      uses: docker/metadata-action@v3
+      uses: docker/metadata-action@v4
       with:
         images: europe-west1-docker.pkg.dev/niva-cd/images/${{ env.IMAGE_NAME }}
         tags: |
