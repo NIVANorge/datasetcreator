@@ -132,7 +132,7 @@ class DatasetAttrsDefaults:
     publisher_email: str = "miljoinformatikk@niva.no"
     publisher_url: str = "https://niva.no"
     # From https://spdx.org/licenses/
-    license: str = "http://spdx.org/licenses/CC-BY-4.0"
+    license: str = "http://spdx.org/licenses/CC-BY-4.0(CC-BY-4.0)"
     # See https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#iso-topic-categories
     iso_topic_category: str = "Not available"
     history: str = "Built with dscreator"
