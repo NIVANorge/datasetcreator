@@ -1,13 +1,13 @@
 version: "3"
 services:
-  test-odm2:
+  test-db:
     build: "./data"
     ports:
       - "32998:5432"
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "odm2"
+      POSTGRES_DB: "db"
     healthcheck:
       test: "pg_isready -h localhost -p 5432 -q -U postgres"
       interval: 2s
@@ -18,5 +18,5 @@ services:
   wait-for-postgres:
       image: hello-world
       depends_on:
-          test-odm2:
+          test-db:
               condition: service_healthy

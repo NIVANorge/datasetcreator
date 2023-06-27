@@ -7,9 +7,9 @@ from dscreator.sources import odm2
 
 
 @pytest.fixture
-def msource_extractor(odm2engine) -> odm2.extractor.TimeseriesExtractor:
+def msource_extractor(db_engine) -> odm2.extractor.TimeseriesExtractor:
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
-        odm2engine,
+        db_engine,
         sampling_feature_code="MSOURCE1",
         variable_codes=[
             "Temp",
