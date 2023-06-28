@@ -1,9 +1,9 @@
 import logging
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Union
 
-from sqlalchemy import Engine
+from sqlalchemy import Engine, Sequence, RowMapping
 from sqlalchemy.sql import text
 
 from dscreator.sources.base import Point
@@ -47,43 +47,40 @@ def get_track(
     )
 
 
-@dataclass
-class TimeseriesResult:
-    uuid: str
-    values: List[str | int | float]
-    datetime: List[datetime]
-
-
 def get_ts(
     engine: Engine,
-    uuid: str,
+    track_uuid: str,
+    uuids: List[str],
     start_time: datetime,
     end_time: datetime,
-) -> TimeseriesResult:
+) -> Sequence[RowMapping]:
     """Query track
     The timeseries is limited to start_time<t<=end_time.
     """
     query = text(
         """
     SELECT
-        time, value
-    FROM
-        ts
+        track.time, 
+        ST_X(track.pos) as longitude, 
+        ST_Y(track.pos) as latitude,
+        ts.uuid, 
+        ts.value
+    FROM track
+    INNER JOIN ts 
+    ON track.time = ts.time
     WHERE
-        ts.uuid = :uuid
-        AND ts.time > :start_time
-        AND ts.time <= :end_time
+        track.uuid = :track_uuid
+        AND track.time > :start_time
+        AND track.time <= :end_time
+        AND ts.uuid in :uuids
         AND ts.qc = 1
     ORDER BY
-        ts.time ASC
+        track.time ASC
     """
-    ).bindparams(uuid=uuid, start_time=start_time, end_time=end_time)
+    ).bindparams(track_uuid=track_uuid, uuids=tuple(uuids), start_time=start_time, end_time=end_time)
 
     with engine.connect() as conn:
-        res = conn.execute(query)
-        res_dict = res.mappings().all()
-
-    return TimeseriesResult(uuid=uuid, values=[a["value"] for a in res_dict], datetime=[a["time"] for a in res_dict])
+        return conn.execute(query).mappings().all()
 
 
 def get_time_by_uuids(
