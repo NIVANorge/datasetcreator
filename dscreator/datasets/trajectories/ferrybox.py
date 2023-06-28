@@ -26,7 +26,7 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
             keywords=",".join([]),
             keywords_vocabulary=",".join([]),
             featureType=ds.attrs["featureType"],
-            metadata_link="http://path/Document_describing_calibration.pdf",
+            references="http://path/Document_describing_calibration.pdf",
             ices_platform_code="LMSD",
             platform_code="FA",
             platform_name="COLOR FANTASY",

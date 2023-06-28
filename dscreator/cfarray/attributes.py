@@ -153,7 +153,7 @@ class FerryboxDatasetAttrsBase(DatasetAttrsDiscreteBase):
     ices_platform_code: str
     platform_code: str
     platform_name: str
-    metadata_link: str = "http://path/Document_describing_calibration.pdf"
+    references: str
 
 
 @dataclass
