@@ -37,6 +37,7 @@ def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
             "Temp",
             "LevelValue",
             "Turbidity",
+            "CondValue"
         ],
     )
 
@@ -74,6 +75,7 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
         variable_codes=[
             "LevelValue",
             "Turbidity",
+            "CondValue"
         ],
     )
 

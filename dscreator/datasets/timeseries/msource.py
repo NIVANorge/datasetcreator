@@ -86,6 +86,14 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
                         short_name="turbidity", long_name="Rain Garden Water Turbidity", units="NTU"
                     ),
                 )
+            case "CondValue":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="conductivity",
+                    attrs=VariableAttrs(
+                        short_name="conductivity", long_name="Rain Garden Water Conductivity", units="uS cm-1"
+                    ),
+                )
             case _:
                 logging.warning(f"Array definition not found for: {timeseries.variable_name}")
                 raise RuntimeError(f"Array definition not found for: {timeseries.variable_name}")
@@ -161,7 +169,14 @@ class MSourceOutletBuilder(MSourceInletBuilder):
                         short_name="turbidity", long_name="Rain Garden Water Turbidity", units="NTU"
                     ),
                 )
-                
+            case "CondValue":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="conductivity",
+                    attrs=VariableAttrs(
+                        short_name="conductivity", long_name="Rain Garden Water Conductivity", units="uS cm-1"
+                    ),
+                )     
             case _:
                 logging.warning(f"Array definition not found for: {timeseries.variable_name}")
                 raise RuntimeError(f"Array definition not found for: {timeseries.variable_name}")
