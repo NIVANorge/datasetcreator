@@ -5,6 +5,7 @@ from functools import partial
 from typing import List
 
 from sqlalchemy import Engine
+import numpy as np
 
 from dscreator.sources.base import BaseExtractor, NamedTimeArray, NamedTimeseries, Point
 from dscreator.sources.odm2.queries import (
@@ -37,7 +38,7 @@ class TimeseriesExtractor(BaseExtractor):
         """Create a Timeseries from ODM2
 
         Create a timeseries from ODM2 based on samlingfeaturecode and variable code.
-        The timeseries is limited to start_time<t<=end_time.
+        The timeseries is limited to start_time<t<=end_time. If no data is found np.nan is returned
         """
         query_by_resultid = partial(
             timeseries_by_resultuuid,
@@ -47,13 +48,24 @@ class TimeseriesExtractor(BaseExtractor):
         )
 
         named_timeseries = []
+        empty_timeseries = []
         for ruuid, vname in zip(self._resultuuids, self.variable_codes):
             res = query_by_resultid(result_uuid=ruuid)
-            named_timeseries.append(
-                NamedTimeArray(vname, res.values, datetime_list=res.datetime, locations=[self._point])
-            )
+            if res.datetime:
+                named_timeseries.append(
+                    NamedTimeArray(vname, res.values, datetime_list=res.datetime, locations=[self._point])
+                )
+            else:
+                empty_timeseries.append(
+                    NamedTimeArray(vname, [], datetime_list=[], locations=[self._point])
+                )
 
-        return NamedTimeseries(array_list=named_timeseries)
+        if named_timeseries and empty_timeseries:
+            for ts in empty_timeseries:
+                ts.datetime_list.append(named_timeseries[0].datetime_list[0])
+                ts.values.append(np.nan)
+
+        return NamedTimeseries(array_list=named_timeseries + empty_timeseries)
 
     def _timestamp(self, is_asc: bool) -> datetime:
         return timestamp_by_code(self.engine, self.sampling_feature_code, self.variable_codes, is_asc)
