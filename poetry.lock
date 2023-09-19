@@ -302,6 +302,24 @@ docs = ["sphinx"]
 test = ["codecov", "cython", "jinja2", "pip", "pytest", "pytest-cov"]
 
 [[package]]
+name = "cf-xarray"
+version = "0.8.4"
+description = "A convenience wrapper for using CF attributes on xarray objects"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "cf_xarray-0.8.4-py3-none-any.whl", hash = "sha256:b441623146b316f99e7c43286163ba01d6cee0dfa0b44ee6d839a68dfd944ca5"},
+    {file = "cf_xarray-0.8.4.tar.gz", hash = "sha256:22c68be851791208e41dba3d240cc88a3f844ad4e9a760fcca28b2674c091daf"},
+]
+
+[package.dependencies]
+xarray = "*"
+
+[package.extras]
+all = ["matplotlib", "pint", "pooch", "regex", "rich", "shapely"]
+
+[[package]]
 name = "cffi"
 version = "1.15.1"
 description = "Foreign Function Interface for Python calling C code."
@@ -3110,21 +3128,21 @@ test = ["fixtures", "mock", "purl", "pytest", "requests-futures", "sphinx", "tes
 
 [[package]]
 name = "rioxarray"
-version = "0.13.4"
+version = "0.14.1"
 description = "geospatial xarray extension powered by rasterio"
 category = "main"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "rioxarray-0.13.4-py3-none-any.whl", hash = "sha256:56eef711d9817d3c729c1a267c940e7dff66bfc874a0b24ed3604ea2f958dfb2"},
-    {file = "rioxarray-0.13.4.tar.gz", hash = "sha256:0cad24ad2c3c5ee181a0cfad2b8c2152a609b7eb118a3430034aec171e9cf14f"},
+    {file = "rioxarray-0.14.1-py3-none-any.whl", hash = "sha256:de8142fcc960fd2121632d1bf50a7e08adad958efc056f52aa78226a6f22e955"},
+    {file = "rioxarray-0.14.1.tar.gz", hash = "sha256:54e993828ee02f3cfc2f8a1c7a5c599cab95cedca965c16c76d8521cdda7d45b"},
 ]
 
 [package.dependencies]
 numpy = ">=1.21"
 packaging = "*"
 pyproj = ">=2.2"
-rasterio = ">=1.1.1"
+rasterio = ">=1.2"
 xarray = ">=0.17"
 
 [package.extras]
@@ -3683,26 +3701,26 @@ files = [
 
 [[package]]
 name = "xarray"
-version = "2022.12.0"
+version = "2023.8.0"
 description = "N-D labeled arrays and datasets in Python"
 category = "main"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "xarray-2022.12.0-py3-none-any.whl", hash = "sha256:eaf3e4c0b62faebf7965f272ce76bc2fc1c9d93c2b966a390e929ef082a796dd"},
-    {file = "xarray-2022.12.0.tar.gz", hash = "sha256:083d08e552a7647c7ece136dfa3a4b6a1379256beb55bbed8b8ddf05f1e14ec7"},
+    {file = "xarray-2023.8.0-py3-none-any.whl", hash = "sha256:eb42b56aea2c7d5db2a7d0c33fb005b78eb5c4421eb747f2ced138c70b5c204e"},
+    {file = "xarray-2023.8.0.tar.gz", hash = "sha256:825c6d64202a731a4e49321edd1e9dfabf4be06802f1b8c8a3c00a3ebfc8cedf"},
 ]
 
 [package.dependencies]
-numpy = ">=1.20"
+numpy = ">=1.21"
 packaging = ">=21.3"
-pandas = ">=1.3"
+pandas = ">=1.4"
 
 [package.extras]
 accel = ["bottleneck", "flox", "numbagg", "scipy"]
-complete = ["bottleneck", "cfgrib", "cftime", "dask[complete]", "flox", "fsspec", "h5netcdf", "matplotlib", "nc-time-axis", "netCDF4", "numbagg", "pooch", "pydap", "rasterio", "scipy", "seaborn", "zarr"]
-docs = ["bottleneck", "cfgrib", "cftime", "dask[complete]", "flox", "fsspec", "h5netcdf", "ipykernel", "ipython", "jupyter-client", "matplotlib", "nbsphinx", "nc-time-axis", "netCDF4", "numbagg", "pooch", "pydap", "rasterio", "scanpydoc", "scipy", "seaborn", "sphinx-autosummary-accessors", "sphinx-rtd-theme", "zarr"]
-io = ["cfgrib", "cftime", "fsspec", "h5netcdf", "netCDF4", "pooch", "pydap", "rasterio", "scipy", "zarr"]
+complete = ["bottleneck", "cftime", "dask[complete]", "flox", "fsspec", "h5netcdf", "matplotlib", "nc-time-axis", "netCDF4", "numbagg", "pooch", "pydap", "scipy", "seaborn", "zarr"]
+docs = ["bottleneck", "cftime", "dask[complete]", "flox", "fsspec", "h5netcdf", "ipykernel", "ipython", "jupyter-client", "matplotlib", "nbsphinx", "nc-time-axis", "netCDF4", "numbagg", "pooch", "pydap", "scanpydoc", "scipy", "seaborn", "sphinx-autosummary-accessors", "sphinx-rtd-theme", "zarr"]
+io = ["cftime", "fsspec", "h5netcdf", "netCDF4", "pooch", "pydap", "scipy", "zarr"]
 parallel = ["dask[complete]"]
 viz = ["matplotlib", "nc-time-axis", "seaborn"]
 
@@ -3721,4 +3739,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "fee5871adbf0c4306622afabbe2d6685f425ca8dbd24ab0faf4c572815026ad5"
+content-hash = "6bae9b8ac23798ffed5c3a4d4452a0eb91199ddde41f5f8e9a9aefa148faca40"
