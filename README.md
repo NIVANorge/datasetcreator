@@ -16,7 +16,7 @@ then for local development set the varible
 DATABASE_URL=postgresql:///{DATABASE}?host={HOST}&port=5432&user={USERNAME}
 ```
 
-in your `.env` file. If not passing the password in the database URL, you can also export the password outside the `.env` file with
+in your `.env` file or pass the password in the database URL, you can also export the password outside the `.env` file with
 
 ```bash
 export PGPASSWORD="MY ACCESS TOKEN"
@@ -40,7 +40,7 @@ poetry run pytest -m "not docker" .
 
 ## Creating datasets
 
-The different entrypoints can be listed with `poetry run dscreator --help`. By default data will be saved to the `./catalog` folder, setting the enviroment variable `STORAGE_PATH` changes this. The program will restart from the last point in time using a restart file from the give storage location.
+The different entrypoints can be listed with `poetry run dscreator --help`. By default data will be saved to the `./catalog` folder, this is changed using the enviroment variable `STORAGE_PATH`. The program uses a restart file from the give storage location to create new slices in time.
 
 ### Examples
 
@@ -56,10 +56,10 @@ poetry run dscreator msource-outlet --max-time-slice 240 --stop-after-n-files 2 
 
 For dynamic datasets add an `app` to [main.py](./dscreator/main.py), that contains:
 
-- An `extractor`, subclassed from `BaseExtractor` in [sources/base.py](./dscreator/sources/base.py). For example see [TimeseriesExtractor](./dscreator/sources/odm2/extractor.py)
-- A dataset builder, subclassed from the appropriate class in [datasets/base.py](./dscreator/datasets/base.py). For example see [MSourceInletBuilder](./dscreator/datasets/timeseries/msource.py)
+- An `extractor`, subclassed from `BaseExtractor` in [sources/base.py](./dscreator/sources/base.py), see [TimeseriesExtractor](./dscreator/sources/odm2/extractor.py)
+- A dataset builder, subclassed from the appropriate class in [datasets/base.py](./dscreator/datasets/base.py), see [MSourceInletBuilder](./dscreator/datasets/timeseries/msource.py)
 
-It is also possible to use a notebook, as done for [limit.ipynb](./notebooks/limits.ipynb).
+It is also possible to use a notebook, as done for [exceedence_limits.ipynb](notebooks/exceedence_limits.ipynb).
 
 ## Viewing datasets
 
@@ -73,7 +73,7 @@ and accessed on http://localhost/thredds/catalog/catalog.html.
 
 ### Configuring the view
 
-The local catalog config file can be found in [catalog.xml](./catalog/catalog.xml). Documentation for working with this configuration file can be found [here](https://docs.unidata.ucar.edu/tds/current/userguide/basic_config_catalog.html). The ncml [documentation](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html) can also be useful.
+The local catalog config file can be found in [catalog.xml](./catalog/catalog.xml). Documentation for working with this configuration file can be found [here](https://docs.unidata.ucar.edu/tds/current/userguide/basic_config_catalog.html). The ncml [documentation](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html) is also useful.
 
 ## Working with netCDF
 
