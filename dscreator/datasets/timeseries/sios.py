@@ -21,10 +21,10 @@ class SiosBuilder(TimeseriesDatasetBuilder):
         For converting CF standard names erddap also contains a good converter for cf standard names.
         """
         return DatasetAttrsDiscrete(
-            title="SIOS sensor buoy in Adventfjorden",
-            summary="Summary",
-            title_no="SIOS sensor bøye i Adventfjorden",
-            summary_no="Oppsummering",
+            title="SIOS oceanographic observations in Adventfjorden",
+            summary="Long-term measurements of sea water properties collected by sensor buoy in Adventfjorden as part of the Svalbard Integrated Arctic Earth Observing System (SIOS).",
+            title_no="SIOS oseanografisk observasjoner i Adventfjorden",
+            summary_no="Langtidsmålinger av sjøvannsegenskaper samlet inn av sensor bøye i Adventfjorden som en del av Svalbard Integrated Arctic Earth Observing System (SIOS)",
             keywords=",".join(
                 [
                     "GCMDSK:Earth Science > Oceans > Ocean Chemistry > Chlorophyll",
