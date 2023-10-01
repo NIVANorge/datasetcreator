@@ -38,7 +38,7 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
-            spatial_representation="point"
+            spatial_representation="trajectory"
         )
 
     def map_to_cfarray(self, timeseries: NamedTrajectory) -> xr.DataArray:
