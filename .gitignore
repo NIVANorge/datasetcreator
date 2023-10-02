@@ -1,6 +1,8 @@
 notebooks/data/*
 scripts/example*.nc
 catalog/**/*.nc
+catalog/metadata/*.xml
+catalog/metadata/*.db
 catalog/**/*.restart.json
 # vscode
 .vscode/*
