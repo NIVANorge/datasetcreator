@@ -999,7 +999,7 @@
                 <gmd:MD_MaintenanceInformation>
                     <gmd:maintenanceAndUpdateFrequency gco:nilReason="unknown"/>
                     <gmd:maintenanceNote>
-                        <gco:CharacterString>This record was translated from NcML using ncml-to-iso.xsl version <xsl:value-of select="$stylesheetVersion"/>. (<xsl:value-of select="current-dateTime()"/>). ncml-to-iso.xsl was addapted from UnidataDD2MI.xsl V2.3.4 </gco:CharacterString>
+                        <gco:CharacterString>This record was translated from NcML using ncml-to-iso.xsl version <xsl:value-of select="$stylesheetVersion"/>. (<xsl:value-of select="current-dateTime()"/>). ncml-to-iso.xsl was addapted from UnidataDD2MI.xsl V2.3.4 with inspiration from metno mmd stylesheets</gco:CharacterString>
                     </gmd:maintenanceNote>
                 </gmd:MD_MaintenanceInformation>
             </gmd:metadataMaintenance>
