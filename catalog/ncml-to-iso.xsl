@@ -522,19 +522,21 @@
                     <xsl:if test="count($license)">
                         <gmd:resourceConstraints>
                             <gmd:MD_LegalConstraints>
+                                <gmd:accessConstraints>
+                                    <gmd:MD_RestrictionCode codeList="https://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_RestrictionCode" codeListValue="otherRestrictions">otherRestrictions</gmd:MD_RestrictionCode>
+                                </gmd:accessConstraints>
+                            </gmd:MD_LegalConstraints>
+                        </gmd:resourceConstraints>
+                        <gmd:resourceConstraints>
+                            <gmd:MD_LegalConstraints>
                                 <gmd:useLimitation>
-                                    <gmd:useConstraints>
-                                        <gmd:MD_RestrictionCode codeList="https://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_RestrictionCode" codeListValue="otherRestrictions">otherRestrictions</gmd:MD_RestrictionCode>
-                                      </gmd:useConstraints>
-                                </gmd:useLimitation>
-                                <gmd:otherConstraints>
                                     <xsl:element name="gmx:Anchor">
                                         <xsl:attribute name="xlink:href">
                             		        <xsl:value-of select="substring-before($license,'(')" />
                                         </xsl:attribute>
                             		    <xsl:value-of select="substring-before(substring-after($license,'('), ')')" />
                                     </xsl:element>
-                                </gmd:otherConstraints>
+                                </gmd:useLimitation>
                             </gmd:MD_LegalConstraints>
                         </gmd:resourceConstraints>
                     </xsl:if>
