@@ -128,7 +128,7 @@
     <!--    Write ISO Metadata  -->
     <!--                        -->
     <xsl:template match="/">
-        <gmi:MI_Metadata>
+        <gmd:MD_Metadata>
             <xsl:attribute name="xsi:schemaLocation">
                 <xsl:value-of select="'http://www.isotc211.org/2005/gmd http://www.isotc211.org/2005/gmx http://www.isotc211.org/2005/gmi http://www.ngdc.noaa.gov/metadata/published/xsd/schema.xsd'"/>
             </xsl:attribute>
@@ -195,10 +195,10 @@
                 </gco:Date>
             </gmd:dateStamp>
             <gmd:metadataStandardName>
-                <gco:CharacterString>ISO 19115-2 Geographic Information - Metadata Part 2 Extensions for imagery and gridded data</gco:CharacterString>
+                <gco:CharacterString>ISO 19115:2003/19139</gco:CharacterString>
             </gmd:metadataStandardName>
             <gmd:metadataStandardVersion>
-                <gco:CharacterString>ISO 19115-2:2009(E)</gco:CharacterString>
+                <gco:CharacterString>1.0</gco:CharacterString>
             </gmd:metadataStandardVersion>
             <gmd:spatialRepresentationInfo>
                 <xsl:choose>
@@ -794,7 +794,7 @@
             <xsl:for-each select="//nc:variable[generate-id() = 
       generate-id(key('coverageTypes',nc:attribute[@name='coverage_content_type']/@value)[1])]">
                 <gmd:contentInfo>
-                    <gmi:MI_CoverageDescription>
+                    <gmi:MD_CoverageDescription>
                         <gmd:attributeDescription>
                             <xsl:attribute name="gco:nilReason">
                                 <xsl:value-of select="'unknown'"/>
@@ -817,14 +817,14 @@
                                 <xsl:with-param name="variableUnits" select="./nc:attribute[@name='units']/@value"/>
                             </xsl:call-template>
                         </xsl:for-each>
-                    </gmi:MI_CoverageDescription>
+                    </gmi:MD_CoverageDescription>
                 </gmd:contentInfo>
             </xsl:for-each>
             <!-- Modified on 2012-05-11-->
             <!-- Output variables with no coverage_content_type -->
             <xsl:if test="count(//nc:variable[not(nc:attribute/@name='coverage_content_type')])">
                 <gmd:contentInfo>
-                    <gmi:MI_CoverageDescription>
+                    <gmi:MD_CoverageDescription>
                         <gmd:attributeDescription>
                             <xsl:attribute name="gco:nilReason">
                                 <xsl:value-of select="'unknown'"/>
@@ -845,7 +845,7 @@
                                 <xsl:with-param name="variableUnits" select="./nc:attribute[@name='units']/@value"/>
                             </xsl:call-template>
                         </xsl:for-each>
-                    </gmi:MI_CoverageDescription>
+                    </gmi:MD_CoverageDescription>
                 </gmd:contentInfo>
             </xsl:if>
             <!-- distributor is netCDF publisher -->
@@ -1005,7 +1005,7 @@
                     </gmd:maintenanceNote>
                 </gmd:MD_MaintenanceInformation>
             </gmd:metadataMaintenance>
-        </gmi:MI_Metadata>
+        </gmd:MD_Metadata>
     </xsl:template>
     <xsl:template name="writeCodelist">
         <xsl:param name="codeListName"/>
@@ -1509,40 +1509,6 @@
                 </xsl:if>
             </gmd:MD_Band>
         </gmd:dimension>
-    </xsl:template>
-    <xsl:template name="writeVariableRanges">
-        <xsl:param name="variableName"/>
-        <xsl:param name="variableLongName"/>
-        <xsl:param name="variableStandardName"/>
-        <xsl:param name="variableType"/>
-        <xsl:param name="variableUnits"/>
-        <xsl:if test="nc:attribute[contains(@name,'flag_')]">
-            <xsl:variable name="flag_masks_seq" select="tokenize(normalize-space(nc:attribute[@name='flag_masks']/@value),'\s')"/>
-            <xsl:variable name="flag_values_seq" select="tokenize(normalize-space(nc:attribute[@name='flag_values']/@value),'\s')"/>
-            <xsl:variable name="flag_names_seq" select="tokenize(normalize-space(nc:attribute[@name='flag_names']/@value),'\s')"/>
-            <xsl:variable name="flag_meanings_seq" select="tokenize(normalize-space(nc:attribute[@name='flag_meanings']/@value),'\s')"/>
-            <xsl:for-each select="$flag_values_seq">
-                <gmi:rangeElementDescription>
-                    <gmi:MI_RangeElementDescription>
-                        <gmi:name>
-                            <gco:CharacterString>
-                                <xsl:value-of select="subsequence($flag_names_seq,position(),1)"/>
-                            </gco:CharacterString>
-                        </gmi:name>
-                        <gmi:definition>
-                            <gco:CharacterString>
-                                <xsl:value-of select="subsequence($flag_meanings_seq,position(),1)"/>
-                            </gco:CharacterString>
-                        </gmi:definition>
-                        <gmi:rangeElement>
-                            <gco:Record>
-                                <xsl:value-of select="translate(subsequence($flag_values_seq,position(),1),',','')"/>
-                            </gco:Record>
-                        </gmi:rangeElement>
-                    </gmi:MI_RangeElementDescription>
-                </gmi:rangeElementDescription>
-            </xsl:for-each>
-        </xsl:if>
     </xsl:template>
     <!--
   Added operationProtocol to capture gmd:protocol value of each service. (-jmaurer, 2014-09-04)
