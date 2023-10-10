@@ -899,7 +899,7 @@
                                                         <gco:CharacterString>File Information</gco:CharacterString>
                                                     </gmd:name>
                                                     <gmd:description>
-                                                        <gco:CharacterString>This URL provides a standard OPeNDAP html interface for selecting data from this dataset. Change the extension to .info for a description of the dataset.</gco:CharacterString>
+                                                        <gco:CharacterString>This URL provides a standard OPeNDAP html interface for selecting data from this dataset.</gco:CharacterString>
                                                     </gmd:description>
                                                     <gmd:function>
                                                         <gmd:CI_OnLineFunctionCode codeList="http://www.ngdc.noaa.gov/metadata/published/xsd/schema/resources/Codelist/gmxCodelists.xml#CI_OnLineFunctionCode" codeListValue="download">download</gmd:CI_OnLineFunctionCode>
