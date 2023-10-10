@@ -27,7 +27,7 @@ services:
     command:
       - -c
       - |
-        sleep 600
+        pycsw-admin.py  delete-records -c /etc/pycsw/pycsw.cfg -y
         pycsw-admin.py  load-records -p data -c /etc/pycsw/pycsw.cfg
     environment:
       - PYCSW_SERVER_URL=http://pycsw:8000
