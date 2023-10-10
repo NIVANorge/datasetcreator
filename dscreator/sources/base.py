@@ -37,6 +37,12 @@ class NamedTimeArray(NamedArray):
 class FeatureBase:
     array_list: List[NamedArray]
 
+    def __add__(self, na_list):
+        for na1 in self.array_list:
+            for na2 in na_list:
+                if na1.variable_name == na2.variable_name:
+                    na1.values = na1.values + na2.values
+        return self.array_list
 
 @dataclass
 class NamedTrajectory(FeatureBase):
@@ -48,6 +54,11 @@ class NamedTrajectory(FeatureBase):
 
     datetime_list: List[datetime]
     locations: List[Point]
+
+    def __add__(self, nt):
+        return NamedTrajectory(datetime_list=self.datetime_list + nt.datetime_list,
+                               locations = self.locations + nt.locations,
+                               array_list= FeatureBase(self.array_list).__add__(nt.array_list))
 
     def __post_init__(self):
         assert (
