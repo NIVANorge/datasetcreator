@@ -12,7 +12,7 @@ import pytest
 import xarray as xr
 
 from dscreator.sources import ferrybox
-from dscreator.datasets.trajectories.ferrybox import FerryboxTrajBuilder
+from dscreator.datasets.trajectories.ferrybox import NorsoopFantasy
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "nc")
 
@@ -29,7 +29,7 @@ def ferrybox_extractor(db_engine) -> ferrybox.extractor.TrajectoryExtractor:
 
 @pytest.mark.docker
 def test_ferrybox_ds_create(ferrybox_extractor: ferrybox.extractor.TrajectoryExtractor):
-    ds = FerryboxTrajBuilder(
+    ds = NorsoopFantasy(
         uuid="uuid",
         dataset_name="datasetname",
         station_name="stationname",

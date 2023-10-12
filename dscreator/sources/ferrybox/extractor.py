@@ -7,18 +7,18 @@ from sqlalchemy import Engine, Sequence, RowMapping
 
 from dscreator.sources.base import BaseExtractor, NamedArray, NamedTrajectory, Point
 from dscreator.sources.ferrybox.queries import get_time_by_uuids, get_ts
-from dscreator.sources.ferrybox.uuid_variable_code_mapper import MAPPER
+
 
 
 @dataclass
 class TrajectoryExtractor(BaseExtractor):
+    """Create a ferybox trajectory extractor
+    
+    platform_variable_key: A key in the MAPPER dict
+    """
     engine: Engine
-    platform_code: str
     variable_codes: List[str]
-    variable_uuid_map: dict[str, str] = field(init=False)
-
-    def __post_init__(self):
-        self.variable_uuid_map = MAPPER[self.platform_code]
+    variable_uuid_map: dict[str, str]
 
     def fetch_slice(
         self,
@@ -78,7 +78,7 @@ class TrajectoryExtractor(BaseExtractor):
 
     def _timestamp(self, is_asc: bool) -> datetime:
         return get_time_by_uuids(
-            self.engine, [MAPPER[self.platform_code][vcode] for vcode in self.variable_codes], is_asc
+            self.engine, [self.variable_uuid_map[vcode] for vcode in self.variable_codes], is_asc
         )
 
     def first_timestamp(self) -> datetime:
