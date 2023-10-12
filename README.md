@@ -16,7 +16,7 @@ then for local development set the varible
 DATABASE_URL=postgresql:///{DATABASE}?host={HOST}&port=5432&user={USERNAME}
 ```
 
-in your `.env` file. If not passing the password in the database URL, you can also export the password outside the `.env` file with
+in your `.env` file or pass the password in the database URL, you can also export the password outside the `.env` file with
 
 ```bash
 export PGPASSWORD="MY ACCESS TOKEN"
@@ -40,7 +40,7 @@ poetry run pytest -m "not docker" .
 
 ## Creating datasets
 
-The different entrypoints can be listed with `poetry run dscreator --help`. By default data will be saved to the `./catalog` folder, setting the enviroment variable `STORAGE_PATH` changes this. The program will restart from the last point in time using a restart file from the give storage location.
+The different entrypoints can be listed with `poetry run dscreator --help`. By default data will be saved to the `./catalog` folder, this is changed using the enviroment variable `STORAGE_PATH`. The program uses a restart file from the give storage location to create new slices in time.
 
 ### Examples
 
@@ -56,10 +56,10 @@ poetry run dscreator msource-outlet --max-time-slice 240 --stop-after-n-files 2 
 
 For dynamic datasets add an `app` to [main.py](./dscreator/main.py), that contains:
 
-- An `extractor`, subclassed from `BaseExtractor` in [sources/base.py](./dscreator/sources/base.py). For example see [TimeseriesExtractor](./dscreator/sources/odm2/extractor.py)
-- A dataset builder, subclassed from the appropriate class in [datasets/base.py](./dscreator/datasets/base.py). For example see [MSourceInletBuilder](./dscreator/datasets/timeseries/msource.py)
+- An `extractor`, subclassed from `BaseExtractor` in [sources/base.py](./dscreator/sources/base.py), see [TimeseriesExtractor](./dscreator/sources/odm2/extractor.py)
+- A dataset builder, subclassed from the appropriate class in [datasets/base.py](./dscreator/datasets/base.py), see [MSourceInletBuilder](./dscreator/datasets/timeseries/msource.py)
 
-It is also possible to use a notebook, as done for [limit.ipynb](./notebooks/limits.ipynb).
+It is also possible to use a notebook, as done for [exceedence_limits.ipynb](notebooks/exceedence_limits.ipynb).
 
 ## Viewing datasets
 
@@ -73,13 +73,27 @@ and accessed on http://localhost/thredds/catalog/catalog.html.
 
 ### Configuring the view
 
-The local catalog config file can be found in [catalog.xml](./catalog/catalog.xml). Documentation for working with this configuration file can be found [here](https://docs.unidata.ucar.edu/tds/current/userguide/basic_config_catalog.html). The ncml [documentation](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html) can also be useful.
+The local catalog config file can be found in [catalog.xml](./catalog/catalog.xml). Documentation for working with this configuration file can be found [here](https://docs.unidata.ucar.edu/tds/current/userguide/basic_config_catalog.html). The ncml [documentation](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html) is also useful.
 
 ## Working with netCDF
 
 For most things [xarray](https://docs.xarray.dev/en/stable/) is a good choice. The command-line tool [ncdump](https://www.unidata.ucar.edu/software/netcdf/workshops/2011/utilities/Ncdump.html) is also quite nice for small things.
 
-### Ferrybox datasets
+
+## Working with metdata
+
+All the required attributes are defined in [dataclasses](./dscreator/cfarray/attributes.py) so it is possible to create a self-describing dataset. When the dataset is published these attributes are translated to ncml and [ncml-to-iso.xsl](./catalog/ncml-to-iso.xsl) and translate to iso. It is also possible to translate from iso to other schemas like [mmd](https://github.com/metno/mmd/tree/master/xslt). For example using:
+ 
+```bash
+curl -O https://raw.githubusercontent.com/metno/mmd/master/xslt/mmd-to-geonorge.xsl
+curl -O https://raw.githubusercontent.com/metno/mmd/master/xslt/iso-to-mmd.xsl
+curl -o ./msource-outlet.xml https://thredds.niva.no/thredds/iso/datasets/msource-outlet.nc?catalog=file:/usr/local/tomcat/content/thredds/subcatalogs/loggers.xml&dataset=4b123377-e0a6-4c7e-b466-2f8a3199bc86
+
+xsltproc iso-to-mmd.xsl msource-outlet.xml > msource.mmd.xml
+xsltproc mmd-to-geonorge.xsl msource.mmd.xml > msource.geonorge.xml
+
+```
+## Ferrybox datasets
 
 Update DATABASE_URL .env with tsb credentials on nivatest-1 cluster. Use host=localhost and
 port-forward to access timescaledb: kubectl port-forward timescale-0 8505:5432.

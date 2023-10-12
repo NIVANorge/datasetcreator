@@ -7,6 +7,8 @@ on:
       - '.github/workflows/**'
       - 'dscreator/**'
       - 'Dockerfile'
+      - 'poetry.lock'
+      - 'pyproject.toml'
 env:
   IMAGE_NAME: dscreator
 jobs:

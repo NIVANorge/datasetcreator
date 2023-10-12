@@ -53,6 +53,7 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
+            spatial_representation="point"
         )
 
     def map_to_cfarray(self, timeseries: NamedTimeseries) -> xr.DataArray:
@@ -84,6 +85,14 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
                     name="turbidity",
                     attrs=VariableAttrs(
                         short_name="turbidity", long_name="Rain Garden Water Turbidity", units="NTU"
+                    ),
+                )
+            case "CondValue":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="conductivity",
+                    attrs=VariableAttrs(
+                        short_name="conductivity", long_name="Rain Garden Water Conductivity", units="uS cm-1"
                     ),
                 )
             case _:
@@ -136,6 +145,7 @@ class MSourceOutletBuilder(MSourceInletBuilder):
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
+            spatial_representation="point"
         )
 
 
@@ -161,7 +171,14 @@ class MSourceOutletBuilder(MSourceInletBuilder):
                         short_name="turbidity", long_name="Rain Garden Water Turbidity", units="NTU"
                     ),
                 )
-                
+            case "CondValue":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="conductivity",
+                    attrs=VariableAttrs(
+                        short_name="conductivity", long_name="Rain Garden Water Conductivity", units="uS cm-1"
+                    ),
+                )     
             case _:
                 logging.warning(f"Array definition not found for: {timeseries.variable_name}")
                 raise RuntimeError(f"Array definition not found for: {timeseries.variable_name}")
