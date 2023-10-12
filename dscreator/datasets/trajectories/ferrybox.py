@@ -22,23 +22,36 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
         """
         return FerryboxDatasetAttrs(
             title="Ferrybox on MS Color Fantasy",
-            summary="Ferry sailing from Oslo to Kiel. For more information see: https://www.colorline.no/oslo-kiel/fakta.",
-            keywords=",".join([]),
-            keywords_vocabulary=",".join([]),
+            title_no="FerryBox på MS Color Fantasy",
+            summary="Ferry sailing from Oslo, Norway to Kiel, Germany. For more information see: https://www.colorline.no/oslo-kiel/fakta.",
+            summary_no="Ferje fra Oslo, Norge til Kiel, Tyskland. For mer informasjon se: https://www.colorline.no/oslo-kiel/fakta.",
+            keywords=",".join(
+                [
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > SALINITY/DENSITY > OCEAN SALINITY > OCEAN SURFACE SALINITY",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > OXYGEN",
+                ]
+            ),
+            keywords_vocabulary=",".join(
+                [
+                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords"
+                ]
+            ),
+            creator_email="norsoop@niva.no",
             featureType=ds.attrs["featureType"],
             references="http://path/Document_describing_calibration.pdf",
-            ices_platform_code="LMSD",
+            ices_platform_code="58CO",
             platform_code="FA",
-            platform_name="COLOR FANTASY",
+            platform_name="Color Fantasy",
             date_created=str(datetime.now()),
-            project=self.project_name,
+            project="NorSOOP RCN 269922; JERICO-RI (H2020 JERICO-S3 871153, JERICO-NEXT 654410), Norwegian Environment Agency, Inner and Outer Oslofjord Fagrådet",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
             geospatial_lat_min=float(ds.latitude.min()),
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
-            spatial_representation="trajectory"
+            spatial_representation="trajectory",
         )
 
     def map_to_cfarray(self, timeseries: NamedTrajectory) -> xr.DataArray:

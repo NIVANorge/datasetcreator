@@ -153,8 +153,3 @@ class FerryboxDatasetAttrsBase(DatasetAttrsDiscreteBase):
 class FerryboxDatasetAttrs(DatasetAttrsDefaults, FerryboxDatasetAttrsBase):
     processing_level: str = "Automated Quality Control applied"
     source: str = "Ferryboxes"
-    license: str = (
-        "These data are public and free of charge. User assumes all risk for use of data. "
-        "User must display citation in any publication or product using data. "
-        "User must contact NIVA prior to any commercial use of data. "
-    )
