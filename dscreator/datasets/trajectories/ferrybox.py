@@ -65,17 +65,17 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
             case "Temperature":
                 array = dataarraybytime(
                     data=timeseries.values,
-                    name="sea_water_temperature",
+                    name="temperature",
                     attrs=CFVariableAttrs(
-                        standard_name="sea_water_temperature", long_name="sea_water_temperature", units="degree_Celsius"
+                        standard_name="sea_water_temperature", long_name="Sea Water Temperature", units="degree_Celsius"
                     ),
                 )
             case "Turbidity":
                 array = dataarraybytime(
                     data=timeseries.values,
-                    name="sea_water_turbidity",
+                    name="turbidity",
                     attrs=CFVariableAttrs(
-                        standard_name="sea_water_turbidity", long_name="sea_water_turbidity", units="degree_Celsius"
+                        standard_name="sea_water_turbidity", long_name="Sea Water Turbidity", units="FTU"
                     ),
                 )
             case "Salinity":
