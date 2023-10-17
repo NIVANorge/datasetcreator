@@ -55,7 +55,7 @@ class SiosBuilder(TimeseriesDatasetBuilder):
         )
 
     def map_to_cfarray(self, timeseries: NamedTimeseries) -> xr.DataArray:
-        """Match timeserie data to C&F
+        """Match timeseries data to C&F
 
         Match timeseries data to the climate and forecast convention based on the given variable code.
         Standard names are found at http://vocab.nerc.ac.uk/collection/P07/current/
@@ -70,12 +70,12 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                         standard_name="sea_water_temperature", long_name="Sea Water Temperature", units="degree_Celsius"
                     ),
                 )
-            case "Turbidity":
+            case "TurbCalib":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="turbidity",
                     attrs=CFVariableAttrs(
-                        standard_name="sea_water_turbidity", long_name="Sea Water Turbidity", units="NTU"
+                        standard_name="sea_water_turbidity", long_name="Sea Water Turbidity", units="FNU"
                     ),
                 )
             case "Salinity":
@@ -86,7 +86,7 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                         standard_name="sea_water_salinity", long_name="Sea Water Salinity", units="1e-3"
                     ),
                 )
-            case "ChlaValue":
+            case "ChlaCalib":
                 array = dataarraybytime(
                     data=timeseries.values,
                     name="chlorophylla",
@@ -104,6 +104,16 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                         standard_name="sea_water_electrical_conductivity",
                         long_name="Sea Water Conductivity",
                         units="S/m",
+                    ),
+                )
+            case "fDOMCalib":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="conductivity",
+                    attrs=CFVariableAttrs(
+                        standard_name="concentration_of_colored_dissolved_organic_matter_in_sea_water_expressed_as_equivalent_mass_fraction_of_quinine_sulfate_dihydrate",
+                        long_name="Concentration of Fluorescent Dissolved Organic Matter in Sea Water",
+                        units="µg/l",
                     ),
                 )
             case _:
