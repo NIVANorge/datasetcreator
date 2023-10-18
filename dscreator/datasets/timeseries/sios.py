@@ -52,6 +52,7 @@ class SiosBuilder(TimeseriesDatasetBuilder):
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
+            processing_level="Experimental",
         )
 
     def map_to_cfarray(self, timeseries: NamedTimeseries) -> xr.DataArray:
@@ -104,16 +105,6 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                         standard_name="sea_water_electrical_conductivity",
                         long_name="Sea Water Conductivity",
                         units="S/m",
-                    ),
-                )
-            case "fDOMCalib":
-                array = dataarraybytime(
-                    data=timeseries.values,
-                    name="conductivity",
-                    attrs=CFVariableAttrs(
-                        standard_name="concentration_of_colored_dissolved_organic_matter_in_sea_water_expressed_as_equivalent_mass_fraction_of_quinine_sulfate_dihydrate",
-                        long_name="Concentration of Fluorescent Dissolved Organic Matter in Sea Water",
-                        units="µg/l",
                     ),
                 )
             case _:
