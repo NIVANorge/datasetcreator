@@ -39,7 +39,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
             ),
             creator_email="norsoop@niva.no",
             featureType=ds.attrs["featureType"],
-            references="https://thredds.t.niva.no/fileServer/references/Method_description_NorSOOP.pdf",
+            references="https://thredds.t.niva.no/thredds/fileServer/datasets/references/Method_description_NorSOOP.pdf",
             ices_platform_code="58CO",
             platform_code="FA",
             platform_name="Color Fantasy",
