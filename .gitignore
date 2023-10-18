@@ -1,4 +1,5 @@
 notebooks/data/*
+notebooks/*_acdd_color_fantasy.*
 scripts/example*.nc
 catalog/**/*.nc
 catalog/metadata/*.xml
