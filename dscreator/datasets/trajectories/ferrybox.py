@@ -5,7 +5,7 @@ from datetime import datetime
 import xarray as xr
 
 from dscreator import utils
-from dscreator.cfarray.attributes import CFVariableAttrs, FerryboxDatasetAttrs
+from dscreator.cfarray.attributes import CFVariableAttrs, FerryboxDatasetAttrs, FlagAttrs
 from dscreator.cfarray.base import dataarraybytime
 from dscreator.datasets.base import TrajectoryDatasetBuilder
 from dscreator.sources.base import NamedTrajectory
@@ -39,7 +39,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
             ),
             creator_email="norsoop@niva.no",
             featureType=ds.attrs["featureType"],
-            references="http://path/Document_describing_calibration.pdf",
+            references="https://thredds.t.niva.no/fileServer/references/Method_description_NorSOOP.pdf",
             ices_platform_code="58CO",
             platform_code="FA",
             platform_name="Color Fantasy",
@@ -70,6 +70,14 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                         standard_name="sea_water_temperature", long_name="Sea Water Temperature", units="degree_Celsius"
                     ),
                 )
+                array.attrs["ancillary_variables"] = "temperature_qc"
+    
+            case "Temperature_qc":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="temperature_qc",
+                    attrs=FlagAttrs(long_name="Sea Water Temperature Quality Flag"),
+                )
             case "Turbidity":
                 array = dataarraybytime(
                     data=timeseries.values,
@@ -85,6 +93,13 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                     attrs=CFVariableAttrs(
                         standard_name="sea_water_salinity", long_name="Sea Water Salinity", units="PSU"
                     ),
+                )
+                array.attrs["ancillary_variables"] = "salinity_qc"
+            case "Salinity_qc":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="salinity_qc",
+                    attrs=FlagAttrs(long_name="Sea Water Salinity Quality Flag"),
                 )
             case "Chlorophyll":
                 array = dataarraybytime(
@@ -103,6 +118,14 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                     attrs=CFVariableAttrs(
                         standard_name="sea_water_oxygen_saturation", long_name="Sea Water Oxygen Saturation", units="%"
                     ),
+                )
+                array.attrs["ancillary_variables"] = "oxygen_qc"
+
+            case "Oxygen_qc":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="oxygen_qc",
+                    attrs=FlagAttrs( long_name="Sea Water Oxygen Saturation Quality Flag"),
                 )
             case "cDOM":
                 array = dataarraybytime(

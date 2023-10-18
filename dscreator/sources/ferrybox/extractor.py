@@ -19,6 +19,13 @@ class TrajectoryExtractor(BaseExtractor):
     engine: Engine
     variable_codes: List[str]
     variable_uuid_map: dict[str, str]
+    qc_flags: List[int]
+    qc_variables: List[str] = field(init=False)
+
+
+    def __post_init__(self):
+        self.qc_variables = [f"{v}_qc" for v in self.variable_codes]
+
 
     def fetch_slice(
         self,
@@ -30,7 +37,8 @@ class TrajectoryExtractor(BaseExtractor):
         The timeseries is limited to start_time<t<=end_time.
         """
 
-        named_trajectory = NamedTrajectory([NamedArray(vcode, []) for vcode in self.variable_codes], [], [])
+        variables = self.variable_codes + self.qc_variables
+        named_trajectory = NamedTrajectory([NamedArray(vcode, []) for vcode in  variables], [], [])
 
         data_list = get_ts(
             self.engine,
@@ -38,6 +46,7 @@ class TrajectoryExtractor(BaseExtractor):
             uuids=list(self.variable_uuid_map.values()),
             start_time=start_time,
             end_time=end_time,
+            qc_flags=self.qc_flags
         )
 
         return self._pack_data(data_list, named_trajectory) if data_list else named_trajectory
@@ -47,9 +56,9 @@ class TrajectoryExtractor(BaseExtractor):
 
         Assumes data_list is sorted ascending on time."""
 
-        value_template = {v: None for v in self.variable_uuid_map.values()}
+        value_template = {v: (None, None) for v in self.variable_uuid_map.values()}
         previous_point = current_point = data_list.pop(0)
-        value_template[str(previous_point.uuid)] = previous_point.value
+        value_template[str(previous_point.uuid)] = (previous_point.value, previous_point.qc)
 
         while data_list:
             current_point = data_list.pop(0)
@@ -57,7 +66,7 @@ class TrajectoryExtractor(BaseExtractor):
             if current_point.time > previous_point.time:
                 self._push_point(previous_point, value_template, named_trajectory)
                 previous_point = current_point
-            value_template[point_uuid] = current_point.value
+            value_template[point_uuid] = (current_point.value, current_point.qc)
         self._push_point(current_point, value_template, named_trajectory)
 
         return named_trajectory
@@ -72,9 +81,16 @@ class TrajectoryExtractor(BaseExtractor):
         named_trajectory.locations.append(Point(current_point.longitude, current_point.latitude))
 
         for array in named_trajectory.array_list:
-            point_uuid = self.variable_uuid_map[array.variable_name]
-            array.values.append(value_template[point_uuid])
-            value_template[point_uuid] = None
+            if array.variable_name.endswith("_qc"):
+                point_uuid = self.variable_uuid_map[array.variable_name.split("_qc")[0]]
+                value = value_template[point_uuid][1]
+            else:
+                point_uuid = self.variable_uuid_map[array.variable_name]
+                value = value_template[point_uuid][0]
+            array.values.append(value)
+        
+        for k in value_template.keys():
+            value_template[k] = (None, None)
 
     def _timestamp(self, is_asc: bool) -> datetime:
         return get_time_by_uuids(

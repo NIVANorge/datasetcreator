@@ -22,11 +22,27 @@ class CFVariableAttrs(VariableAttrsBase):
     long_name: str
     units: str
 
-
 @dataclass
 class VariableAttrs(VariableAttrsBase):
     short_name: str
 
+
+@dataclass
+class FlagAttrs:
+    """CF Flag attributes
+
+    """
+    long_name: str
+    standard_name: str = "status_flag"
+    flag_meanings: str = "no_qc_performed good_data probably_good_data bad_data_that_are_potentially_correctable bad_data value_changed value_below_detection nominal_value interpolated_value missing_value"
+    valid_max: int = 9
+    valid_min: int = 0
+    flag_values: List[int] = field(init=False)
+
+    def __post_init__(self):
+        self.valid_max: 9
+        self.valid_min: 0
+        self.flag_values: List[int] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 @dataclass
 class AltitudeAttrs:
