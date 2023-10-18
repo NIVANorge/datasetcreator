@@ -79,7 +79,21 @@ The local catalog config file can be found in [catalog.xml](./catalog/catalog.xm
 
 For most things [xarray](https://docs.xarray.dev/en/stable/) is a good choice. The command-line tool [ncdump](https://www.unidata.ucar.edu/software/netcdf/workshops/2011/utilities/Ncdump.html) is also quite nice for small things.
 
-### Ferrybox datasets
+
+## Working with metdata
+
+All the required attributes are defined in [dataclasses](./dscreator/cfarray/attributes.py) so it is possible to create a self-describing dataset. When the dataset is published these attributes are translated to ncml and [ncml-to-iso.xsl](./catalog/ncml-to-iso.xsl) and translate to iso. It is also possible to translate from iso to other schemas like [mmd](https://github.com/metno/mmd/tree/master/xslt). For example using:
+ 
+```bash
+curl -O https://raw.githubusercontent.com/metno/mmd/master/xslt/mmd-to-geonorge.xsl
+curl -O https://raw.githubusercontent.com/metno/mmd/master/xslt/iso-to-mmd.xsl
+curl -o ./msource-outlet.xml https://thredds.niva.no/thredds/iso/datasets/msource-outlet.nc?catalog=file:/usr/local/tomcat/content/thredds/subcatalogs/loggers.xml&dataset=4b123377-e0a6-4c7e-b466-2f8a3199bc86
+
+xsltproc iso-to-mmd.xsl msource-outlet.xml > msource.mmd.xml
+xsltproc mmd-to-geonorge.xsl msource.mmd.xml > msource.geonorge.xml
+
+```
+## Ferrybox datasets
 
 Update DATABASE_URL .env with tsb credentials on nivatest-1 cluster. Use host=localhost and
 port-forward to access timescaledb: kubectl port-forward timescale-0 8505:5432.

@@ -53,6 +53,7 @@ class SiosBuilder(TimeseriesDatasetBuilder):
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
             processing_level="Experimental",
+            spatial_representation="point"
         )
 
     def map_to_cfarray(self, timeseries: NamedTimeseries) -> xr.DataArray:

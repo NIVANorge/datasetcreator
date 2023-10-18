@@ -86,6 +86,8 @@ class DepthAttrs:
 class DatasetAttrsBase:
     title: str
     summary: str
+    title_no: str
+    summary_no: str
     date_created: datetime
     keywords: str
     keywords_vocabulary: str
@@ -95,24 +97,14 @@ class DatasetAttrsBase:
     geospatial_lat_max: float
     geospatial_lon_min: float
     geospatial_lon_max: float
+    # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#spatial_representation
+    spatial_representation: str
     project: str
-
-
-@dataclass
-class NorDatasetAttrsBase(DatasetAttrsBase):
-    title_no: str
-    summary_no: str
 
 
 @dataclass
 class DatasetAttrsDiscreteBase(DatasetAttrsBase):
     featureType: str
-
-
-@dataclass
-class DatasetAttrsGridBase(DatasetAttrsBase):
-    # See, https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#spatial-representation
-    spatial_representation: str
 
 
 @dataclass
@@ -125,7 +117,8 @@ class DatasetAttrsDefaults:
     creator_email: str = "miljoinformatikk@niva.no"
     creator_url: str = "https://niva.no"
     data_owner: str = "Norwegian Institute for Water Research"
-    processing_level: str = "Missing data has been filled with fillValue."
+    # One of https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#operational-status
+    processing_level: str = "Not available"
     Conventions: str = "CF-1.7, ACDD-1.3"
     netcdf_version: str = "4"
     publisher_name: str = "Norwegian Institute for Water Research"
@@ -139,12 +132,12 @@ class DatasetAttrsDefaults:
 
 
 @dataclass
-class DatasetAttrsDiscrete(DatasetAttrsDefaults, DatasetAttrsDiscreteBase, NorDatasetAttrsBase):
+class DatasetAttrsDiscrete(DatasetAttrsDefaults, DatasetAttrsDiscreteBase):
     pass
 
 
 @dataclass
-class DatasetAttrsGrid(DatasetAttrsDefaults, DatasetAttrsGridBase, NorDatasetAttrsBase):
+class DatasetAttrsGrid(DatasetAttrsDefaults, DatasetAttrsBase):
     pass
 
 
