@@ -18,6 +18,9 @@ def default_encoding(ds: xr.Dataset) -> Dict:
 
     for v in ds.data_vars:
         enc[v] = dtype_to_encoding(str(ds[v].dtype))
+        if "flag_values" in ds[v].attrs:
+            enc[v] = INT_ENCODING
+
     
     return enc
 
