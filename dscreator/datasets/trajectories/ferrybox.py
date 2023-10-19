@@ -47,10 +47,10 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
             project="NorSOOP RCN 269922; JERICO-RI (H2020 JERICO-S3 871153, JERICO-NEXT 654410), Norwegian Environment Agency, Inner and Outer Oslofjord Fagrådet",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
-            geospatial_lat_min=float(ds.latitude.min()),
-            geospatial_lat_max=float(ds.latitude.max()),
-            geospatial_lon_min=float(ds.longitude.min()),
-            geospatial_lon_max=float(ds.longitude.max()),
+            geospatial_lat_min=53.8,
+            geospatial_lat_max=	59.93,
+            geospatial_lon_min=9.92,
+            geospatial_lon_max=12.6,
             spatial_representation="trajectory",
         )
 
