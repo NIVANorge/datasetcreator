@@ -5,14 +5,14 @@ from datetime import datetime
 import xarray as xr
 
 from dscreator import utils
-from dscreator.cfarray.attributes import CFVariableAttrs, FerryboxDatasetAttrs
+from dscreator.cfarray.attributes import CFVariableAttrs, FerryboxDatasetAttrs, FlagAttrs
 from dscreator.cfarray.base import dataarraybytime
 from dscreator.datasets.base import TrajectoryDatasetBuilder
 from dscreator.sources.base import NamedTrajectory
 
 
 @dataclass
-class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
+class NorsoopFantasy(TrajectoryDatasetBuilder):
     def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
         """Add ACDD attributes to a xarray dataset
 
@@ -22,23 +22,37 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
         """
         return FerryboxDatasetAttrs(
             title="Ferrybox on MS Color Fantasy",
-            summary="Ferry sailing from Oslo to Kiel. For more information see: https://www.colorline.no/oslo-kiel/fakta.",
-            keywords=",".join([]),
-            keywords_vocabulary=",".join([]),
+            title_no="FerryBox på MS Color Fantasy",
+            summary="Ferry sailing from Oslo, Norway to Kiel, Germany. For more information see: https://www.colorline.no/oslo-kiel/fakta.",
+            summary_no="Ferje fra Oslo, Norge til Kiel, Tyskland. For mer informasjon se: https://www.colorline.no/oslo-kiel/fakta.",
+            keywords=",".join(
+                [
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > SALINITY/DENSITY > OCEAN SALINITY > OCEAN SURFACE SALINITY",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > OXYGEN",
+                ]
+            ),
+            keywords_vocabulary=",".join(
+                [
+                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
+                    "CFSTDN:CF Standard Names:https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html"
+                ]
+            ),
+            creator_email="norsoop@niva.no",
             featureType=ds.attrs["featureType"],
-            metadata_link="http://path/Document_describing_calibration.pdf",
-            ices_platform_code="LMSD",
+            references="https://thredds.niva.no/thredds/fileServer/datasets/references/Method_description_and_quality_control_procedure_NorSOOP.pdf",
+            ices_platform_code="58CO",
             platform_code="FA",
-            platform_name="COLOR FANTASY",
+            platform_name="Color Fantasy",
             date_created=str(datetime.now()),
-            project=self.project_name,
+            project="NorSOOP RCN 269922; JERICO-RI (H2020 JERICO-S3 871153, JERICO-NEXT 654410), Norwegian Environment Agency, Inner and Outer Oslofjord Fagrådet",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
-            geospatial_lat_min=float(ds.latitude.min()),
-            geospatial_lat_max=float(ds.latitude.max()),
-            geospatial_lon_min=float(ds.longitude.min()),
-            geospatial_lon_max=float(ds.longitude.max()),
-            spatial_representation="trajectory"
+            geospatial_lat_min=53.8,
+            geospatial_lat_max=	59.93,
+            geospatial_lon_min=9.92,
+            geospatial_lon_max=12.6,
+            spatial_representation="trajectory",
         )
 
     def map_to_cfarray(self, timeseries: NamedTrajectory) -> xr.DataArray:
@@ -52,17 +66,25 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
             case "Temperature":
                 array = dataarraybytime(
                     data=timeseries.values,
-                    name="sea_water_temperature",
+                    name="temperature",
                     attrs=CFVariableAttrs(
-                        standard_name="sea_water_temperature", long_name="sea_water_temperature", units="degree_Celsius"
+                        standard_name="sea_water_temperature", long_name="Sea Water Temperature", units="degree_Celsius"
                     ),
+                )
+                array.attrs["ancillary_variables"] = "temperature_qc"
+    
+            case "Temperature_qc":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="temperature_qc",
+                    attrs=FlagAttrs(long_name="Sea Water Temperature Quality Flag"),
                 )
             case "Turbidity":
                 array = dataarraybytime(
                     data=timeseries.values,
-                    name="sea_water_turbidity",
+                    name="turbidity",
                     attrs=CFVariableAttrs(
-                        standard_name="sea_water_turbidity", long_name="sea_water_turbidity", units="degree_Celsius"
+                        standard_name="sea_water_turbidity", long_name="Sea Water Turbidity", units="FTU"
                     ),
                 )
             case "Salinity":
@@ -72,6 +94,13 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
                     attrs=CFVariableAttrs(
                         standard_name="sea_water_salinity", long_name="Sea Water Salinity", units="PSU"
                     ),
+                )
+                array.attrs["ancillary_variables"] = "salinity_qc"
+            case "Salinity_qc":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="salinity_qc",
+                    attrs=FlagAttrs(long_name="Sea Water Salinity Quality Flag"),
                 )
             case "Chlorophyll":
                 array = dataarraybytime(
@@ -90,6 +119,14 @@ class FerryboxTrajBuilder(TrajectoryDatasetBuilder):
                     attrs=CFVariableAttrs(
                         standard_name="sea_water_oxygen_saturation", long_name="Sea Water Oxygen Saturation", units="%"
                     ),
+                )
+                array.attrs["ancillary_variables"] = "oxygen_qc"
+
+            case "Oxygen_qc":
+                array = dataarraybytime(
+                    data=timeseries.values,
+                    name="oxygen_qc",
+                    attrs=FlagAttrs( long_name="Sea Water Oxygen Saturation Quality Flag"),
                 )
             case "cDOM":
                 array = dataarraybytime(

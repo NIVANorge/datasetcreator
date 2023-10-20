@@ -11,7 +11,7 @@ def test_ferrybox_trajectory():
         datetime_list=[datetime(1999, 10, 4), datetime(1999, 10, 5), datetime(1999, 10, 6)],
     )
 
-    example_builder = trajectories.ferrybox.FerryboxTrajBuilder(
+    example_builder = trajectories.ferrybox.NorsoopFantasy(
         "uuid", "dataset_name", "trajectory_name", "project_name", True
     )
 

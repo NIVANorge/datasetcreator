@@ -75,6 +75,10 @@
       </aggregation>
     </netcdf>
   </dataset>
+  <dataset ID="samplefa" name="Test FA dataset" urlPath="datasets/colorfantasy_ferrybox/FA_merged_acdd_color_fantasy.nc" serviceName="trajectory">
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/datasets/colorfantasy_ferrybox/color_fantasy/FA_merged_acdd_color_fantasy.nc">
+  </netcdf>
+  </dataset>
   <datasetScan name="Files" ID="testDatasetScan" path="testAll" location="/datasets">
     <metadata
       inherited="true">

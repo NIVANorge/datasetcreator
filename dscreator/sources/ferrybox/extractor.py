@@ -1,21 +1,31 @@
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from functools import partial
 from typing import List
 
-from sqlalchemy import Engine
+from sqlalchemy import Engine, Sequence, RowMapping
 
 from dscreator.sources.base import BaseExtractor, NamedArray, NamedTrajectory, Point
-from dscreator.sources.ferrybox.queries import get_time_by_uuids, get_track, get_ts
-from dscreator.sources.ferrybox.uuid_variable_code_mapper import MAPPER
+from dscreator.sources.ferrybox.queries import get_time_by_uuids, get_ts
+
 
 
 @dataclass
 class TrajectoryExtractor(BaseExtractor):
+    """Create a ferybox trajectory extractor
+    
+    platform_variable_key: A key in the MAPPER dict
+    """
     engine: Engine
-    platform_code: str
     variable_codes: List[str]
+    variable_uuid_map: dict[str, str]
+    qc_flags: List[int]
+    qc_variables: List[str] = field(init=False)
+
+
+    def __post_init__(self):
+        self.qc_variables = [f"{v}_qc" for v in self.variable_codes]
+
 
     def fetch_slice(
         self,
@@ -23,39 +33,68 @@ class TrajectoryExtractor(BaseExtractor):
         end_time: datetime,
     ) -> NamedTrajectory:
         """Create a Timeseries from tsb
+
         The timeseries is limited to start_time<t<=end_time.
         """
-        query_ts = partial(get_ts, engine=self.engine, start_time=start_time, end_time=end_time)
 
-        named_timearrays = []
-        track = get_track(self.engine, MAPPER[self.platform_code]["track"], start_time, end_time)
-        track_datetime = list(track.datetime)
-        for vcode in self.variable_codes:
-            res = query_ts(uuid=MAPPER[self.platform_code][vcode])
-            if len(res.values) > 0:
-                logging.info(f"fetching vcode {vcode}")
-                values = [res.values[res.datetime.index(dt)] if dt in res.datetime else None for dt in track_datetime]
-                named_timearrays.append(NamedArray(vcode, values))
-            else:
-                logging.info(f"No values for {vcode} for time period ({start_time} : {end_time})")
-                named_timearrays.append(NamedArray(vcode, [None for x in range(len(track_datetime))]))
-        # Get indices of all None values
-        i_None = [[i for i, v in enumerate(ts.values) if v is None] for ts in named_timearrays]
-        # If None appears for all measurements, it means there is no valid data
-        i_noData = list(
-            set([index for index in i_None[0] for j in range(1, len(named_timearrays)) if index in i_None[j]])
+        variables = self.variable_codes + self.qc_variables
+        named_trajectory = NamedTrajectory([NamedArray(vcode, []) for vcode in  variables], [], [])
+
+        data_list = get_ts(
+            self.engine,
+            track_uuid=self.variable_uuid_map["track"],
+            uuids=list(self.variable_uuid_map.values()),
+            start_time=start_time,
+            end_time=end_time,
+            qc_flags=self.qc_flags
         )
-        named_timearrays = [
-            NamedArray(nta.variable_name, [v for i, v in enumerate(nta.values) if i not in i_noData])
-            for nta in named_timearrays
-        ]
-        track_values = [tv for i, tv in enumerate(track.values) if i not in i_noData]
-        track_datetime = [tdt for i, tdt in enumerate(track_datetime) if i not in i_noData]
-        return NamedTrajectory(array_list=named_timearrays, datetime_list=track_datetime, locations=track_values)
+
+        return self._pack_data(data_list, named_trajectory) if data_list else named_trajectory
+
+    def _pack_data(self, data_list: Sequence[RowMapping], named_trajectory: NamedTrajectory) -> NamedTrajectory:
+        """Pack data into a named trajectory
+
+        Assumes data_list is sorted ascending on time."""
+
+        value_template = {v: (None, None) for v in self.variable_uuid_map.values()}
+        previous_point = current_point = data_list.pop(0)
+        value_template[str(previous_point.uuid)] = (previous_point.value, previous_point.qc)
+
+        while data_list:
+            current_point = data_list.pop(0)
+            point_uuid = str(current_point.uuid)
+            if current_point.time > previous_point.time:
+                self._push_point(previous_point, value_template, named_trajectory)
+                previous_point = current_point
+            value_template[point_uuid] = (current_point.value, current_point.qc)
+        self._push_point(current_point, value_template, named_trajectory)
+
+        return named_trajectory
+
+    def _push_point(self, current_point: dict, value_template: dict, named_trajectory: NamedTrajectory):
+        """Push point into a named trajectory
+        
+        value_template contains the values for each uuid, for missing data it is set to None.
+        """
+
+        named_trajectory.datetime_list.append(current_point.time)
+        named_trajectory.locations.append(Point(current_point.longitude, current_point.latitude))
+
+        for array in named_trajectory.array_list:
+            if array.variable_name.endswith("_qc"):
+                point_uuid = self.variable_uuid_map[array.variable_name.split("_qc")[0]]
+                value = value_template[point_uuid][1]
+            else:
+                point_uuid = self.variable_uuid_map[array.variable_name]
+                value = value_template[point_uuid][0]
+            array.values.append(value)
+        
+        for k in value_template.keys():
+            value_template[k] = (None, None)
 
     def _timestamp(self, is_asc: bool) -> datetime:
         return get_time_by_uuids(
-            self.engine, [MAPPER[self.platform_code][vcode] for vcode in self.variable_codes], is_asc
+            self.engine, [self.variable_uuid_map[vcode] for vcode in self.variable_codes], is_asc
         )
 
     def first_timestamp(self) -> datetime:
@@ -63,7 +102,7 @@ class TrajectoryExtractor(BaseExtractor):
         Padded with 10 sec
         """
         # return self._timestamp(is_asc=True) - timedelta(seconds=1)
-        return datetime(2022, 12, 12, 16, 0, 0)
+        return datetime(2022, 12, 12, 16, 0)
 
     def last_timestamp(self) -> datetime:
         """The last timestamp for extraction
