@@ -34,12 +34,13 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
             ),
             keywords_vocabulary=",".join(
                 [
-                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords"
+                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
+                    "CFSTDN:CF Standard Names:https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html"
                 ]
             ),
             creator_email="norsoop@niva.no",
             featureType=ds.attrs["featureType"],
-            references="https://thredds.t.niva.no/thredds/fileServer/datasets/references/Method_description_NorSOOP.pdf",
+            references="https://thredds.niva.no/thredds/fileServer/datasets/references/Method_description_and_quality_control_procedure_NorSOOP.pdf",
             ices_platform_code="58CO",
             platform_code="FA",
             platform_name="Color Fantasy",
