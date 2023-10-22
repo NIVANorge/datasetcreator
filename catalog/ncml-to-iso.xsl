@@ -56,10 +56,10 @@
     <!--jmaurer-->
     <xsl:variable name="places" select="(/nc:netcdf/nc:group[@name='THREDDSMetadata']/nc:group[@name='vocab'])"/>
     <!-- Extent Search Fields: 17 possible -->
-    <xsl:variable name="geospatial_lat_min" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='geospatial_lat_min']/@value)"/>
-    <xsl:variable name="geospatial_lat_max" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='geospatial_lat_max']/@value)"/>
-    <xsl:variable name="geospatial_lon_min" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='geospatial_lon_min']/@value)"/>
-    <xsl:variable name="geospatial_lon_max" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='geospatial_lon_max']/@value)"/>
+    <xsl:variable name="geospatial_lat_min" as="xs:string*" select="(/nc:netcdf/nc:attribute[@name='geospatial_lat_min']/@value)"/>
+    <xsl:variable name="geospatial_lat_max" as="xs:string*" select="(/nc:netcdf/nc:attribute[@name='geospatial_lat_max']/@value)"/>
+    <xsl:variable name="geospatial_lon_min" as="xs:string*" select="(/nc:netcdf/nc:attribute[@name='geospatial_lon_min']/@value)"/>
+    <xsl:variable name="geospatial_lon_max" as="xs:string*" select="(/nc:netcdf/nc:attribute[@name='geospatial_lon_max']/@value)"/>
     <xsl:variable name="timeStart" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='time_coverage_start']/@value)"/>
     <xsl:variable name="timeEnd" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='time_coverage_end']/@value)"/>
     <xsl:variable name="timeStartCnt" select="count($timeStart)"/>
