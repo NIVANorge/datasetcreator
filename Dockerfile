@@ -1,4 +1,4 @@
-FROM python:3.10-slim as base
+FROM --platform=linux/amd64 python:3.10-slim as base
 
 WORKDIR /app
 COPY pyproject.toml poetry.lock README.md ./
