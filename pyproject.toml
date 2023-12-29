@@ -30,6 +30,7 @@ matplotlib = "^3.5.3"
 requests-mock = "^1.10.0"
 nc-time-axis = "^1.4.1"
 pytest-docker = "^1.0.0"
+lxml = "^4.9.4"
 
 
 [tool.poetry.group.plots.dependencies]
