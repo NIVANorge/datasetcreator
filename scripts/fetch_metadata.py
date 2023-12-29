@@ -5,7 +5,7 @@ from lxml import etree
 #%%
 current_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "catalog", "metadata")
 catalog_base = "https://thredds.niva.no/thredds/catalog/subcatalogs"
-iso_url = "https://thredds.niva.no/thredds/iso/"
+iso_url = "https://thredds.niva.no/thredds/iso"
 cat_file = "catalog=file:/usr/local/tomcat/content/thredds/subcatalogs"
 
 #%%
