@@ -493,13 +493,13 @@
                     <xsl:if test="$standardNameCnt">
                         <gmd:descriptiveKeywords>
                             <gmd:MD_Keywords>
-                                <xsl:for-each select="/nc:netcdf/nc:variable/nc:attribute[@name='standard_name']">
+                                <xsl:for-each-group select="/nc:netcdf/nc:variable/nc:attribute[@name='standard_name']" group-by="./@value">
                                     <gmd:keyword>
                                         <gco:CharacterString>
                                             <xsl:value-of select="./@value"/>
                                         </gco:CharacterString>
                                     </gmd:keyword>
-                                </xsl:for-each>
+                                </xsl:for-each-group>
                                 <gmd:type>
                                     <xsl:call-template name="writeCodelist">
                                         <xsl:with-param name="codeListName" select="'gmd:MD_KeywordTypeCode'"/>

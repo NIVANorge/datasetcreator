@@ -18,7 +18,7 @@ for cat in ["ferryboxes", "loggers"]:
 
 #%%
 for ds_name, uuid, cat_name in datasets:
-    ds_url = f"{iso_url}/{ds_name}.nc?{cat_file}/{cat_name}.xml&dataset={uuid}"
+    ds_url = f"{iso_url}/{ds_name}?{cat_file}/{cat_name}.xml&dataset={uuid}"
     res = requests.get(ds_url)
     with open(os.path.join(current_path, f"{ds_name.split('/')[-1]}.xml"), "w") as f:
         f.write(res.text)
