@@ -3,7 +3,9 @@ import os
 import requests
 from lxml import etree
 #%%
-current_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "catalog", "metadata")
+
+cat_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "catalog", "metadata")
+target_path = os.environ.get("METADATA_PATH", cat_path)
 catalog_base = "https://thredds.niva.no/thredds/catalog/subcatalogs"
 iso_url = "https://thredds.niva.no/thredds/iso"
 cat_file = "catalog=file:/usr/local/tomcat/content/thredds/subcatalogs"
@@ -20,6 +22,6 @@ for cat in ["ferryboxes", "loggers"]:
 for ds_name, uuid, cat_name in datasets:
     ds_url = f"{iso_url}/{ds_name}?{cat_file}/{cat_name}.xml&dataset={uuid}"
     res = requests.get(ds_url)
-    with open(os.path.join(current_path, f"{ds_name.split('/')[-1]}.xml"), "w") as f:
+    with open(os.path.join(target_path, f"{ds_name.split('/')[-1]}.xml"), "w") as f:
         f.write(res.text)
 # %%
