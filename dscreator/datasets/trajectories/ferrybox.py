@@ -40,12 +40,13 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
             ),
             creator_email="norsoop@niva.no",
             featureType=ds.attrs["featureType"],
-            references="https://thredds.niva.no/thredds/fileServer/datasets/references/Method_description_and_quality_control_procedure_NorSOOP.pdf",
+            #https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
+            references="https://thredds.niva.no/thredds/fileServer/datasets/references/Method_description_and_quality_control_procedure_NorSOOP.pdf(Extended metadata)",
             ices_platform_code="58CO",
             platform_code="FA",
             platform_name="Color Fantasy",
             date_created=utils.iso_now(),
-            project="NorSOOP RCN 269922; JERICO-RI (H2020 JERICO-S3 871153, JERICO-NEXT 654410), Norwegian Environment Agency, Inner and Outer Oslofjord Fagrådet",
+            project="NorSOOP RCN 269922; JERICO-RI (H2020 JERICO-S3 871153 JERICO-NEXT 654410), Norwegian Environment Agency, Inner and Outer Oslofjord Fagrådet",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
             geospatial_lat_min=53.8,
@@ -117,7 +118,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                     data=timeseries.values,
                     name="oxygen",
                     attrs=CFVariableAttrs(
-                        standard_name="sea_water_oxygen_saturation", long_name="Sea Water Oxygen Saturation", units="%"
+                        standard_name="fractional_saturation_of_oxygen_in_sea_water", long_name="Sea Water Oxygen Saturation", units="%"
                     ),
                 )
                 array.attrs["ancillary_variables"] = "oxygen_qc"
