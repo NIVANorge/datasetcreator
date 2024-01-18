@@ -44,7 +44,7 @@ class SiosBuilder(TimeseriesDatasetBuilder):
             ),
             iso_topic_category="oceans",
             featureType=ds.attrs["featureType"],
-            date_created=utils.to_isoformat(datetime.now()),
+            date_created=utils.iso_now(),
             project=self.project_name,
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),

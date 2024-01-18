@@ -44,7 +44,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
             ices_platform_code="58CO",
             platform_code="FA",
             platform_name="Color Fantasy",
-            date_created=utils.to_isoformat(datetime.now()),
+            date_created=utils.iso_now(),
             project="NorSOOP RCN 269922; JERICO-RI (H2020 JERICO-S3 871153, JERICO-NEXT 654410), Norwegian Environment Agency, Inner and Outer Oslofjord Fagrådet",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
