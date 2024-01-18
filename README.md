@@ -82,7 +82,7 @@ For most things [xarray](https://docs.xarray.dev/en/stable/) is a good choice. T
 
 ## Working with metdata
 
-All the required attributes are defined in [dataclasses](./dscreator/cfarray/attributes.py) so it is possible to create a self-describing dataset. When the dataset is published these attributes are translated to ncml and [ncml-to-iso.xsl](./catalog/ncml-to-iso.xsl) and translate to iso. It is also possible to translate from iso to other schemas like [mmd](https://github.com/metno/mmd/tree/master/xslt). For example using:
+All the required attributes are defined in [dataclasses](./dscreator/cfarray/attributes.py) for easy use in python. When the dataset is published these attributes are translated to ncml and the stylesheet [ncml-to-iso.xsl](./catalog/ncml-to-iso.xsl) can translate to iso. It is also possible to translate from iso to other schemas like [mmd](https://github.com/metno/mmd/tree/master/xslt). For example using:
  
 ```bash
 curl -O https://raw.githubusercontent.com/metno/mmd/master/xslt/mmd-to-geonorge.xsl
@@ -93,12 +93,10 @@ xsltproc iso-to-mmd.xsl msource-outlet.xml > msource.mmd.xml
 xsltproc mmd-to-geonorge.xsl msource.mmd.xml > msource.geonorge.xml
 
 ```
+
+There is also a tool [py-mmd-tool](https://github.com/metno/py-mmd-tools) that can translate straight from nc attributes.
+
 ## Ferrybox datasets
 
-Update DATABASE_URL .env with tsb credentials on nivatest-1 cluster. Use host=localhost and
-port-forward to access timescaledb: kubectl port-forward timescale-0 8505:5432.
-Create test dataset for Color Fantasy:
-
-```bash
-poetry run dscreator rt-ferrybox-fa --stop-after-n-files 1 --acdd
-```
+Update the DATABASE_URL in `.env` with tsb credentials and connect to tsb,
+also see the notebook [norsoop-2017-2022.ipynb](./notebooks/norsoop-2017-2022.ipynb)
