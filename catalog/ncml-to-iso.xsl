@@ -399,7 +399,17 @@
                         <xsl:with-param name="organisationName" select="$institution[1]"/>
                         <xsl:with-param name="email" select="$creatorEmail[1]"/>
                         <xsl:with-param name="url" select="$creatorURL[1]"/>
-                        <xsl:with-param name="roleCode" select="'pointOfContact'"/>
+                        <xsl:with-param name="roleCode" select="'originator'"/>
+                    </xsl:call-template>
+                    <!-- publisher -->
+                    <xsl:call-template name="writeResponsibleParty">
+                        <xsl:with-param name="tagName" select="'gmd:pointOfContact'"/>
+                        <xsl:with-param name="testValue" select="$publisherTotal"/>
+                        <xsl:with-param name="individualName" select="$publisherName[1]"/>
+                        <xsl:with-param name="organisationName" select="$institution[1]"/>
+                        <xsl:with-param name="email" select="$publisherEmail[1]"/>
+                        <xsl:with-param name="url" select="$publisherURL[1]"/>
+                        <xsl:with-param name="roleCode" select="'publisher'"/>
                     </xsl:call-template>
                     <xsl:if test="count($keywords)">
                         <xsl:for-each select="tokenize($keywordsVocabulary[1],',')">
