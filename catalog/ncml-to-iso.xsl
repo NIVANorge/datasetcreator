@@ -456,28 +456,6 @@
                             </gmd:descriptiveKeywords>
                         </xsl:for-each>
                     </xsl:if>
-                    <xsl:if test="count($project)">
-                        <gmd:descriptiveKeywords>
-                            <gmd:MD_Keywords>
-                                <gmd:keyword>
-                                    <gco:CharacterString>
-                                        <xsl:value-of select="$project[1]"/>
-                                    </gco:CharacterString>
-                                </gmd:keyword>
-                                <gmd:type>
-                                    <xsl:call-template name="writeCodelist">
-                                        <xsl:with-param name="codeListName" select="'gmd:MD_KeywordTypeCode'"/>
-                                        <xsl:with-param name="codeListValue" select="'project'"/>
-                                    </xsl:call-template>
-                                </gmd:type>
-                                <gmd:thesaurusName>
-                                    <xsl:attribute name="gco:nilReason">
-                                        <xsl:value-of select="'unknown'"/>
-                                    </xsl:attribute>
-                                </gmd:thesaurusName>
-                            </gmd:MD_Keywords>
-                        </gmd:descriptiveKeywords>
-                    </xsl:if>
                     <xsl:if test="count($publisherName)">
                         <gmd:descriptiveKeywords>
                             <gmd:MD_Keywords>
