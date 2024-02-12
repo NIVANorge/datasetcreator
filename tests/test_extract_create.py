@@ -11,8 +11,9 @@ from datetime import datetime, timedelta
 import pytest
 import xarray as xr
 
-from dscreator.sources import ferrybox
+from dscreator.sources import ferrybox, odm2
 from dscreator.datasets.trajectories.ferrybox import NorsoopFantasy
+from dscreator.datasets.timeseries.msource import MSourceInletBuilder
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "nc")
 
@@ -43,3 +44,32 @@ def test_ferrybox_ds_create(ferrybox_extractor: ferrybox.extractor.TrajectoryExt
     assert ds.temperature.equals(ds_expected.sea_water_temperature)
     assert ds.salinity.equals(ds_expected.salinity)
     assert ds.oxygen.equals(ds_expected.oxygen)
+
+
+@pytest.mark.docker
+def test_timeseries_ds_create(db_engine):
+    timeseries_extractor = odm2.extractor.TimeseriesExtractor(
+        db_engine,
+        sampling_feature_code="MSOURCE1",
+        variable_codes=[
+            "Temp",
+            "LevelValue",
+            "Turbidity",
+        ]
+    )
+    ds = MSourceInletBuilder(
+        uuid="uuid",
+        dataset_name="datasetname",
+        station_name="stationname",
+        project_name="projectname",
+        is_acdd=True,
+    ).create(timeseries_extractor.fetch_slice(datetime(2022, 9, 14, 14, 19), datetime(2022, 9, 17, 14, 20)))
+
+    ds_expected = xr.open_dataset(os.path.join(TEST_DATA_DIR, "msource_test_dataset.nc"))
+    assert ds.temp.equals(ds_expected.temp)
+    assert ds.levelvalue.equals(ds_expected.levelvalue)
+    assert ds.turbidity.equals(ds_expected.turbidity)
+    for k in ds.attrs:
+        assert k in ds_expected.attrs
+        if k not in ["date_created"]:
+            assert ds.attrs[k]==ds_expected.attrs[k]
