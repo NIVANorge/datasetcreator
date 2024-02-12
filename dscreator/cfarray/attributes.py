@@ -22,6 +22,7 @@ class CFVariableAttrs(VariableAttrsBase):
     long_name: str
     units: str
 
+
 @dataclass
 class VariableAttrs(VariableAttrsBase):
     short_name: str
@@ -29,9 +30,8 @@ class VariableAttrs(VariableAttrsBase):
 
 @dataclass
 class FlagAttrs:
-    """CF Flag attributes
+    """CF Flag attributes"""
 
-    """
     long_name: str
     standard_name: str = "status_flag"
     flag_meanings: str = "no_qc_performed good_data probably_good_data bad_data_that_are_potentially_correctable bad_data value_changed value_below_detection nominal_value interpolated_value missing_value"
@@ -43,6 +43,7 @@ class FlagAttrs:
         self.valid_max: 9
         self.valid_min: 0
         self.flag_values: List[int] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
 
 @dataclass
 class AltitudeAttrs:
@@ -168,5 +169,5 @@ class FerryboxDatasetAttrsBase(DatasetAttrsDiscreteBase):
 @dataclass
 class FerryboxDatasetAttrs(DatasetAttrsDefaults, FerryboxDatasetAttrsBase):
     processing_level: str = "Operational"
-    #https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#activity-type
+    # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#activity-type
     source: str = "In Situ Ship-based station"

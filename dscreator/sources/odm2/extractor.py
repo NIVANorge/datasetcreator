@@ -7,7 +7,7 @@ from typing import List
 from sqlalchemy import Engine
 import numpy as np
 
-from dscreator.sources.base import BaseExtractor, NamedTimeArray, NamedTimeseries, Point
+from dscreator.sources.base import BaseExtractor, Point
 from dscreator.sources.odm2.queries import (
     point_by_sampling_code,
     resultuuids_by_code,
@@ -34,38 +34,29 @@ class TimeseriesExtractor(BaseExtractor):
         self,
         start_time: datetime,
         end_time: datetime,
-    ) -> List[NamedTimeseries]:
+    ) -> dict[str, list]:
         """Create a Timeseries from ODM2
 
         Create a timeseries from ODM2 based on samlingfeaturecode and variable code.
         The timeseries is limited to start_time<t<=end_time. If no data is found np.nan is returned
         """
-        query_by_resultid = partial(
-            timeseries_by_resultuuid,
+        res = timeseries_by_resultuuid(
             engine=self.engine,
+            result_uuids=self._resultuuids,
+            variable_names=self.variable_codes,
             start_time=start_time,
             end_time=end_time,
         )
+        data_dict = {v.lower(): [] for v in self.variable_codes}
+        data_dict["time"] = []
+        for value in res:
+            for vname in data_dict:
+                data_dict[vname].append(value[vname])
 
-        named_timeseries = []
-        empty_timeseries = []
-        for ruuid, vname in zip(self._resultuuids, self.variable_codes):
-            res = query_by_resultid(result_uuid=ruuid)
-            if res.datetime:
-                named_timeseries.append(
-                    NamedTimeArray(vname, res.values, datetime_list=res.datetime, locations=[self._point])
-                )
-            else:
-                empty_timeseries.append(
-                    NamedTimeArray(vname, [], datetime_list=[], locations=[self._point])
-                )
+        data_dict["longitude"] = [self._point.longitude]
+        data_dict["latitude"] = [self._point.latitude]
 
-        if named_timeseries and empty_timeseries:
-            for ts in empty_timeseries:
-                ts.datetime_list.append(named_timeseries[0].datetime_list[0])
-                ts.values.append(np.nan)
-
-        return NamedTimeseries(array_list=named_timeseries + empty_timeseries)
+        return data_dict
 
     def _timestamp(self, is_asc: bool) -> datetime:
         return timestamp_by_code(self.engine, self.sampling_feature_code, self.variable_codes, is_asc)

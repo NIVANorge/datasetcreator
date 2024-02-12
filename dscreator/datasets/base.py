@@ -1,14 +1,14 @@
 import abc
 import logging
 from dataclasses import asdict, dataclass
-from typing import List
 
 import xarray as xr
 
 from dscreator.cfarray.attributes import DatasetAttrsDiscrete
-from dscreator.cfarray.time_series import timeseriescoords, timeseriesdataset
-from dscreator.cfarray.trajectory import trajectorycoords, trajectorydataset
-from dscreator.sources.base import FeatureBase, NamedArray, NamedTimeArray, NamedTimeseries, NamedTrajectory
+from dscreator.cfarray.time_series import timeseriescoords
+from dscreator.cfarray.trajectory import trajectorycoords
+from dscreator.cfarray.base import idarray
+from dscreator.cfarray.dims import TIME
 
 
 @dataclass
@@ -20,23 +20,15 @@ class DatasetBuilder(abc.ABC):
     is_acdd: bool
 
     @abc.abstractmethod
-    def create(self, named_timeseries: FeatureBase) -> xr.Dataset:
+    def create(self, data_dict: dict[str, dict]) -> xr.Dataset:
         """Entrypoint for creating a xarray dataset"""
         pass
 
     @abc.abstractmethod
-    def cftimearray(self, timeseries: NamedArray) -> xr.DataArray:
-        """Convert a NamedTimearray to a coordinated dataarray
+    def variable_attributes(self, variable_name: str) -> dict:
+        """Match variable name to C&F
 
-        The variables names are also mapped to C&F variables if possible.
-        """
-        pass
-
-    @abc.abstractmethod
-    def map_to_cfarray(self, timeseries: NamedArray) -> xr.DataArray:
-        """Match timeserie data to C&F
-
-        Match timeseries data to the climate and forecast convention based on the given variable code.
+        Match variable name to the climate and forecast convention based on the given variable code.
         Standard names are found at http://vocab.nerc.ac.uk/collection/P07/current/
         online unit list on https://ncics.org/portfolio/other-resources/udunits2/
         """
@@ -57,65 +49,57 @@ class DatasetBuilder(abc.ABC):
 
 @dataclass
 class TimeseriesDatasetBuilder(DatasetBuilder):
-    def create(self, named_timeseries: NamedTimeseries) -> xr.Dataset:
+    def create(self, data_dict: dict[str, list]) -> xr.Dataset:
         """Entrypoint for creating a xarray dataset"""
 
-        time_arrays = map(self.cftimearray, named_timeseries.array_list)
+        ds = xr.Dataset.from_dict(
+            {k: dict(dims=(TIME), data=data_dict[k]) for k in data_dict if k not in ["latitude", "longitude"]}
+        )
+        ds = ds.assign_coords(
+            timeseriescoords(
+                time=ds.time,
+                latitude=data_dict["latitude"][0],
+                longitude=data_dict["longitude"][0],
+            )
+        )
+        for variable in ds.data_vars:
+            ds[variable].attrs = self.variable_attributes(variable)
 
-        ds = timeseriesdataset(named_dataarrays=list(time_arrays), station_name=self.station_name)
         ds.attrs["id"] = self.uuid
+        ds["station_name"] = idarray(self.station_name, "timeseries_id")
+        ds.attrs["featureType"] = "timeseries"
 
         if self.is_acdd and ds.dims["time"] > 0:
             # need to have data to add acdd
             self.add_acdd(ds)
 
         return ds
-
-    def cftimearray(self, timeseries: NamedTimeArray) -> xr.DataArray:
-        """Convert a NamedTimeseries to a coordinated dataarray
-
-        The variables names are also mapped to C&F variables if possible.
-        """
-
-        array = self.map_to_cfarray(timeseries)
-
-        return array.assign_coords(
-            timeseriescoords(
-                time=timeseries.datetime_list,
-                latitude=timeseries.locations[0].latitude,
-                longitude=timeseries.locations[0].longitude,
-            )
-        )
 
 
 @dataclass
 class TrajectoryDatasetBuilder(DatasetBuilder):
-    def create(self, named_trajectory: NamedTrajectory) -> xr.Dataset:
+    def create(self, data_dict: dict[str, list]) -> xr.Dataset:
         """Entrypoint for creating a xarray dataset"""
 
-        time_arrays = map(self.cftimearray, named_trajectory.array_list)
-        ds = trajectorydataset(named_dataarrays=list(time_arrays), trajectory_name=self.station_name)
+        ds = xr.Dataset.from_dict({k: dict(dims=(TIME), data=data_dict[k]) for k in data_dict})
+
         ds = ds.assign_coords(
             trajectorycoords(
-                time=named_trajectory.datetime_list,
-                latitude=[loc.latitude for loc in named_trajectory.locations],
-                longitude=[loc.longitude for loc in named_trajectory.locations],
+                time=data_dict["time"],
+                latitude=data_dict["latitude"],
+                longitude=data_dict["longitude"],
             )
         )
+
+        for variable in ds.data_vars:
+            ds[variable].attrs = self.variable_attributes(variable)
+
         ds.attrs["id"] = self.uuid
+        ds["trajectory_name"] = idarray(self.station_name, "trajectory_id")
+        ds.attrs["featureType"] = "trajectory"
 
         if self.is_acdd and ds.dims["time"] > 0:
             # need to have data to add acdd
             self.add_acdd(ds)
 
         return ds
-
-    def cftimearray(self, array: NamedArray) -> xr.DataArray:
-        """Convert a NamedArray to a cf array
-
-        The variables names are also mapped to C&F variables if possible.
-        """
-
-        cf_array = self.map_to_cfarray(array)
-
-        return cf_array

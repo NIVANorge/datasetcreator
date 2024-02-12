@@ -1,5 +1,3 @@
-from typing import Annotated, Optional
-
 from pydantic_settings import BaseSettings
 
 

@@ -33,8 +33,10 @@ def from_isoformat(iso_str: str) -> datetime:
     """Convert iso str to datetime"""
     return datetime.strptime(iso_str, "%Y-%m-%dT%H:%M:%SZ")
 
+
 def iso_now() -> str:
     return to_isoformat(datetime.utcnow())
+
 
 @dataclass
 class DatetimeInterval:

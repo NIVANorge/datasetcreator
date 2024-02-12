@@ -1,6 +1,5 @@
 from dataclasses import asdict, dataclass
 from datetime import datetime
-from functools import partial
 from typing import List
 
 import xarray as xr

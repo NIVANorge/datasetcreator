@@ -24,4 +24,3 @@ for ds_name, uuid, cat_name in datasets:
     res = requests.get(ds_url)
     with open(os.path.join(target_path, f"{ds_name.split('/')[-1]}.xml"), "w") as f:
         f.write(res.text)
-# %%

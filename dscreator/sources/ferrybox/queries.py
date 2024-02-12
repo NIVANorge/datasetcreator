@@ -53,7 +53,7 @@ def get_ts(
     uuids: List[str],
     start_time: datetime,
     end_time: datetime,
-    qc_flags: List[str] = [-1,0,1]
+    qc_flags: List[str] = [-1, 0, 1],
 ) -> Sequence[RowMapping]:
     """Query track
     The timeseries is limited to start_time<t<=end_time.
@@ -79,7 +79,9 @@ def get_ts(
     ORDER BY
         track.time ASC
     """
-    ).bindparams(track_uuid=track_uuid, uuids=tuple(uuids), start_time=start_time, end_time=end_time, qc_flags=tuple(qc_flags))
+    ).bindparams(
+        track_uuid=track_uuid, uuids=tuple(uuids), start_time=start_time, end_time=end_time, qc_flags=tuple(qc_flags)
+    )
 
     with engine.connect() as conn:
         return conn.execute(query).mappings().all()

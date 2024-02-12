@@ -33,12 +33,7 @@ def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
         sampling_feature_code="MSOURCE1",
-        variable_codes=[
-            "Temp",
-            "LevelValue",
-            "Turbidity",
-            "CondValue"
-        ],
+        variable_codes=["Temp", "LevelValue", "Turbidity", "CondValue"],
     )
 
     dataset_builder = timeseries.msource.MSourceInletBuilder(
@@ -72,11 +67,7 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
         sampling_feature_code="MSOURCE2",
-        variable_codes=[
-            "LevelValue",
-            "Turbidity",
-            "CondValue"
-        ],
+        variable_codes=["LevelValue", "Turbidity", "CondValue"],
     )
 
     dataset_builder = timeseries.msource.MSourceOutletBuilder(
@@ -138,7 +129,6 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
     )
 
     runner.start()
-
 
 
 if __name__ == "__main__":

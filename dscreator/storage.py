@@ -39,7 +39,7 @@ class BaseHandler(abc.ABC):
         self.workdir = os.path.join("datasets", self.project_name.lower(), self.dataset_name)
         self.restart_filepath = os.path.join(self.workdir, "." + self.dataset_name + ".restart.json")
 
-    def save_netcdf(self, ds: xr.Dataset, filename: str, encoding: Optional[Dict]=None):
+    def save_netcdf(self, ds: xr.Dataset, filename: str, encoding: Optional[Dict] = None):
         if encoding is None:
             encoding = default_encoding(ds)
         ds.to_netcdf(filename, unlimited_dims=self.unlimited_dims, encoding=encoding)
@@ -101,12 +101,11 @@ class GCSStorageHandler(BaseHandler):
         self.save_netcdf(ds, tmp_file.name, encoding)
         bucket = storage_client.bucket(self.bucket_name)
         blob = bucket.blob(filepath)
-        blob.chunk_size = 5 * 1024 * 1024 # Set 5 MB blob size
+        blob.chunk_size = 5 * 1024 * 1024  # Set 5 MB blob size
         blob.upload_from_filename(tmp_file.name)
         tmp_file.close()
 
         return os.path.join(SETTINGS.storage_path, filepath)
-
 
     def save_restart(self, ds: xr.Dataset):
         """Fetch restart info from the given storage"""
@@ -190,7 +189,7 @@ def get_storage_handler(
     Wrapper that selects storage handler based on 'SETTINGS.storage_path' env variable.
 
     filename_prefix(optional): a prefix for the filename for dynamic data it is infered from the 'time' dimension
-    encoding (optional): extra encoding for data variables, 'time' will use default from TIME_ENCODING. 
+    encoding (optional): extra encoding for data variables, 'time' will use default from TIME_ENCODING.
                          Try to avoid int64 encoding since it can be troublesome for some clients
     """
 

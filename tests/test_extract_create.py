@@ -21,9 +21,9 @@ TEST_DATA_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data"
 def ferrybox_extractor(db_engine) -> ferrybox.extractor.TrajectoryExtractor:
     traj_extractor = ferrybox.extractor.TrajectoryExtractor(
         db_engine,
-        variable_codes=["Temperature", "Salinity", "Oxygen"],
-        variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER['FA_20'],
-        qc_flags=[1]
+        variable_codes=["temperature", "salinity", "oxygen"],
+        variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["FA_20"],
+        qc_flags=[1],
     )
     return traj_extractor
 
