@@ -43,7 +43,14 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
             platform_code="FA",
             platform_name="Color Fantasy",
             date_created=utils.iso_now(),
-            project="NorSOOP RCN 269922; JERICO-RI (H2020 JERICO-S3 871153 JERICO-NEXT 654410), Norwegian Environment Agency, Inner and Outer Oslofjord Fagrådet",
+            project=",".join(
+                [
+                    "Norwegian Ships of Opportunity program (NorSOOP ID 269922)",
+                    "Joint European Research Infrastructure of Coastal Observatories (JERICO-S3 ID 871153 JERICO-NEXT ID 654410)",
+                    "Norwegian Environment Agency",
+                    "Inner and Outer Oslofjord Fagrådet",
+                ]
+            ),
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
             geospatial_lat_min=53.8,
