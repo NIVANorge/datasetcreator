@@ -1,13 +1,11 @@
 import logging
 from dataclasses import dataclass
-from datetime import datetime
 
 import xarray as xr
 from dataclasses import asdict
 
 from dscreator import utils
 from dscreator.cfarray.attributes import CFVariableAttrs, DatasetAttrsDiscrete
-from dscreator.cfarray.base import dataarraybytime
 from dscreator.datasets.base import TimeseriesDatasetBuilder
 
 

@@ -6,7 +6,7 @@ dscreator.sources and dscreator.datasets
 
 import os
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import pytest
 import xarray as xr

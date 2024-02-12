@@ -4,8 +4,6 @@ from datetime import datetime, timedelta
 from typing import List, Union
 
 import numpy as np
-import pytz
-import xarray as xr
 
 
 def numpy_to_datetime(dt: np.datetime64) -> datetime:

@@ -1,6 +1,5 @@
 import logging
 from dataclasses import dataclass, asdict
-from datetime import datetime
 
 import xarray as xr
 
