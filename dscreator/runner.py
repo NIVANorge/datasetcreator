@@ -13,10 +13,15 @@ from dscreator.utils import DatetimeInterval
 @dataclass
 class DataRunner:
     extractor: base.BaseExtractor
+    """The extractor to use for data retrieval for example TimeseriesExtractor or TrajectoryExtractor"""
     dataset_builder: Union[TimeseriesDatasetBuilder, TrajectoryDatasetBuilder]
+    """The dataset builder to use for creating the dataset, for example TimeseriesDatasetBuilder or TrajectoryDatasetBuilder"""
     hourly_delta: int
+    """The number of hours to use for each time interval"""
     n_intervals: int
+    """The number of intervals to use, if 0 all intervals are used"""
     custom_start_time: Optional[datetime] = None
+    """Optional a custom start time to use for the export"""
     time_intervals: List[DatetimeInterval] = field(init=False)
     storage_handler: BaseHandler = field(init=False)
 
