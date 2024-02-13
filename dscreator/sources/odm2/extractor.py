@@ -38,8 +38,13 @@ class TimeseriesExtractor(BaseExtractor):
         """Create a Timeseries from ODM2
 
         Create a timeseries from ODM2 based on samlingfeaturecode and variable code.
-        The timeseries is limited to start_time<t<=end_time. If no data is found np.nan is returned
+        The timeseries is limited to start_time<t<=end_time. The result is a dictionary with the following keys:
+        - time (list of datetime)
+        - variable_names (list of float)
+        - latitude (list of float) only one value mapped to a scalar
+        - longitude (list of float) only one value mapped to a scalar
         """
+
         res = timeseries_by_resultuuid(
             engine=self.engine,
             result_uuids=self._resultuuids,

@@ -15,9 +15,13 @@ from dscreator.cfarray.dims import TIME
 class DatasetBuilder(abc.ABC):
     uuid: str
     dataset_name: str
+    """The name of the dataset"""
     station_name: str
+    """The name of the station, added to cf_role"""
     project_name: str
+    """The name of the project, lower cases and underscores used to construct the storage path"""
     is_acdd: bool
+    """If the dataset should have ACDD attributes"""
 
     @abc.abstractmethod
     def create(self, data_dict: dict[str, dict]) -> xr.Dataset:
@@ -50,7 +54,18 @@ class DatasetBuilder(abc.ABC):
 @dataclass
 class TimeseriesDatasetBuilder(DatasetBuilder):
     def create(self, data_dict: dict[str, list]) -> xr.Dataset:
-        """Entrypoint for creating a xarray dataset"""
+        """Entrypoint for creating a xarray dataset
+        
+        The data_dict should contain the following keys:
+        - time (list of datetime)                   coordinate and dimension
+        - latitude (list of float with length 1)    coordinate
+        - longitude (list of float with length 1)   coordinate
+        - any other data variables                  data variables
+
+        The data variables should have the same length as the time list. The data variables will be match to
+        the climate and forecast convention based on the given variable code, see the variable_attributes method in the subclass.
+        The latitude and longitude should have a length of 1, as they are the same for all the time steps.
+        """
 
         ds = xr.Dataset.from_dict(
             {k: dict(dims=(TIME), data=data_dict[k]) for k in data_dict if k not in ["latitude", "longitude"]}
@@ -79,7 +94,16 @@ class TimeseriesDatasetBuilder(DatasetBuilder):
 @dataclass
 class TrajectoryDatasetBuilder(DatasetBuilder):
     def create(self, data_dict: dict[str, list]) -> xr.Dataset:
-        """Entrypoint for creating a xarray dataset"""
+        """Entrypoint for creating a xarray dataset
+        
+        The data_dict should contain the following keys:
+        - time (list of datetime)   coordinate and dimension
+        - latitude (list of float)  coordinate
+        - longitude (list of float) coordinate
+        - any other data variables  data variables
+        
+        All lists should have the same length and time should be increasing. The data variables will be match to
+        the climate and forecast convention based on the given variable code, see the variable_attributes method in the subclass."""
 
         ds = xr.Dataset.from_dict({k: dict(dims=(TIME), data=data_dict[k]) for k in data_dict})
 
