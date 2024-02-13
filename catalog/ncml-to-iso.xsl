@@ -135,14 +135,7 @@
             <gmd:fileIdentifier>
                 <xsl:call-template name="writeCharacterString">
                     <xsl:with-param name="stringToWrite">
-                        <xsl:choose>
-                            <xsl:when test="$identifierNameSpace[1]">
-                                <xsl:value-of select="concat($identifierNameSpace[1],':',$id[1])"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="$id[1]"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
+                        <xsl:value-of select="$id[1]"/>
                     </xsl:with-param>
                 </xsl:call-template>
             </gmd:fileIdentifier>
