@@ -41,7 +41,7 @@ class TrajectoryExtractor(BaseExtractor):
 
         The all list should have the same length and time should be increasing.
         """
-    
+
         data_dict = {v: [] for v in ["time", "latitude", "longitude"] + self.variable_codes + self.qc_variables}
         value_template = {v: (None, None) for v in self.variable_uuid_map.values()}
         data_list = get_ts(

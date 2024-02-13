@@ -55,7 +55,7 @@ def test_timeseries_ds_create(db_engine):
             "Temp",
             "LevelValue",
             "Turbidity",
-        ]
+        ],
     )
     ds = MSourceInletBuilder(
         uuid="uuid",
@@ -72,4 +72,4 @@ def test_timeseries_ds_create(db_engine):
     for k in ds.attrs:
         assert k in ds_expected.attrs
         if k not in ["date_created"]:
-            assert ds.attrs[k]==ds_expected.attrs[k]
+            assert ds.attrs[k] == ds_expected.attrs[k]

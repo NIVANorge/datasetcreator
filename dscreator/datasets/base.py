@@ -55,7 +55,7 @@ class DatasetBuilder(abc.ABC):
 class TimeseriesDatasetBuilder(DatasetBuilder):
     def create(self, data_dict: dict[str, list]) -> xr.Dataset:
         """Entrypoint for creating a xarray dataset
-        
+
         The data_dict should contain the following keys:
         - time (list of datetime)                   coordinate and dimension
         - latitude (list of float with length 1)    coordinate
@@ -95,15 +95,16 @@ class TimeseriesDatasetBuilder(DatasetBuilder):
 class TrajectoryDatasetBuilder(DatasetBuilder):
     def create(self, data_dict: dict[str, list]) -> xr.Dataset:
         """Entrypoint for creating a xarray dataset
-        
+
         The data_dict should contain the following keys:
         - time (list of datetime)   coordinate and dimension
         - latitude (list of float)  coordinate
         - longitude (list of float) coordinate
         - any other data variables  data variables
-        
+
         All lists should have the same length and time should be increasing. The data variables will be match to
-        the climate and forecast convention based on the given variable code, see the variable_attributes method in the subclass."""
+        the climate and forecast convention based on the given variable code, see the variable_attributes method in the subclass.
+        """
 
         ds = xr.Dataset.from_dict({k: dict(dims=(TIME), data=data_dict[k]) for k in data_dict})
 
