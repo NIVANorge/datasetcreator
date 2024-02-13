@@ -31,11 +31,19 @@ class TrajectoryExtractor(BaseExtractor):
         start_time: datetime,
         end_time: datetime,
     ) -> dict[str, list]:
-        """Create a Timeseries from tsb
+        """Create a data dictonary trajectory from tsb
 
-        The timeseries is limited to start_time<t<=end_time.
+        The the data dictonary is limited to start_time<t<=end_time. The result is a dictionary with the following keys:
+        - time (list of datetime)
+        - variable_names (list of float)
+        - latitude (list of float)
+        - longitude (list of float)
+
+        The all list should have the same length and time should be increasing.
         """
-
+    
+        data_dict = {v: [] for v in ["time", "latitude", "longitude"] + self.variable_codes + self.qc_variables}
+        value_template = {v: (None, None) for v in self.variable_uuid_map.values()}
         data_list = get_ts(
             self.engine,
             track_uuid=self.variable_uuid_map["track"],
@@ -44,23 +52,6 @@ class TrajectoryExtractor(BaseExtractor):
             end_time=end_time,
             qc_flags=self.qc_flags,
         )
-
-        return self._to_dict(data_list)
-
-    def _to_dict(self, data_list: Sequence[RowMapping]) -> dict[str, list]:
-        """Convert data_list to a dictionary of lists
-
-        Assumes data_list is sorted ascending on time.
-        The dict will contain the following keys:
-            - time
-            - latitude
-            - longitude
-            - variable_codes
-            - qc_variables
-        """
-
-        data_dict = {v: [] for v in ["time", "latitude", "longitude"] + self.variable_codes + self.qc_variables}
-        value_template = {v: (None, None) for v in self.variable_uuid_map.values()}
 
         previous_point = current_point = data_list.pop(0)
         value_template[str(previous_point.uuid)] = (previous_point.value, previous_point.qc)
