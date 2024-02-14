@@ -55,7 +55,9 @@ class DataRunner:
     def start(self):
         """Start the dataset export
 
-        Create one file for each time interval and if there are data store a restart file
+        This method will extract data from the extractor and create datasets using the dataset builder.
+        The datasets are then saved using the storage handler. If a restart file is found the export will start from 
+        the end time of the restart file. If a custom start time is given the export will start from that time.
         """
 
         logging.info(f"Start dumping for {self.time_intervals[0].start_time} -> {self.time_intervals[-1].end_time}")
