@@ -16,7 +16,7 @@ datasets = []
 for cat in ["ferryboxes", "loggers"]:
     cat_doc = etree.fromstring(requests.get(f"{catalog_base}/{cat}.xml").content)
     for el in cat_doc:
-        if el.tag.endswith("dataset") and el[0].text in ["trajectory", "timeseries"]:
+        if el.tag.endswith("dataset") and el[0].text in ["trajectory", "trajectory-download", "timeseries"]:
             datasets.append((el.get("urlPath"), el.get("ID"), cat))
 
 # %%
