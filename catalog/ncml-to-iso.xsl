@@ -56,10 +56,10 @@
     <!--jmaurer-->
     <xsl:variable name="places" select="(/nc:netcdf/nc:group[@name='THREDDSMetadata']/nc:group[@name='vocab'])"/>
     <!-- Extent Search Fields: 17 possible -->
-    <xsl:variable name="geospatial_lat_min" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='geospatial_lat_min']/@value)"/>
-    <xsl:variable name="geospatial_lat_max" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='geospatial_lat_max']/@value)"/>
-    <xsl:variable name="geospatial_lon_min" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='geospatial_lon_min']/@value)"/>
-    <xsl:variable name="geospatial_lon_max" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='geospatial_lon_max']/@value)"/>
+    <xsl:variable name="geospatial_lat_min" as="xs:string*" select="(/nc:netcdf/nc:attribute[@name='geospatial_lat_min']/@value)"/>
+    <xsl:variable name="geospatial_lat_max" as="xs:string*" select="(/nc:netcdf/nc:attribute[@name='geospatial_lat_max']/@value)"/>
+    <xsl:variable name="geospatial_lon_min" as="xs:string*" select="(/nc:netcdf/nc:attribute[@name='geospatial_lon_min']/@value)"/>
+    <xsl:variable name="geospatial_lon_max" as="xs:string*" select="(/nc:netcdf/nc:attribute[@name='geospatial_lon_max']/@value)"/>
     <xsl:variable name="timeStart" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='time_coverage_start']/@value)"/>
     <xsl:variable name="timeEnd" as="xs:string*" select="(/nc:netcdf/nc:group[@name='CFMetadata']/nc:attribute[@name='time_coverage_end']/@value)"/>
     <xsl:variable name="timeStartCnt" select="count($timeStart)"/>
@@ -135,14 +135,7 @@
             <gmd:fileIdentifier>
                 <xsl:call-template name="writeCharacterString">
                     <xsl:with-param name="stringToWrite">
-                        <xsl:choose>
-                            <xsl:when test="$identifierNameSpace[1]">
-                                <xsl:value-of select="concat($identifierNameSpace[1],':',$id[1])"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="$id[1]"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
+                        <xsl:value-of select="$id[1]"/>
                     </xsl:with-param>
                 </xsl:call-template>
             </gmd:fileIdentifier>
@@ -399,7 +392,17 @@
                         <xsl:with-param name="organisationName" select="$institution[1]"/>
                         <xsl:with-param name="email" select="$creatorEmail[1]"/>
                         <xsl:with-param name="url" select="$creatorURL[1]"/>
-                        <xsl:with-param name="roleCode" select="'pointOfContact'"/>
+                        <xsl:with-param name="roleCode" select="'originator'"/>
+                    </xsl:call-template>
+                    <!-- publisher -->
+                    <xsl:call-template name="writeResponsibleParty">
+                        <xsl:with-param name="tagName" select="'gmd:pointOfContact'"/>
+                        <xsl:with-param name="testValue" select="$publisherTotal"/>
+                        <xsl:with-param name="individualName" select="$publisherName[1]"/>
+                        <xsl:with-param name="organisationName" select="$institution[1]"/>
+                        <xsl:with-param name="email" select="$publisherEmail[1]"/>
+                        <xsl:with-param name="url" select="$publisherURL[1]"/>
+                        <xsl:with-param name="roleCode" select="'publisher'"/>
                     </xsl:call-template>
                     <xsl:if test="count($keywords)">
                         <xsl:for-each select="tokenize($keywordsVocabulary[1],',')">
@@ -446,28 +449,6 @@
                             </gmd:descriptiveKeywords>
                         </xsl:for-each>
                     </xsl:if>
-                    <xsl:if test="count($project)">
-                        <gmd:descriptiveKeywords>
-                            <gmd:MD_Keywords>
-                                <gmd:keyword>
-                                    <gco:CharacterString>
-                                        <xsl:value-of select="$project[1]"/>
-                                    </gco:CharacterString>
-                                </gmd:keyword>
-                                <gmd:type>
-                                    <xsl:call-template name="writeCodelist">
-                                        <xsl:with-param name="codeListName" select="'gmd:MD_KeywordTypeCode'"/>
-                                        <xsl:with-param name="codeListValue" select="'project'"/>
-                                    </xsl:call-template>
-                                </gmd:type>
-                                <gmd:thesaurusName>
-                                    <xsl:attribute name="gco:nilReason">
-                                        <xsl:value-of select="'unknown'"/>
-                                    </xsl:attribute>
-                                </gmd:thesaurusName>
-                            </gmd:MD_Keywords>
-                        </gmd:descriptiveKeywords>
-                    </xsl:if>
                     <xsl:if test="count($publisherName)">
                         <gmd:descriptiveKeywords>
                             <gmd:MD_Keywords>
@@ -493,13 +474,13 @@
                     <xsl:if test="$standardNameCnt">
                         <gmd:descriptiveKeywords>
                             <gmd:MD_Keywords>
-                                <xsl:for-each select="/nc:netcdf/nc:variable/nc:attribute[@name='standard_name']">
+                                <xsl:for-each-group select="/nc:netcdf/nc:variable/nc:attribute[@name='standard_name']" group-by="./@value">
                                     <gmd:keyword>
                                         <gco:CharacterString>
                                             <xsl:value-of select="./@value"/>
                                         </gco:CharacterString>
                                     </gmd:keyword>
-                                </xsl:for-each>
+                                </xsl:for-each-group>
                                 <gmd:type>
                                     <xsl:call-template name="writeCodelist">
                                         <xsl:with-param name="codeListName" select="'gmd:MD_KeywordTypeCode'"/>

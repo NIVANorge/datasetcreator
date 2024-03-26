@@ -13,10 +13,15 @@ from dscreator.utils import DatetimeInterval
 @dataclass
 class DataRunner:
     extractor: base.BaseExtractor
+    """The extractor to use for data retrieval for example TimeseriesExtractor or TrajectoryExtractor"""
     dataset_builder: Union[TimeseriesDatasetBuilder, TrajectoryDatasetBuilder]
+    """The dataset builder to use for creating the dataset, for example TimeseriesDatasetBuilder or TrajectoryDatasetBuilder"""
     hourly_delta: int
+    """The number of hours to use for each time interval"""
     n_intervals: int
+    """The number of intervals to use, if 0 all intervals are used"""
     custom_start_time: Optional[datetime] = None
+    """Optional a custom start time to use for the export"""
     time_intervals: List[DatetimeInterval] = field(init=False)
     storage_handler: BaseHandler = field(init=False)
 
@@ -50,7 +55,9 @@ class DataRunner:
     def start(self):
         """Start the dataset export
 
-        Create one file for each time interval and if there are data store a restart file
+        This method will extract data from the extractor and create datasets using the dataset builder.
+        The datasets are then saved using the storage handler. If a restart file is found the export will start from 
+        the end time of the restart file. If a custom start time is given the export will start from that time.
         """
 
         logging.info(f"Start dumping for {self.time_intervals[0].start_time} -> {self.time_intervals[-1].end_time}")
@@ -59,8 +66,8 @@ class DataRunner:
 
         for interval in self.time_intervals:
             logging.info(f"Dumping {interval.start_time} < time <= {interval.end_time}")
-            ts = self.extractor.fetch_slice(start_time=interval.start_time, end_time=interval.end_time)
-            ds = self.dataset_builder.create(ts)
+            data_dict = self.extractor.fetch_slice(start_time=interval.start_time, end_time=interval.end_time)
+            ds = self.dataset_builder.create(data_dict)
             if ds.dims["time"] > 0:
                 logging.info(f"Saving dataset slice {ds.time[0].values} --> {ds.time[-1].values}")
                 self.storage_handler.save_dataset(ds)

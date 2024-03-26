@@ -17,9 +17,10 @@ tenacity = "^8.1.0"
 google-cloud-storage = "^2.7.0"
 SQLAlchemy = "^2.0.0"
 rioxarray = "^0.14.1"
-netcdf4 = "<=1.6.3"
+netcdf4 = "^1.6.5"
 pydantic-settings = "^2.0.3"
 cf-xarray = "^0.8.4"
+numpy = "^1.26.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^6.2.5"
@@ -30,6 +31,7 @@ matplotlib = "^3.5.3"
 requests-mock = "^1.10.0"
 nc-time-axis = "^1.4.1"
 pytest-docker = "^1.0.0"
+lxml = "^4.9.4"
 
 
 [tool.poetry.group.plots.dependencies]

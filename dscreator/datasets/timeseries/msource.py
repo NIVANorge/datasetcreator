@@ -1,14 +1,11 @@
 import logging
-from dataclasses import dataclass
-from datetime import datetime
+from dataclasses import dataclass, asdict
 
 import xarray as xr
 
 from dscreator import utils
 from dscreator.cfarray.attributes import DatasetAttrsDiscrete, VariableAttrs
-from dscreator.cfarray.base import dataarraybytime
 from dscreator.datasets.base import TimeseriesDatasetBuilder
-from dscreator.sources.odm2.extractor import NamedTimeseries
 
 
 @dataclass
@@ -45,7 +42,7 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
             ),
             iso_topic_category="inlandWaters",
             featureType=ds.attrs["featureType"],
-            date_created=str(datetime.now()),
+            date_created=utils.iso_now(),
             project=self.project_name,
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
@@ -53,53 +50,42 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
-            spatial_representation="point"
+            spatial_representation="point",
         )
 
-    def map_to_cfarray(self, timeseries: NamedTimeseries) -> xr.DataArray:
+    def variable_attributes(self, variable_name) -> dict:
         """Match timeserie data to C&F
 
         Match timeseries data to the climate and forecast convention based on the given variable code.
         Standard names are found at http://vocab.nerc.ac.uk/collection/P07/current/
         online unit list on https://ncics.org/portfolio/other-resources/udunits2/
         """
-        match timeseries.variable_name:
-            case "Temp":
-                array = dataarraybytime(
-                    data=timeseries.values,
-                    name="temperature",
-                    attrs=VariableAttrs(
+        match variable_name:
+            case "temp":
+                attrs = asdict(
+                    VariableAttrs(
                         short_name="temperature", long_name="Rain Garden Water Temperature", units="degree_Celsius"
-                    ),
+                    )
                 )
-                array.attrs["comment"] = "An operational parameter affected by a heating device during winter"
-            case "LevelValue":
-                array = dataarraybytime(
-                    data=timeseries.values,
-                    name="levelvalue",
-                    attrs=VariableAttrs(short_name="water_level", long_name="Water Level Weir Box", units="m"),
+
+                attrs["comment"] = "An operational parameter affected by a heating device during winter"
+                return attrs
+            case "levelvalue":
+                return asdict(VariableAttrs(short_name="water_level", long_name="Water Level Weir Box", units="m"))
+
+            case "turbidity":
+                return asdict(
+                    VariableAttrs(short_name="turbidity", long_name="Rain Garden Water Turbidity", units="NTU")
                 )
-            case "Turbidity":
-                array = dataarraybytime(
-                    data=timeseries.values,
-                    name="turbidity",
-                    attrs=VariableAttrs(
-                        short_name="turbidity", long_name="Rain Garden Water Turbidity", units="NTU"
-                    ),
-                )
-            case "CondValue":
-                array = dataarraybytime(
-                    data=timeseries.values,
-                    name="conductivity",
-                    attrs=VariableAttrs(
+            case "condvalue":
+                return asdict(
+                    VariableAttrs(
                         short_name="conductivity", long_name="Rain Garden Water Conductivity", units="uS cm-1"
-                    ),
+                    )
                 )
             case _:
-                logging.warning(f"Array definition not found for: {timeseries.variable_name}")
-                raise RuntimeError(f"Array definition not found for: {timeseries.variable_name}")
-
-        return array
+                logging.warning(f"Array definition not found for: {variable_name}")
+                raise RuntimeError(f"Array definition not found for: {variable_name}")
 
 
 @dataclass
@@ -111,7 +97,7 @@ class MSourceOutletBuilder(MSourceInletBuilder):
         For more information on keywords this is the best resource https://gcmd.earthdata.nasa.gov/KeywordViewer/. We can add keywords and
         also link to the vocabulary.
         """
-         
+
         return DatasetAttrsDiscrete(
             title="MULTISOURCE/DIGIVEIVANN Outlet",
             title_no="MULTISOURCE/DIGIVEIVANN Utløp",
@@ -137,7 +123,7 @@ class MSourceOutletBuilder(MSourceInletBuilder):
             ),
             iso_topic_category="inlandWaters",
             featureType=ds.attrs["featureType"],
-            date_created=str(datetime.now()),
+            date_created=utils.iso_now(),
             project=self.project_name,
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
@@ -145,42 +131,31 @@ class MSourceOutletBuilder(MSourceInletBuilder):
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
-            spatial_representation="point"
+            spatial_representation="point",
         )
 
-
-    def map_to_cfarray(self, timeseries: NamedTimeseries) -> xr.DataArray:
+    def variable_attributes(self, variable_name) -> dict:
         """Match timeserie data to C&F
 
         Match timeseries data to the climate and forecast convention based on the given variable code.
         Standard names are found at http://vocab.nerc.ac.uk/collection/P07/current/
         online unit list on https://ncics.org/portfolio/other-resources/udunits2/
         """
-        match timeseries.variable_name:
-            case "LevelValue":
-                array = dataarraybytime(
-                    data=timeseries.values,
-                    name="levelvalue",
-                    attrs=VariableAttrs(short_name="water_level", long_name="Water Level Manhole", units="m"),
+        match variable_name:
+            case "levelvalue":
+                return asdict(
+                    VariableAttrs(short_name="water_level", long_name="Water Level Manhole", units="m"),
                 )
-            case "Turbidity":
-                array = dataarraybytime(
-                    data=timeseries.values,
-                    name="turbidity",
-                    attrs=VariableAttrs(
-                        short_name="turbidity", long_name="Rain Garden Water Turbidity", units="NTU"
-                    ),
+            case "turbidity":
+                return asdict(
+                    VariableAttrs(short_name="turbidity", long_name="Rain Garden Water Turbidity", units="NTU")
                 )
-            case "CondValue":
-                array = dataarraybytime(
-                    data=timeseries.values,
-                    name="conductivity",
-                    attrs=VariableAttrs(
+            case "condvalue":
+                return asdict(
+                    VariableAttrs(
                         short_name="conductivity", long_name="Rain Garden Water Conductivity", units="uS cm-1"
-                    ),
-                )     
+                    )
+                )
             case _:
-                logging.warning(f"Array definition not found for: {timeseries.variable_name}")
-                raise RuntimeError(f"Array definition not found for: {timeseries.variable_name}")
-
-        return array
+                logging.warning(f"Array definition not found for: {variable_name}")
+                raise RuntimeError(f"Array definition not found for: {variable_name}")

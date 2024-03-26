@@ -28,11 +28,11 @@ def test_timeseries_extractor_timestamps(msource_extractor):
 
 @pytest.mark.docker
 def test_extractor_values(msource_extractor):
-    ts_list = msource_extractor.fetch_slice(datetime(2022, 9, 14, 14, 20), datetime(2022, 9, 15, 14, 20))
-    assert len(ts_list.array_list) == 3
-    assert ts_list.array_list[0].variable_name == "Temp"
-    assert ts_list.array_list[2].variable_name == "Turbidity"
-    assert ts_list.array_list[0].values == [22.1]
+    data_dict = msource_extractor.fetch_slice(datetime(2022, 9, 14, 14, 20), datetime(2022, 9, 15, 14, 20))
+    assert len(data_dict) == 6
+    assert "temp" in data_dict
+    assert "turbidity" in data_dict
+    assert data_dict["temp"] == [22.1]
 
     ts_list_bigger_window = msource_extractor.fetch_slice(datetime(2022, 9, 14, 14, 19), datetime(2022, 9, 15, 14, 20))
-    assert ts_list_bigger_window.array_list[0].values == [22.8, 22.1]
+    assert ts_list_bigger_window["temp"] == [22.8, 22.1]

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import List, Optional
 
-from sqlalchemy import Engine
+from sqlalchemy import Engine, Sequence, RowMapping
 from sqlalchemy.sql import text
 
 from dscreator.sources.base import Point
@@ -38,41 +38,46 @@ class TimeseriesResult:
 
 def timeseries_by_resultuuid(
     engine: Engine,
-    result_uuid: str,
+    result_uuids: List[str],
+    variable_names: List[str],
     start_time: datetime,
     end_time: datetime,
-) -> TimeseriesResult:
+) -> Sequence[RowMapping]:
     """Query a timeserie for a given result uuid
 
     The timeseries is limited to start_time<t<=end_time.
     """
+    cols = ", ".join(
+        [
+            f"max(case when (r.resultuuid='{r}') then datavalue else NULL end) as {v}"
+            for r, v in zip(result_uuids, variable_names)
+        ]
+    )
     query = text(
-        """
+        f"""
     SELECT
-        valuedatetime,
-        datavalue
+        valuedatetime as time, {cols}
     FROM
         odm2.timeseriesresultvalues tsrv
         JOIN odm2.results r ON r.resultid = tsrv.resultid
     WHERE
-        r.resultuuid = :result_uuid
+        r.resultuuid IN :result_uuids
         AND tsrv.valuedatetime > :start_time
         AND tsrv.valuedatetime <= :end_time
         AND tsrv.qualitycodecv != 'Bad'
         AND tsrv.censorcodecv != 'Discarded'
+    GROUP BY
+        tsrv.valuedatetime
     ORDER BY
         tsrv.valuedatetime ASC
     """
-    ).bindparams(result_uuid=result_uuid, start_time=start_time, end_time=end_time)
+    ).bindparams(result_uuids=tuple(result_uuids), start_time=start_time, end_time=end_time)
 
-    logging.info(f"Querying timeseries for resultuuid {result_uuid}")
+    logging.info(f"Querying timeseries for resultuuid {result_uuids}")
 
     with engine.connect() as conn:
         res = conn.execute(query)
-        res_dict = res.mappings().all()
-    return TimeseriesResult(
-        result_uuid, values=[r["datavalue"] for r in res_dict], datetime=[r["valuedatetime"] for r in res_dict]
-    )
+        return res.mappings().all()
 
 
 @dataclass

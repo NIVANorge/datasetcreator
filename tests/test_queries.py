@@ -28,6 +28,7 @@ def test_resultids(db_engine):
 @pytest.mark.docker
 def test_timeseries_values(db_engine):
     ts = queries.timeseries_by_resultuuid(
-        db_engine, "23a7cdcc-e61b-4993-a5fe-a18f35f860b2", datetime(2022, 9, 14), datetime(2022, 9, 15)
+        db_engine, ["23a7cdcc-e61b-4993-a5fe-a18f35f860b2"], ["somevalue"], datetime(2022, 9, 14), datetime(2022, 9, 15)
     )
-    assert len(ts.values) == 2
+    assert len(ts) == 2
+    assert ts[0]["somevalue"] == 0.128

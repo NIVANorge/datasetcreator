@@ -1,4 +1,5 @@
 notebooks/data/*
+notebooks/*_acdd_color_fantasy.*
 scripts/example*.nc
 catalog/**/*.nc
 catalog/metadata/*.xml
@@ -148,3 +149,5 @@ secrets
 loggers_qc/data_analysis
 loggers_qc/scripts/*csv
 loggers_ingestor/scripts/*dat
+notebooks/merged_acdd_color_fantasy.csv
+catalog/datasets/references/Method_description_NorSOOP.pdf

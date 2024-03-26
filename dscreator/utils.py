@@ -4,8 +4,6 @@ from datetime import datetime, timedelta
 from typing import List, Union
 
 import numpy as np
-import pytz
-import xarray as xr
 
 
 def numpy_to_datetime(dt: np.datetime64) -> datetime:
@@ -32,6 +30,10 @@ def to_isoformat(date_time: Union[np.datetime64, datetime]) -> str:
 def from_isoformat(iso_str: str) -> datetime:
     """Convert iso str to datetime"""
     return datetime.strptime(iso_str, "%Y-%m-%dT%H:%M:%SZ")
+
+
+def iso_now() -> str:
+    return to_isoformat(datetime.utcnow())
 
 
 @dataclass

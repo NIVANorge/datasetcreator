@@ -1,16 +1,27 @@
+# %%
 import os
 import requests
+from lxml import etree
 
-current_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "catalog", "metadata")
-tds_url = "https://thredds.niva.no/thredds/iso/datasets"
-cat_base = "catalog=file:/usr/local/tomcat/content/thredds/subcatalogs"
-datasets = [
-    ("msource-inlet", "d2675936-8ebf-4fc5-988c-4a5198b2df57", "loggers"),
-    ("msource-outlet", "4b123377-e0a6-4c7e-b466-2f8a3199bc86", "loggers")
-]
+# %%
 
+cat_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "catalog", "metadata")
+target_path = os.environ.get("METADATA_PATH", cat_path)
+catalog_base = "https://thredds.niva.no/thredds/catalog/subcatalogs"
+iso_url = "https://thredds.niva.no/thredds/iso"
+cat_file = "catalog=file:/usr/local/tomcat/content/thredds/subcatalogs"
+
+# %%
+datasets = []
+for cat in ["ferryboxes", "loggers"]:
+    cat_doc = etree.fromstring(requests.get(f"{catalog_base}/{cat}.xml").content)
+    for el in cat_doc:
+        if el.tag.endswith("dataset") and el[0].text in ["trajectory", "trajectory-download", "timeseries"]:
+            datasets.append((el.get("urlPath"), el.get("ID"), cat))
+
+# %%
 for ds_name, uuid, cat_name in datasets:
-    ds_url = f"{tds_url}/{ds_name}.nc?{cat_base}/{cat_name}.xml&dataset={uuid}"
+    ds_url = f"{iso_url}/{ds_name}?{cat_file}/{cat_name}.xml&dataset={uuid}"
     res = requests.get(ds_url)
-    with open(os.path.join(current_path, f"{ds_name}.xml"), "w") as f:
+    with open(os.path.join(target_path, f"{ds_name.split('/')[-1]}.xml"), "w") as f:
         f.write(res.text)

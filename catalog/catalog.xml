@@ -44,7 +44,7 @@
   <dataset name="Test MSOURCE/DIGIVEIVANN Inlet" ID="testmsourceinlet" serviceName="timeseries"
     urlPath="datasets/msource-inlet.nc">
     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
-      <attribute name="id" value="d2675936-8ebf-4fc5-988c-4a5198b2df57" />
+      <attribute name="id" value="d2675936" />
       <group name="THREDDSMetadata">
         <group name="services">
           <attribute name="opendap_service"
@@ -61,7 +61,7 @@
   <dataset name="Test MSOURCE/DIGIVEIVANN Outlet" ID="testmsourceoutlet" serviceName="timeseries"
     urlPath="datasets/msource-outlet.nc">
     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
-      <attribute name="id" value="4b123377-e0a6-4c7e-b466-2f8a3199bc86" />
+      <attribute name="id" value="4b123377" />
       <group name="THREDDSMetadata">
         <group name="services">
           <attribute name="opendap_service"
@@ -74,6 +74,10 @@
         <scan location="/datasets/multisource/msource-outlet" regExp=".*msource-outlet.nc" />
       </aggregation>
     </netcdf>
+  </dataset>
+  <dataset ID="samplefa" name="Test FA dataset" urlPath="datasets/colorfantasy_ferrybox/FA_merged_acdd_color_fantasy.nc" serviceName="trajectory">
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/datasets/colorfantasy_ferrybox/color_fantasy/FA_merged_acdd_color_fantasy.nc">
+  </netcdf>
   </dataset>
   <datasetScan name="Files" ID="testDatasetScan" path="testAll" location="/datasets">
     <metadata

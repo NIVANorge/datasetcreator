@@ -33,12 +33,7 @@ def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
         sampling_feature_code="MSOURCE1",
-        variable_codes=[
-            "Temp",
-            "LevelValue",
-            "Turbidity",
-            "CondValue"
-        ],
+        variable_codes=["Temp", "LevelValue", "Turbidity", "CondValue"],
     )
 
     dataset_builder = timeseries.msource.MSourceInletBuilder(
@@ -72,11 +67,7 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
         sampling_feature_code="MSOURCE2",
-        variable_codes=[
-            "LevelValue",
-            "Turbidity",
-            "CondValue"
-        ],
+        variable_codes=["LevelValue", "Turbidity", "CondValue"],
     )
 
     dataset_builder = timeseries.msource.MSourceOutletBuilder(
@@ -132,36 +123,6 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
 
     runner = DataRunner(
         extractor=timeseries_extractor,
-        dataset_builder=dataset_builder,
-        hourly_delta=max_time_slice,
-        n_intervals=stop_after_n_files,
-    )
-
-    runner.start()
-
-
-@app.command()
-def rt_ferrybox_FA(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
-    """Build test ferrybox dataset from data in timescale db
-    The dataset tries to follow the climate & forecast convention and is dumped as netcdf
-    """
-
-    logging.info("Exporting rt_ferrybox_FA dataset")
-    engine = create_engine(SETTINGS.database_url)
-    trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
-        engine, "FA", ["Temperature", "Oxygen", "Salinity"]  # ["Turbidity",  "cDOM", "Chlorophyll"]
-    )
-    #
-    dataset_builder = trajectories.ferrybox.FerryboxTrajBuilder(
-        uuid="29b7de62-e1fa-4dce-90e4-7ff8a0931397",
-        dataset_name="rt_ferrybox_FA",
-        station_name="Color Fantasy",
-        project_name="NorSoop",
-        is_acdd=acdd,
-    )
-
-    runner = DataRunner(
-        extractor=trajectory_extractor,
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
