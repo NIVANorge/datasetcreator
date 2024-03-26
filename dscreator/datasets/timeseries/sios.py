@@ -69,7 +69,7 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                         standard_name="sea_water_temperature", long_name="Sea Water Temperature", units="degree_Celsius"
                     )
                 )
-            case "turbidity":
+            case "turbcalib":
                 return asdict(
                     CFVariableAttrs(standard_name="sea_water_turbidity", long_name="Sea Water Turbidity", units="NTU")
                 )
