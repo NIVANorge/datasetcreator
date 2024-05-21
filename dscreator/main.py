@@ -28,7 +28,7 @@ def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
 
     logging.info("Exporting MSOURCE dataset")
 
-    engine = create_engine(SETTINGS.database_url)
+    engine = create_engine(SETTINGS.odm2_connection_str)
 
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
@@ -63,7 +63,7 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
 
     logging.info("Exporting MSOURCE dataset")
 
-    engine = create_engine(SETTINGS.database_url)
+    engine = create_engine(SETTINGS.odm2_connection_str)
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
         sampling_feature_code="MSOURCE2",
@@ -97,7 +97,7 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
     """
 
     logging.info("Exporting SIOS dataset")
-    engine = create_engine(SETTINGS.database_url)
+    engine = create_engine(SETTINGS.odm2_connection_str)
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
         sampling_feature_code="bbee7983-e91c-4282-9a5d-d0894a9b7cb0",

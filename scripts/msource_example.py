@@ -10,7 +10,7 @@ from dscreator.config import SETTINGS
 from dscreator.sources.odm2.extractor import TimeseriesExtractor
 
 # %%
-engine = create_engine(SETTINGS.database_url)
+engine = create_engine(SETTINGS.odm2_connection_str)
 # %%
 start_time = datetime(2022, 9, 23)
 extractor = TimeseriesExtractor(engine, "MSOURCE1", ["Turbidity", "LevelValue"])

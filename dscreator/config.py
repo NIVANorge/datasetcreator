@@ -3,7 +3,8 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     # postgresql:///odm2?host=timescale-db&port=5432&user=postgres&password=postgres
-    database_url: str = ""
+    odm2_connection_str: str = ""
+    tsb_connection_str: str = ""
     # gs://nivatest-1-senda
     storage_path: str = "./catalog"
 
