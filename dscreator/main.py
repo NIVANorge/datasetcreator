@@ -10,6 +10,7 @@ from dscreator.datasets import timeseries, trajectories
 from dscreator.runner import DataRunner
 from dscreator.sources import ferrybox, odm2
 
+
 app = typer.Typer()
 
 logging.basicConfig(
@@ -130,6 +131,37 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
 
     runner.start()
 
+
+@app.command()
+def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
+    """Build nrt color fantasy dataset from data in tsb
+    """
+
+    logging.info("Exporting NRT FA dataset")
+    trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
+        create_engine(SETTINGS.tsb_connection_str),
+        variable_codes=["temperature", "salinity", "oxygen"],
+        variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["FA_20"],
+        qc_flags=[1],
+    )
+
+    dataset_builder = trajectories.ferrybox.NorsoopFantasy(
+        uuid="no.niva:af11ba01-dfe3-4432-b9d2-4e6fd10714db",
+        dataset_name="nrt_color_fantasy",
+        station_name="color_fantasy",
+        project_name="NorSoop",
+        is_acdd=acdd,
+    )
+
+    runner = DataRunner(
+        custom_start_time=datetime(2023, 1, 1),
+        extractor=trajectory_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+    )
+
+    runner.start()
 
 if __name__ == "__main__":
     app()
