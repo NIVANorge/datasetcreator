@@ -84,7 +84,7 @@ class TimeseriesDatasetBuilder(DatasetBuilder):
         ds["station_name"] = idarray(self.station_name, "timeseries_id")
         ds.attrs["featureType"] = "timeseries"
 
-        if self.is_acdd and ds.dims["time"] > 0:
+        if self.is_acdd and ds.sizes["time"] > 0:
             # need to have data to add acdd
             self.add_acdd(ds)
 
@@ -123,7 +123,7 @@ class TrajectoryDatasetBuilder(DatasetBuilder):
         ds["trajectory_name"] = idarray(self.station_name, "trajectory_id")
         ds.attrs["featureType"] = "trajectory"
 
-        if self.is_acdd and ds.dims["time"] > 0:
+        if self.is_acdd and ds.sizes["time"] > 0:
             # need to have data to add acdd
             self.add_acdd(ds)
 

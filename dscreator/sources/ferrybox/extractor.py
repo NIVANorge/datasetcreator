@@ -93,7 +93,7 @@ class TrajectoryExtractor(BaseExtractor):
         Padded with 10 sec
         """
         # return self._timestamp(is_asc=True) - timedelta(seconds=1)
-        return datetime(2022, 12, 12, 16, 0)
+        return datetime(2024, 5, 12, 16, 0)
 
     def last_timestamp(self) -> datetime:
         """The last timestamp for extraction

@@ -22,6 +22,6 @@ def test_ferrybox_trajectory():
     assert len(ds.longitude) == 3
     assert all(ds.longitude == [10.70, 10.71, 10.72])
     assert all(ds.temperature == [10, 11, 12])
-    assert ds.dims["time"] == 3
+    assert ds.sizes["time"] == 3
     assert ds.attrs["featureType"] == "trajectory"
     assert ds.temperature.attrs["standard_name"] == "sea_water_temperature"

@@ -134,18 +134,17 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
 
 @app.command()
 def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
-    """Build nrt color fantasy dataset from data in tsb
-    """
+    """Build nrt color fantasy dataset from data in tsb"""
 
     logging.info("Exporting NRT FA dataset")
     trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
         create_engine(SETTINGS.tsb_connection_str),
-        variable_codes=["temperature", "salinity", "oxygen"],
+        variable_codes=["temperature", "salinity", "oxygen", "chlorophyll", "turbidity", "cdom"],
         variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["FA_20"],
         qc_flags=[1],
     )
 
-    dataset_builder = trajectories.ferrybox.NorsoopFantasy(
+    dataset_builder = trajectories.ferrybox.DailyFantasy(
         uuid="no.niva:af11ba01-dfe3-4432-b9d2-4e6fd10714db",
         dataset_name="nrt_color_fantasy",
         station_name="color_fantasy",
@@ -162,6 +161,7 @@ def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
     )
 
     runner.start()
+
 
 if __name__ == "__main__":
     app()
