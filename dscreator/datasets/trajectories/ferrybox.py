@@ -155,7 +155,7 @@ class DailyFantasy(NorsoopFantasy):
         attrs.keywords += "," + ",".join(
             [
                 "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > CHLOROPHYLL",
-                "GCMDSK:EARTH SCIENCE > OCEANS >  OCEAN OPTICS > TURBIDITY",
+                "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > TURBIDITY",
                 "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > ORGANIC MATTER > COLORED DISSOLVED ORGANIC MATTER",
             ]
         )
