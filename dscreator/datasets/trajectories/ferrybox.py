@@ -84,7 +84,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                 attrs = asdict(
                     CFVariableAttrs(standard_name="sea_water_turbidity", long_name="Sea Water Turbidity", units="FTU")
                 )
-                attrs["ancillary_variables"] = "salinity_qc"
+                attrs["ancillary_variables"] = "turbidity_qc"
                 return attrs
             case "turbidity_qc":
                 return asdict(FlagAttrs(long_name="Sea Water Turbidity Quality Flag"))
