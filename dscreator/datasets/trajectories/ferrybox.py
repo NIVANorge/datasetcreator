@@ -113,7 +113,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                 return asdict(
                     FlagAttrs(long_name="Mass Concentration of Chlorophyll A in Sea Water Quality Flag"),
                 )
-            case "cdom":
+            case "fdom":
                 attrs = asdict(
                     CFVariableAttrs(
                         standard_name="concentration_of_colored_dissolved_organic_matter_in_sea_water_expressed_as_equivalent_mass_fraction_of_quinine_sulfate_dihydrate",
@@ -121,9 +121,9 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                         units="mg/m^3",
                     )
                 )
-                attrs["ancillary_variables"] = "cdom_qc"
+                attrs["ancillary_variables"] = "fdom_qc"
                 return attrs
-            case "cdom_qc":
+            case "fdom_qc":
                 return asdict(
                     FlagAttrs(long_name="Colored Dissolved Organic Matter In Sea Water Quality Flag"),
                 )

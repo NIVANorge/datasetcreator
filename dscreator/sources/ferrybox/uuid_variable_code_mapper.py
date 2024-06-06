@@ -16,7 +16,7 @@ MAPPER = {
         "track": "4d9ff393-25a3-47b8-aaf1-8fbbccfec3c3",  # fa/gpstrack
         "chlorophyll": "ea782920-a5e1-415e-930b-b7c12e3cf366", # FA/FERRYBOX/C3/CHLA_FLUORESCENCE/SENSOR_ADJUSTED
         "turbidity": "de22c594-b313-4c13-ae84-1810eb5841e2", # FA/FERRYBOX/C3/TURBIDITY/SENSOR_ADJUSTED
-        "cdom": "a02eea6b-042d-4209-8307-c88230639b86", # FA/FERRYBOX/C3/CDOM_FLUORESCENCE/SENSOR_ADJUSTED
+        "fdom": "a02eea6b-042d-4209-8307-c88230639b86", # FA/FERRYBOX/C3/CDOM_FLUORESCENCE/SENSOR_ADJUSTED
     },
     "TF": {},
     "NB": {},
