@@ -154,7 +154,8 @@ class DailyFantasy(NorsoopFantasy):
         attrs.summary_no = "Daglig updatert dataset fra ferrybox ombord ferje fra Oslo, Norge til Kiel, Tyskland. For mer informasjon se: https://www.colorline.no/oslo-kiel/fakta."
         attrs.keywords += "," + ",".join(
             [
-                "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > CHLOROPHYLL",
+                "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > CHLOROPHYLL",
+                "GCMDSK:EARTH SCIENCE > OCEANS >  OCEAN OPTICS > TURBIDITY",
                 "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > ORGANIC MATTER > COLORED DISSOLVED ORGANIC MATTER",
             ]
         )
