@@ -148,7 +148,7 @@ def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
         uuid="no.niva:af11ba01-dfe3-4432-b9d2-4e6fd10714db",
         dataset_name="nrt_color_fantasy",
         station_name="color_fantasy",
-        grouping="NorSoop",
+        grouping="nrt",
         is_acdd=acdd,
     )
 
