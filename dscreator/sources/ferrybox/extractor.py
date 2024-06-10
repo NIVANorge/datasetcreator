@@ -53,6 +53,9 @@ class TrajectoryExtractor(BaseExtractor):
             qc_flags=self.qc_flags,
         )
 
+        if not data_list:
+            return data_dict
+
         previous_point = current_point = data_list.pop(0)
         value_template[str(previous_point.uuid)] = (previous_point.value, previous_point.qc)
 
