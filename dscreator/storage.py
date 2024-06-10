@@ -28,7 +28,7 @@ class BaseHandler(abc.ABC):
     The filename starts with the timestamps followed with underscore dataset_name.
     """
 
-    project_name: str
+    grouping: str
     dataset_name: str
     filename_prefix: str
     workdir: str = field(init=False)
@@ -36,7 +36,7 @@ class BaseHandler(abc.ABC):
     unlimited_dims: List[str]
 
     def __post_init__(self):
-        self.workdir = os.path.join("datasets", self.project_name.lower(), self.dataset_name)
+        self.workdir = os.path.join("datasets", self.grouping.lower(), self.dataset_name)
         self.restart_filepath = os.path.join(self.workdir, "." + self.dataset_name + ".restart.json")
 
     def save_netcdf(self, ds: xr.Dataset, filename: str, encoding: Optional[Dict] = None):
@@ -179,7 +179,7 @@ class LocalStorageHandler(BaseHandler):
 
 
 def get_storage_handler(
-    project_name: str,
+    grouping: str,
     dataset_name: str,
     filename_prefix: Optional[str] = None,
     unlimited_dims: Optional[List] = None,
@@ -198,7 +198,7 @@ def get_storage_handler(
 
     if SETTINGS.storage_path.startswith("gs://"):
         return GCSStorageHandler(
-            project_name=project_name,
+            grouping=grouping,
             dataset_name=dataset_name,
             filename_prefix=filename_prefix,
             unlimited_dims=unlimited_dims,
@@ -206,7 +206,7 @@ def get_storage_handler(
         )
     else:
         return LocalStorageHandler(
-            project_name=project_name,
+            grouping=grouping,
             dataset_name=dataset_name,
             filename_prefix=filename_prefix,
             unlimited_dims=unlimited_dims,

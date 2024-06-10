@@ -41,7 +41,7 @@ def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
         uuid="268ac6d7-c991-48e6-8c9c-f554eb5a9516",
         dataset_name="msource-inlet",
         station_name="msource-inlet",
-        project_name="Multisource",
+        grouping="Multisource",
         is_acdd=acdd,
     )
 
@@ -75,7 +75,7 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
         uuid="09eb5028-9bc7-4587-b8ff-0436bc00494a",
         dataset_name="msource-outlet",
         station_name="msource-outlet",
-        project_name="Multisource",
+        grouping="Multisource",
         is_acdd=acdd,
     )
 
@@ -118,7 +118,7 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
         uuid="29b7de62-e1fa-4dce-90e4-7ff8a0931397",
         dataset_name="sios",
         station_name="adventfjorden",
-        project_name="SIOS",
+        grouping="SIOS",
         is_acdd=acdd,
     )
 
@@ -148,7 +148,7 @@ def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
         uuid="no.niva:af11ba01-dfe3-4432-b9d2-4e6fd10714db",
         dataset_name="nrt_color_fantasy",
         station_name="color_fantasy",
-        project_name="NorSoop",
+        grouping="NorSoop",
         is_acdd=acdd,
     )
 

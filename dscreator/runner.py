@@ -32,7 +32,7 @@ class DataRunner:
         custom start time.
         """
         self.storage_handler = get_storage_handler(
-            project_name=self.dataset_builder.project_name,
+            grouping=self.dataset_builder.grouping,
             dataset_name=self.dataset_builder.dataset_name,
             unlimited_dims=["time"],
         )

@@ -18,8 +18,8 @@ class DatasetBuilder(abc.ABC):
     """The name of the dataset"""
     station_name: str
     """The name of the station, added to cf_role"""
-    project_name: str
-    """The name of the project, lower cases and underscores used to construct the storage path"""
+    grouping: str
+    """Grouping, for example project, lower cases and underscores used to construct the storage path"""
     is_acdd: bool
     """If the dataset should have ACDD attributes"""
 

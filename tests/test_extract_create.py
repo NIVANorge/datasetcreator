@@ -35,7 +35,7 @@ def test_ferrybox_ds_create(ferrybox_extractor: ferrybox.extractor.TrajectoryExt
         uuid="uuid",
         dataset_name="datasetname",
         station_name="stationname",
-        project_name="projectname",
+        grouping="projectname",
         is_acdd=True,
     ).create(ferrybox_extractor.fetch_slice(datetime(2020, 1, 1, 14, 20), datetime(2021, 1, 1, 14, 20)))
 
@@ -61,7 +61,7 @@ def test_timeseries_ds_create(db_engine):
         uuid="uuid",
         dataset_name="datasetname",
         station_name="stationname",
-        project_name="projectname",
+        grouping="projectname",
         is_acdd=True,
     ).create(timeseries_extractor.fetch_slice(datetime(2022, 9, 14, 14, 19), datetime(2022, 9, 17, 14, 20)))
 
