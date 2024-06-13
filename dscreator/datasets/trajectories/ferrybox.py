@@ -38,7 +38,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
             creator_email="norsoop@niva.no",
             featureType=ds.attrs["featureType"],
             # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
-            references="https://thredds.niva.no/thredds/fileServer/datasets/references/Method_description_and_quality_control_procedure_NorSOOP.pdf(Extended metadata)",
+            references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md(Extended metadata)",
             ices_platform_code="58CO",
             platform_code="FA",
             platform_name="Color Fantasy",
