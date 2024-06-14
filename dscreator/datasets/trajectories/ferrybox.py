@@ -127,7 +127,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                 return asdict(
                     FlagAttrs(long_name="Colored Dissolved Organic Matter In Sea Water Quality Flag"),
                 )
-            case "oxygen":
+            case "oxygen_sat":
                 attrs = asdict(
                     CFVariableAttrs(
                         standard_name="fractional_saturation_of_oxygen_in_sea_water",
@@ -135,9 +135,9 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                         units="%",
                     )
                 )
-                attrs["ancillary_variables"] = "oxygen_qc"
+                attrs["ancillary_variables"] = "oxygen_sat_qc"
                 return attrs
-            case "oxygen_qc":
+            case "oxygen_sat_qc":
                 return asdict(FlagAttrs(long_name="Sea Water Oxygen Saturation Quality Flag"))
             case _:
                 logging.warning(f"Array definition not found for: {variable_name}")
