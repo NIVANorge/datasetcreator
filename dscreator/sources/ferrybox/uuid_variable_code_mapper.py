@@ -4,7 +4,7 @@ MAPPER = {
     {
         "temperature": "720b78cb-3e82-4c4d-9b63-7d1ae1b7afc1",  # degC, FA/INLET/SBE38/TEMPERATURE/RAW
         "salinity": "314cd400-14a7-489a-ab97-bce6b11ad068",  # PSU, SBE45, FA/FERRYBOX/SBE45/SALINITY/RAW
-        "oxygen_sat": "e03fba93-1fed-49c2-ac5a-601dc2475915",  # RBR, %, FA/ferrybox/INLET/OPTODE/OXYGEN/SATURATION
+        "oxygen_sat": "e03fba93-1fed-49c2-ac5a-601dc2475915",  # , %, FA/ferrybox/INLET/OPTODE/OXYGEN/SATURATION
         "track": "4d9ff393-25a3-47b8-aaf1-8fbbccfec3c3",  # FA/gpstrack
     },
     "FA_20":
