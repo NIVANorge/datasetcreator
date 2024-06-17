@@ -39,7 +39,7 @@ class TrajectoryExtractor(BaseExtractor):
         - latitude (list of float)
         - longitude (list of float)
 
-        The all list should have the same length and time should be increasing.
+        The all list should have the same length and time should be increasing. Missing value returned as 9 for qc
         """
 
         data_dict = {v: [] for v in ["time", "latitude", "longitude"] + self.variable_codes + self.qc_variables}
@@ -86,7 +86,7 @@ class TrajectoryExtractor(BaseExtractor):
             data_dict[var_name].append(value_template[point_uuid][1])
 
         for k in value_template.keys():
-            value_template[k] = (None, None)
+            value_template[k] = (None, 9)
 
     def _timestamp(self, is_asc: bool) -> datetime:
         return get_time_by_uuids(self.engine, [self.variable_uuid_map[vcode] for vcode in self.variable_codes], is_asc)

@@ -4,6 +4,7 @@ from typing import Dict
 TIME_ENCODING = {"dtype": "int32", "units": "seconds since 1970-01-01 00:00:00"}
 COORD_ENCODING = {"zlib": False, "_FillValue": None}
 INT_ENCODING = {"dtype": "int16", "scale_factor": 0.1, "_FillValue": -9999}
+BYTE_ENCODING = {"dtype": "byte"}
 
 
 def default_encoding(ds: xr.Dataset) -> Dict:
@@ -20,7 +21,8 @@ def default_encoding(ds: xr.Dataset) -> Dict:
     for v in ds.data_vars:
         enc[v] = dtype_to_encoding(str(ds[v].dtype))
         if "flag_values" in ds[v].attrs:
-            enc[v] = INT_ENCODING
+            enc[v] = BYTE_ENCODING
+            ds[v] = ds[v].astype("byte")
 
     return enc
 

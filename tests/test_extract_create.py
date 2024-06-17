@@ -22,7 +22,7 @@ TEST_DATA_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data"
 def ferrybox_extractor(db_engine) -> ferrybox.extractor.TrajectoryExtractor:
     traj_extractor = ferrybox.extractor.TrajectoryExtractor(
         db_engine,
-        variable_codes=["temperature", "salinity", "oxygen"],
+        variable_codes=["temperature", "salinity", "oxygen_sat"],
         variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["FA_20"],
         qc_flags=[1],
     )
@@ -38,12 +38,12 @@ def test_ferrybox_ds_create(ferrybox_extractor: ferrybox.extractor.TrajectoryExt
         grouping="projectname",
         is_acdd=True,
     ).create(ferrybox_extractor.fetch_slice(datetime(2020, 1, 1, 14, 20), datetime(2021, 1, 1, 14, 20)))
-
+    ds.to_netcdf(os.path.join(TEST_DATA_DIR, "fa_test_dataset.nc"))
     ds_expected = xr.open_dataset(os.path.join(TEST_DATA_DIR, "fa_test_dataset.nc"))
 
-    assert ds.temperature.equals(ds_expected.sea_water_temperature)
+    assert ds.temperature.equals(ds_expected.temperature)
     assert ds.salinity.equals(ds_expected.salinity)
-    assert ds.oxygen.equals(ds_expected.oxygen)
+    assert ds.oxygen_sat.equals(ds_expected.oxygen_sat)
 
 
 @pytest.mark.docker
