@@ -139,7 +139,7 @@ def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
     logging.info("Exporting NRT FA dataset")
     trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
         create_engine(SETTINGS.tsb_connection_str),
-        variable_codes=["temperature", "salinity", "oxygen", "chlorophyll", "turbidity", "fdom"],
+        variable_codes=["temperature", "salinity", "oxygen_sat", "chlorophyll", "turbidity", "fdom"],
         variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["FA_22"],
         qc_flags=[1],
     )
