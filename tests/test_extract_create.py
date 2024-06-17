@@ -38,7 +38,7 @@ def test_ferrybox_ds_create(ferrybox_extractor: ferrybox.extractor.TrajectoryExt
         grouping="projectname",
         is_acdd=True,
     ).create(ferrybox_extractor.fetch_slice(datetime(2020, 1, 1, 14, 20), datetime(2021, 1, 1, 14, 20)))
-    ds.to_netcdf(os.path.join(TEST_DATA_DIR, "fa_test_dataset.nc"))
+    
     ds_expected = xr.open_dataset(os.path.join(TEST_DATA_DIR, "fa_test_dataset.nc"))
 
     assert ds.temperature.equals(ds_expected.temperature)
