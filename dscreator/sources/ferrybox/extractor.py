@@ -53,6 +53,9 @@ class TrajectoryExtractor(BaseExtractor):
             qc_flags=self.qc_flags,
         )
 
+        if not data_list:
+            return data_dict
+
         previous_point = current_point = data_list.pop(0)
         value_template[str(previous_point.uuid)] = (previous_point.value, previous_point.qc)
 
@@ -92,11 +95,10 @@ class TrajectoryExtractor(BaseExtractor):
         """The first timestamp for extraction
         Padded with 10 sec
         """
-        # return self._timestamp(is_asc=True) - timedelta(seconds=1)
-        return datetime(2022, 12, 12, 16, 0)
+        return self._timestamp(is_asc=True) - timedelta(seconds=10)
 
     def last_timestamp(self) -> datetime:
         """The last timestamp for extraction
         Padded with 10 sec
         """
-        return self._timestamp(is_asc=False) + timedelta(seconds=1)
+        return self._timestamp(is_asc=False) + timedelta(seconds=10)

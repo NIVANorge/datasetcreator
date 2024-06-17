@@ -10,6 +10,7 @@ from dscreator.datasets import timeseries, trajectories
 from dscreator.runner import DataRunner
 from dscreator.sources import ferrybox, odm2
 
+
 app = typer.Typer()
 
 logging.basicConfig(
@@ -40,7 +41,7 @@ def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
         uuid="268ac6d7-c991-48e6-8c9c-f554eb5a9516",
         dataset_name="msource-inlet",
         station_name="msource-inlet",
-        project_name="Multisource",
+        grouping="Multisource",
         is_acdd=acdd,
     )
 
@@ -74,7 +75,7 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
         uuid="09eb5028-9bc7-4587-b8ff-0436bc00494a",
         dataset_name="msource-outlet",
         station_name="msource-outlet",
-        project_name="Multisource",
+        grouping="Multisource",
         is_acdd=acdd,
     )
 
@@ -117,12 +118,43 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
         uuid="29b7de62-e1fa-4dce-90e4-7ff8a0931397",
         dataset_name="sios",
         station_name="adventfjorden",
-        project_name="SIOS",
+        grouping="SIOS",
         is_acdd=acdd,
     )
 
     runner = DataRunner(
         extractor=timeseries_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+    )
+
+    runner.start()
+
+
+@app.command()
+def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
+    """Build nrt color fantasy dataset from data in tsb"""
+
+    logging.info("Exporting NRT FA dataset")
+    trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
+        create_engine(SETTINGS.tsb_connection_str),
+        variable_codes=["temperature", "salinity", "oxygen_sat", "chlorophyll", "turbidity", "fdom"],
+        variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["FA_22"],
+        qc_flags=[1],
+    )
+
+    dataset_builder = trajectories.ferrybox.DailyFantasy(
+        uuid="no.niva:af11ba01-dfe3-4432-b9d2-4e6fd10714db",
+        dataset_name="color_fantasy",
+        station_name="color_fantasy",
+        grouping="nrt",
+        is_acdd=acdd,
+    )
+
+    runner = DataRunner(
+        custom_start_time=datetime(2023, 1, 1),
+        extractor=trajectory_extractor,
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,

@@ -32,7 +32,7 @@ class DataRunner:
         custom start time.
         """
         self.storage_handler = get_storage_handler(
-            project_name=self.dataset_builder.project_name,
+            grouping=self.dataset_builder.grouping,
             dataset_name=self.dataset_builder.dataset_name,
             unlimited_dims=["time"],
         )
@@ -56,7 +56,7 @@ class DataRunner:
         """Start the dataset export
 
         This method will extract data from the extractor and create datasets using the dataset builder.
-        The datasets are then saved using the storage handler. If a restart file is found the export will start from 
+        The datasets are then saved using the storage handler. If a restart file is found the export will start from
         the end time of the restart file. If a custom start time is given the export will start from that time.
         """
 

@@ -81,10 +81,13 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                 return asdict(FlagAttrs(long_name="Sea Water Temperature Quality Flag"))
 
             case "turbidity":
-                return asdict(
+                attrs = asdict(
                     CFVariableAttrs(standard_name="sea_water_turbidity", long_name="Sea Water Turbidity", units="FTU")
                 )
-
+                attrs["ancillary_variables"] = "turbidity_qc"
+                return attrs
+            case "turbidity_qc":
+                return asdict(FlagAttrs(long_name="Sea Water Turbidity Quality Flag"))
             case "salinity":
                 attrs = asdict(
                     CFVariableAttrs(standard_name="sea_water_salinity", long_name="Sea Water Salinity", units="PSU")
@@ -97,15 +100,34 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                     FlagAttrs(long_name="Sea Water Salinity Quality Flag"),
                 )
             case "chlorophyll":
-                return asdict(
+                attrs = asdict(
                     CFVariableAttrs(
                         standard_name="rt_calibrated_mass_concentration_of_chlorophyll_a_in_sea_water",
                         long_name="Mass Concentration of Chlorophyll A in Sea Water",
                         units="mg/m^3",
                     )
                 )
-
-            case "oxygen":
+                attrs["ancillary_variables"] = "chlorophyll_qc"
+                return attrs
+            case "chlorophyll_qc":
+                return asdict(
+                    FlagAttrs(long_name="Mass Concentration of Chlorophyll A in Sea Water Quality Flag"),
+                )
+            case "fdom":
+                attrs = asdict(
+                    CFVariableAttrs(
+                        standard_name="concentration_of_colored_dissolved_organic_matter_in_sea_water_expressed_as_equivalent_mass_fraction_of_quinine_sulfate_dihydrate",
+                        long_name="Colored Dissolved Organic Matter In Sea Water",
+                        units="mg/m^3",
+                    )
+                )
+                attrs["ancillary_variables"] = "fdom_qc"
+                return attrs
+            case "fdom_qc":
+                return asdict(
+                    FlagAttrs(long_name="Colored Dissolved Organic Matter In Sea Water Quality Flag"),
+                )
+            case "oxygen_sat":
                 attrs = asdict(
                     CFVariableAttrs(
                         standard_name="fractional_saturation_of_oxygen_in_sea_water",
@@ -113,15 +135,28 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                         units="%",
                     )
                 )
-                attrs["ancillary_variables"] = "oxygen_qc"
+                attrs["ancillary_variables"] = "oxygen_sat_qc"
                 return attrs
-            case "oxygen_qc":
+            case "oxygen_sat_qc":
                 return asdict(FlagAttrs(long_name="Sea Water Oxygen Saturation Quality Flag"))
-
-            case "cdom":
-                return asdict(
-                    CFVariableAttrs(standard_name="", long_name="", units="mg/m^3"),
-                )
             case _:
                 logging.warning(f"Array definition not found for: {variable_name}")
                 raise RuntimeError(f"Array definition not found for: {variable_name}")
+
+
+@dataclass
+class DailyFantasy(NorsoopFantasy):
+    def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
+        attrs = super().dataset_attributes(ds)
+        attrs.title = "Ferrybox on MS Color Fantasy, daily data"
+        attrs.title_no = "Ferje på MS Color Fantasy, daglige data"
+        attrs.summary = "Daily updating dataset of ferrybox data for ferry sailing Oslo, Norway to Kiel, Germany. For more information see: https://www.colorline.no/oslo-kiel/fakta."
+        attrs.summary_no = "Daglig updatert dataset fra ferrybox ombord ferje fra Oslo, Norge til Kiel, Tyskland. For mer informasjon se: https://www.colorline.no/oslo-kiel/fakta."
+        attrs.keywords += "," + ",".join(
+            [
+                "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > CHLOROPHYLL",
+                "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > TURBIDITY",
+                "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > ORGANIC MATTER > COLORED DISSOLVED ORGANIC MATTER",
+            ]
+        )
+        return attrs
