@@ -20,7 +20,7 @@ MAPPER = {
     {
         "temperature": "720b78cb-3e82-4c4d-9b63-7d1ae1b7afc1",  # degc, fa/inlet/sbe38/temperature/raw
         "salinity": "314cd400-14a7-489a-ab97-bce6b11ad068",  # psu, sbe45, fa/ferrybox/sbe45/salinity/raw
-        "oxygen_sat": " f831af38-d376-406d-8388-be6f3312f578",  # aanderaa, %,  FA/FERRYBOX/OPTODE/OXYGEN_SATURATION/RAW
+        "oxygen_sat": "f831af38-d376-406d-8388-be6f3312f578",  # aanderaa, %,  FA/FERRYBOX/OPTODE/OXYGEN_SATURATION/RAW
         "track": "4d9ff393-25a3-47b8-aaf1-8fbbccfec3c3",  # fa/gpstrack
         "chlorophyll": "ea782920-a5e1-415e-930b-b7c12e3cf366", # FA/FERRYBOX/C3/CHLA_FLUORESCENCE/SENSOR_ADJUSTED
         "turbidity": "de22c594-b313-4c13-ae84-1810eb5841e2", # FA/FERRYBOX/C3/TURBIDITY/SENSOR_ADJUSTED
@@ -29,3 +29,4 @@ MAPPER = {
     "TF": {},
     "NB": {},
 }
+>>
