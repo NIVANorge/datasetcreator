@@ -23,7 +23,7 @@ def ferrybox_extractor(db_engine) -> ferrybox.extractor.TrajectoryExtractor:
     traj_extractor = ferrybox.extractor.TrajectoryExtractor(
         db_engine,
         variable_codes=["temperature", "salinity", "oxygen_sat"],
-        variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["FA_20"],
+        variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["FA_19"],
         qc_flags=[1],
     )
     return traj_extractor
