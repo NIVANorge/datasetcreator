@@ -24,8 +24,10 @@ dataarraybytime = partial(dataarray, dims=TIME)
 dataarraybydepth = partial(dataarray, dims=DEPTH)
 
 
-def idarray(id_name: str, cf_role: str):
+def idarray(id_name: str, cf_role: str, array_name: Optional[str] = None) -> xr.DataArray:
     attrs = {
         "cf_role": cf_role,
     }
+    if array_name is not None:
+        return xr.DataArray(id_name, dims=DIMLESS, name=array_name, attrs=attrs)
     return xr.DataArray(id_name, dims=DIMLESS, attrs=attrs)

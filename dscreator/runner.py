@@ -22,6 +22,8 @@ class DataRunner:
     """The number of intervals to use, if 0 all intervals are used"""
     custom_start_time: Optional[datetime] = None
     """Optional a custom start time to use for the export"""
+    end_time_delay: Optional[timedelta] = None
+    """Set a delay for the end time of the export, useful for ensuring that all data is available before exporting"""
     time_intervals: List[DatetimeInterval] = field(init=False)
     storage_handler: BaseHandler = field(init=False)
 
@@ -47,6 +49,9 @@ class DataRunner:
             start_time = self.extractor.first_timestamp()
 
         end_time = self.extractor.last_timestamp()
+        if self.end_time_delay is not None:
+            end_time = end_time - self.end_time_delay
+
         time_intervals = utils.datetime_intervals(start_time, end_time, timedelta(hours=self.hourly_delta))
         last_index = len(time_intervals) if self.n_intervals < 1 else self.n_intervals
 

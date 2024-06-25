@@ -43,7 +43,7 @@ class TrajectoryExtractor(BaseExtractor):
         """
 
         data_dict = {v: [] for v in ["time", "latitude", "longitude"] + self.variable_codes + self.qc_variables}
-        value_template = {v: (None, None) for v in self.variable_uuid_map.values()}
+        value_template = {v: (None, 9) for v in self.variable_uuid_map.values()}
         data_list = get_ts(
             self.engine,
             track_uuid=self.variable_uuid_map["track"],
