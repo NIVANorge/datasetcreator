@@ -150,8 +150,8 @@ class DailyFantasy(NorsoopFantasy):
         attrs = super().dataset_attributes(ds)
         attrs.title = "Ferrybox on MS Color Fantasy, daily data"
         attrs.title_no = "Ferje på MS Color Fantasy, daglige data"
-        attrs.summary = "Daily updating dataset of ferrybox data for ferry sailing Oslo, Norway to Kiel, Germany. For more information see: https://www.colorline.no/oslo-kiel/fakta."
-        attrs.summary_no = "Daglig updatert dataset fra ferrybox ombord ferje fra Oslo, Norge til Kiel, Tyskland. For mer informasjon se: https://www.colorline.no/oslo-kiel/fakta."
+        attrs.summary = "Daily updating dataset of ferrybox data for ferry sailing Oslo, Norway to Kiel, Germany. QC flags are from automatic quality control. For more information see: https://www.colorline.no/oslo-kiel/fakta."
+        attrs.summary_no = "Daglig updatert dataset fra ferrybox ombord ferje fra Oslo, Norge til Kiel, Tyskland. QC flagg er fra automatisk kvalitetskontroll. For mer informasjon se: https://www.colorline.no/oslo-kiel/fakta."
         attrs.keywords += "," + ",".join(
             [
                 "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > CHLOROPHYLL",
