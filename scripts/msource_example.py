@@ -4,9 +4,10 @@ from datetime import datetime, timedelta
 from sqlalchemy import create_engine
 
 from dscreator.cfarray.attributes import VariableAttrs
-from dscreator.cfarray.base import TIME_ENCODING, dataarraybytime
+from dscreator.cfarray.base import dataarraybytime
 from dscreator.cfarray.time_series import timeseriescoords, timeseriesdataset
 from dscreator.config import SETTINGS
+from dscreator.encoding import TIME_ENCODING
 from dscreator.sources.odm2.extractor import TimeseriesExtractor
 
 # %%
@@ -55,4 +56,4 @@ ds = timeseriesdataset(
 # %%
 ds
 # %%
-ds.to_netcdf("timeseries.nc", unlimited_dims=["time"], encoding=TIME_ENCODING)
+ds.to_netcdf("timeseries.nc", unlimited_dims=["time"], encoding={ "time": TIME_ENCODING })

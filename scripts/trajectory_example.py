@@ -5,7 +5,8 @@
 from datetime import datetime
 
 from dscreator.cfarray.attributes import CFVariableAttrs
-from dscreator.cfarray.base import TIME_ENCODING, dataarraybytime
+from dscreator.cfarray.base import dataarraybytime
+from dscreator.encoding import TIME_ENCODING
 from dscreator.cfarray.trajectory import trajectorycoords, trajectorydataset
 
 # %% Creating just a xarray dataset
@@ -28,7 +29,7 @@ time = list(
 # %%
 temperature = dataarraybytime(
     name="temperature",
-    data=[2, None, 5, 7],
+    data=[2, 4, 5, 7],
     attrs=CFVariableAttrs(
         standard_name="sea_water_temperature",
         long_name="sea_water_temperature",
@@ -54,16 +55,14 @@ turbidity = dataarraybytime(
     )
 )
 # %%
-ds = trajectorydataset([temperature, turbidity], "trajectory_name")
+ds = trajectorydataset([temperature, turbidity], "trajectory-test")
 
-# %%
-print(ds)
 # %%
 
 ds.temperature.plot()
 
 # %%
-ds.to_netcdf("example_trajectory.nc", encoding=TIME_ENCODING)
+ds.to_netcdf("example_trajectory.nc", encoding={ "time": TIME_ENCODING })
 # run `ncdump example_trajectory.nc` on commandline to view text repr also
 
 # %%
