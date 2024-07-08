@@ -159,4 +159,5 @@ class DailyFantasy(NorsoopFantasy):
                 "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > ORGANIC MATTER > COLORED DISSOLVED ORGANIC MATTER",
             ]
         )
+        attrs.project += "," + ",".join(["AquaINFRA"])
         return attrs

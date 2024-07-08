@@ -75,6 +75,57 @@
       </aggregation>
     </netcdf>
   </dataset>
+    <dataset name="Color Fantasy - Daily" ID="no.niva:test-af11b" serviceName="trajectory"
+    urlPath="datasets/nrt/color_fantasy.nc">
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <attribute name="id" value="no.niva:test-af11b"/>
+      <attribute name="featureType" value="trajectory"/>
+      <attribute name="title" value="Ferrybox on MS Color Fantasy, daily data"/>
+      <attribute name="summary" value="Daily updating dataset of ferrybox data for ferry sailing Oslo, Norway to Kiel, Germany. QC flags are from automatic quality control. For more information see: https://www.colorline.no/oslo-kiel/fakta."/>
+      <attribute name="title_no" value="Ferje på MS Color Fantasy, daglige data"/>
+      <attribute name="summary_no" value="Daglig updatert dataset fra ferrybox ombord ferje fra Oslo, Norge til Kiel, Tyskland. QC flagg er fra automatisk kvalitetskontroll. For mer informasjon se: https://www.colorline.no/oslo-kiel/fakta."/>
+      <attribute name="date_created" value="2024-07-08T09:15:00Z"/>
+      <attribute name="keywords" value="GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE,GCMDSK:EARTH SCIENCE > OCEANS > SALINITY/DENSITY > OCEAN SALINITY > OCEAN SURFACE SALINITY,GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > OXYGEN,GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > CHLOROPHYLL,GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > TURBIDITY,GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > ORGANIC MATTER > COLORED DISSOLVED ORGANIC MATTER"/>
+      <attribute name="keywords_vocabulary" value="GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords,CFSTDN:CF Standard Names:https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html"/>
+      <attribute name="time_coverage_start" value="2023-01-01T13:16:00Z"/>
+      <attribute name="geospatial_lat_min" type="double" value="53.8"/>
+      <attribute name="geospatial_lat_max" type="double" value="59.93"/>
+      <attribute name="geospatial_lon_min" type="double" value="9.92"/>
+      <attribute name="geospatial_lon_max" type="double" value="12.6"/>
+      <attribute name="spatial_representation" value="trajectory"/>
+      <attribute name="project" value="Norwegian Ships of Opportunity program (NorSOOP ID 269922),Joint European Research Infrastructure of Coastal Observatories (JERICO-S3 ID 871153 JERICO-NEXT ID 654410),Norwegian Environment Agency,Inner and Outer Oslofjord Fagrådet,AquaINFRA"/>
+      <attribute name="ices_platform_code" value="58CO"/>
+      <attribute name="platform_code" value="FA"/>
+      <attribute name="platform_name" value="Color Fantasy"/>
+      <attribute name="references" value="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md(Extended metadata)"/>
+      <attribute name="naming_authority" value="no.niva"/>
+      <attribute name="creator_type" value="institution"/>
+      <attribute name="creator_institution" value="Norwegian Institute for Water Research"/>
+      <attribute name="institution" value="Norwegian Institute for Water Research (NIVA)"/>
+      <attribute name="creator_email" value="norsoop@niva.no"/>
+      <attribute name="creator_url" value="https://niva.no"/>
+      <attribute name="data_owner" value="Norwegian Institute for Water Research"/>
+      <attribute name="processing_level" value="Operational"/>
+      <attribute name="Conventions" value="CF-1.7, ACDD-1.3"/>
+      <attribute name="netcdf_version" value="4"/>
+      <attribute name="publisher_name" value="Norwegian Institute for Water Research"/>
+      <attribute name="publisher_email" value="miljoinformatikk@niva.no"/>
+      <attribute name="publisher_url" value="https://niva.no"/>
+      <attribute name="license" value="http://spdx.org/licenses/CC-BY-4.0(CC-BY-4.0)"/>
+      <attribute name="iso_topic_category" value="Not available"/>
+      <attribute name="history" value="Built with dscreator"/>
+      <attribute name="source" value="In Situ Ship-based station"/>
+      <group name="THREDDSMetadata">
+        <group name="services">
+          <attribute name="opendap_service"
+            value="https://thredds.t.niva.no/thredds/dodsC/datasets/nrt/color_fantasy.nc" />
+        </group>
+      </group>
+      <aggregation dimName="time" type="joinExisting">
+        <scan location="/datasets/nrt/color_fantasy" regExp=".*color_fantasy.nc" />
+      </aggregation>
+    </netcdf>
+  </dataset>
   <dataset ID="samplefa" name="Test FA dataset" urlPath="datasets/colorfantasy_ferrybox/FA_merged_acdd_color_fantasy.nc" serviceName="trajectory">
     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="/datasets/colorfantasy_ferrybox/color_fantasy/FA_merged_acdd_color_fantasy.nc">
   </netcdf>
