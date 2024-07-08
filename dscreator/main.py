@@ -158,7 +158,7 @@ def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
-        end_time_delay=timedelta(minutes=45),
+        end_time_delay=timedelta(minutes=90),
     )
 
     runner.start()
