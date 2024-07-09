@@ -163,10 +163,11 @@ class FerryboxDatasetAttrsBase(DatasetAttrsDiscreteBase):
     platform_code: str
     platform_name: str
     references: str
+    depth : str
 
 
 @dataclass
 class FerryboxDatasetAttrs(DatasetAttrsDefaults, FerryboxDatasetAttrsBase):
     processing_level: str = "Operational"
     # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#activity-type
-    source: str = "In Situ Ship-based station"
+    source: str = "FerryBox"

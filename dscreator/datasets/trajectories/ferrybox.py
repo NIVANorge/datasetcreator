@@ -35,6 +35,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                     "CFSTDN:CF Standard Names:https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html",
                 ]
             ),
+            depth="~5m",
             creator_email="norsoop@niva.no",
             featureType=ds.attrs["featureType"],
             # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
