@@ -18,7 +18,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
         A good viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
         """
         return FerryboxDatasetAttrs(
-            title="Ferrybox on MS Color Fantasy",
+            title="FerryBox on MS Color Fantasy",
             title_no="FerryBox på MS Color Fantasy",
             summary="Ferry sailing from Oslo, Norway to Kiel, Germany. For more information see: https://www.colorline.no/oslo-kiel/fakta.",
             summary_no="Ferje fra Oslo, Norge til Kiel, Tyskland. For mer informasjon se: https://www.colorline.no/oslo-kiel/fakta.",
@@ -149,8 +149,8 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
 class DailyFantasy(NorsoopFantasy):
     def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
         attrs = super().dataset_attributes(ds)
-        attrs.title = "Ferrybox on MS Color Fantasy, daily data"
-        attrs.title_no = "Ferje på MS Color Fantasy, daglige data"
+        attrs.title = "FerryBox on MS Color Fantasy, daily data"
+        attrs.title_no = "FerryBox på MS Color Fantasy, daglige data"
         attrs.summary = "Daily updating dataset of ferrybox data for ferry sailing Oslo, Norway to Kiel, Germany. QC flags are from automatic quality control. For more information see: https://www.colorline.no/oslo-kiel/fakta."
         attrs.summary_no = "Daglig updatert dataset fra ferrybox ombord ferje fra Oslo, Norge til Kiel, Tyskland. QC flagg er fra automatisk kvalitetskontroll. For mer informasjon se: https://www.colorline.no/oslo-kiel/fakta."
         attrs.keywords += "," + ",".join(
