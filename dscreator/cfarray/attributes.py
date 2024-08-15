@@ -34,7 +34,9 @@ class FlagAttrs:
 
     long_name: str
     standard_name: str = "status_flag"
-    flag_meanings: str = "no_qc_performed good_data probably_good_data bad_data_that_are_potentially_correctable bad_data value_changed value_below_detection nominal_value interpolated_value missing_value"
+    flag_meanings: str = (
+        "no_qc_performed good_data probably_good_data bad_data_that_are_potentially_correctable bad_data value_changed value_below_detection nominal_value interpolated_value missing_value"
+    )
     valid_max: int = 9
     valid_min: int = 0
     flag_values: List[int] = field(init=False)
@@ -132,12 +134,14 @@ class DatasetAttrsDefaults:
     institution: str = "Norwegian Institute for Water Research (NIVA)"
     creator_email: str = "miljoinformatikk@niva.no"
     creator_url: str = "https://niva.no"
+    creator_name: str = "Norwegian Institute for Water Research"
     data_owner: str = "Norwegian Institute for Water Research"
     # One of https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#operational-status
     processing_level: str = "Not available"
     Conventions: str = "CF-1.7, ACDD-1.3"
     netcdf_version: str = "4"
     publisher_name: str = "Norwegian Institute for Water Research"
+    publisher_insitution: str = "Norwegian Institute for Water Research"
     publisher_email: str = "miljoinformatikk@niva.no"
     publisher_url: str = "https://niva.no"
     # From https://spdx.org/licenses/
@@ -163,7 +167,7 @@ class FerryboxDatasetAttrsBase(DatasetAttrsDiscreteBase):
     platform_code: str
     platform_name: str
     references: str
-    depth : str
+    depth: str
 
 
 @dataclass
