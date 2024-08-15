@@ -23,14 +23,14 @@ cf-xarray = "^0.8.4"
 numpy = "^1.26.4"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^6.2.5"
+pytest = "^7.0.0"
 isort = "^5.10.1"
 black = {extras = ["jupyter"], version = "^23.1.0"}
 ipykernel = "^6.15.2"
 matplotlib = "^3.5.3"
 requests-mock = "^1.10.0"
 nc-time-axis = "^1.4.1"
-pytest-docker = "^1.0.0"
+pytest-docker = "^2.0.0"
 lxml = "^4.9.4"
 
 
