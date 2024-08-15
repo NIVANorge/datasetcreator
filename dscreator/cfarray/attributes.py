@@ -141,7 +141,7 @@ class DatasetAttrsDefaults:
     Conventions: str = "CF-1.7, ACDD-1.3"
     netcdf_version: str = "4"
     publisher_name: str = "Norwegian Institute for Water Research"
-    publisher_insitution: str = "Norwegian Institute for Water Research"
+    publisher_institution: str = "Norwegian Institute for Water Research"
     publisher_email: str = "miljoinformatikk@niva.no"
     publisher_url: str = "https://niva.no"
     # From https://spdx.org/licenses/
