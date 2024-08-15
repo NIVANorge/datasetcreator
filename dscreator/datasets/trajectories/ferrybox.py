@@ -31,8 +31,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
             ),
             keywords_vocabulary=",".join(
                 [
-                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
-                    "CFSTDN:CF Standard Names:https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html",
+                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords"
                 ]
             ),
             depth="~5m",
@@ -52,6 +51,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                     "Inner and Outer Oslofjord Fagrådet",
                 ]
             ),
+            iso_topic_category="oceans",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
             geospatial_lat_min=53.8,
