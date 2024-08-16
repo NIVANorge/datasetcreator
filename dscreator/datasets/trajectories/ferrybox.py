@@ -27,11 +27,15 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                     "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
                     "GCMDSK:EARTH SCIENCE > OCEANS > SALINITY/DENSITY > OCEAN SALINITY > OCEAN SURFACE SALINITY",
                     "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > OXYGEN",
+                    "GEMET:Oceanographic geographical features",
+                    "NORTHEMES:Marine activities",
                 ]
             ),
             keywords_vocabulary=",".join(
                 [
-                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords"
+                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
+                    "GEMET:INSPIRE Themes:http://inspire.ec.europa.eu/theme",
+                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
                 ]
             ),
             depth="~5m",
@@ -153,12 +157,16 @@ class DailyFantasy(NorsoopFantasy):
         attrs.title_no = "FerryBox på MS Color Fantasy, daglige data"
         attrs.summary = "Daily updating dataset of ferrybox data for ferry sailing Oslo, Norway to Kiel, Germany. QC flags are from automatic quality control. For more information see: https://www.colorline.no/oslo-kiel/fakta."
         attrs.summary_no = "Daglig updatert dataset fra ferrybox ombord ferje fra Oslo, Norge til Kiel, Tyskland. QC flagg er fra automatisk kvalitetskontroll. For mer informasjon se: https://www.colorline.no/oslo-kiel/fakta."
-        attrs.keywords += "," + ",".join(
-            [
-                "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > CHLOROPHYLL",
-                "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > TURBIDITY",
-                "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > ORGANIC MATTER > COLORED DISSOLVED ORGANIC MATTER",
-            ]
+        attrs.keywords = (
+            ",".join(
+                [
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > CHLOROPHYLL",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > TURBIDITY",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > ORGANIC MATTER > COLORED DISSOLVED ORGANIC MATTER",
+                ]
+            )
+            + ","
+            + attrs.keywords
         )
         attrs.project += "," + ",".join(["AquaINFRA"])
         return attrs

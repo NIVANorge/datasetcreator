@@ -32,12 +32,15 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
                     "GCMDSK:EARTH SCIENCE > ATMOSPHERE > PRECIPITATION > PRECIPITATION PROFILES > RAIN WATER PATH",
                     "GCMDSK:EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > WATER QUALITY/WATER CHEMISTRY",
                     "GCMDLOC:CONTINENT > EUROPE > NORTHERN EUROPE > SCANDINAVIA > NORWAY",
+                    "NORTHEMES:Pollution"
+
                 ]
             ),
             keywords_vocabulary=",".join(
                 [
                     "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
                     "GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
+                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling"
                 ]
             ),
             iso_topic_category="inlandWaters",
@@ -113,12 +116,14 @@ class MSourceOutletBuilder(MSourceInletBuilder):
                     "GCMDSK:EARTH SCIENCE > ATMOSPHERE > PRECIPITATION > PRECIPITATION PROFILES > RAIN WATER PATH",
                     "GCMDSK:EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > WATER QUALITY/WATER CHEMISTRY",
                     "GCMDLOC:CONTINENT > EUROPE > NORTHERN EUROPE > SCANDINAVIA > NORWAY",
+                    "NORTHEMES:Pollution"
                 ]
             ),
             keywords_vocabulary=",".join(
                 [
                     "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
                     "GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
+                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling"
                 ]
             ),
             iso_topic_category="inlandWaters",
