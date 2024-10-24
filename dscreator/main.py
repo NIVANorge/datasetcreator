@@ -104,14 +104,11 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
         sampling_feature_code="bbee7983-e91c-4282-9a5d-d0894a9b7cb0",
         variable_codes=[
             "Temp",
-            "Turbidity",
+            "TurbCalib",
             "Salinity",
-            "ChlaValue",
+            "ChlaCalib",
             "CondValue",
-            # "OxygenCon",
-            # "OxygenSat",
-            # "RawBackScattering",
-            # "fDOM",
+            "fDOMCalib",
         ],
     )
     dataset_builder = timeseries.sios.SiosBuilder(

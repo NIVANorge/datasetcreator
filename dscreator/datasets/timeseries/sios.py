@@ -19,18 +19,21 @@ class SiosBuilder(TimeseriesDatasetBuilder):
         For converting CF standard names erddap also contains a good converter for cf standard names.
         """
         return DatasetAttrsDiscrete(
-            title="SIOS sensor buoy in Adventfjorden",
-            summary="Summary",
-            title_no="SIOS sensor bøye i Adventfjorden",
-            summary_no="Oppsummering",
+            title="SIOS oceanographic observations in Adventfjorden",
+            summary="Long-term measurements of sea water properties collected by sensor buoy in Adventfjorden as part of the Svalbard Integrated Arctic Earth Observing System (SIOS).",
+            title_no="SIOS oseanografisk observasjoner i Adventfjorden",
+            summary_no="Langtidsmålinger av sjøvannsegenskaper samlet inn av sensor bøye i Adventfjorden som en del av Svalbard Integrated Arctic Earth Observing System (SIOS)",
             keywords=",".join(
                 [
+                    # GEMET & NORTHEMES
                     "GCMDSK:Earth Science > Oceans > Ocean Chemistry > Chlorophyll",
                     "GCMDSK:Earth Science > Oceans > Salinity/Density > Conductivity",
                     "GCMDSK:Earth Science > Oceans > Salinity/Density > Salinity",
                     "GCMDSK:Earth Science > Oceans > Ocean Temperature > Water Temperature",
                     "GCMDPLA:Water-based Platforms > Buoys > Moored > BUOYS",
                     "GCMDLOC:OCEAN > ATLANTIC OCEAN > NORTH ATLANTIC OCEAN > SVALBARD AND JAN MAYEN",
+                    "GEMET:Hydrography",
+                    "NORTHEMES:Marine activities",
                 ]
             ),
             keywords_vocabulary=",".join(
@@ -38,6 +41,8 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                     "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
                     "GCMDPLA:GCMD Platforms:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/platforms",
                     "GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
+                    "GEMET:INSPIRE Themes:http://inspire.ec.europa.eu/theme",
+                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
                 ]
             ),
             iso_topic_category="oceans",
@@ -50,8 +55,10 @@ class SiosBuilder(TimeseriesDatasetBuilder):
             geospatial_lat_max=float(ds.latitude.max()),
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
-            spatial_representation="point",
+            processing_level="Experimental",
+            spatial_representation="point"
         )
+
 
     def variable_attributes(self, variable_name) -> dict:
         """Match timeserie data to C&F
@@ -67,7 +74,7 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                         standard_name="sea_water_temperature", long_name="Sea Water Temperature", units="degree_Celsius"
                     )
                 )
-            case "turbidity":
+            case "turbcalib":
                 return asdict(
                     CFVariableAttrs(standard_name="sea_water_turbidity", long_name="Sea Water Turbidity", units="NTU")
                 )
@@ -75,20 +82,26 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                 return asdict(
                     CFVariableAttrs(standard_name="sea_water_salinity", long_name="Sea Water Salinity", units="1e-3")
                 )
-            case "chlavalue":
-                return asdict(
-                    CFVariableAttrs(
+            case "chlacalib":
+               return asdict(CFVariableAttrs(
                         standard_name="mass_concentration_of_chlorophyll_a_in_sea_water",
                         long_name="Mass Concentration of Chlorophyll A in Sea Water",
                         units="µg/l",
-                    )
-                )
+                    ))
             case "condvalue":
                 return asdict(
                     CFVariableAttrs(
                         standard_name="sea_water_electrical_conductivity",
                         long_name="Sea Water Conductivity",
                         units="S/m",
+                    )
+                )
+            case "fDOMCalib":
+                return asdict(
+                    CFVariableAttrs(
+                        standard_name="concentration_of_colored_dissolved_organic_matter_in_sea_water_expressed_as_equivalent_mass_fraction_of_quinine_sulfate_dihydrate",
+                        long_name="Concentration of Fluorescent Dissolved Organic Matter in Sea Water",
+                        units="µg/l",
                     )
                 )
             case _:
