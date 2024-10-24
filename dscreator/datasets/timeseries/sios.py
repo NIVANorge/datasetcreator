@@ -25,12 +25,15 @@ class SiosBuilder(TimeseriesDatasetBuilder):
             summary_no="Langtidsmålinger av sjøvannsegenskaper samlet inn av sensor bøye i Adventfjorden som en del av Svalbard Integrated Arctic Earth Observing System (SIOS)",
             keywords=",".join(
                 [
+                    # GEMET & NORTHEMES
                     "GCMDSK:Earth Science > Oceans > Ocean Chemistry > Chlorophyll",
                     "GCMDSK:Earth Science > Oceans > Salinity/Density > Conductivity",
                     "GCMDSK:Earth Science > Oceans > Salinity/Density > Salinity",
                     "GCMDSK:Earth Science > Oceans > Ocean Temperature > Water Temperature",
                     "GCMDPLA:Water-based Platforms > Buoys > Moored > BUOYS",
                     "GCMDLOC:OCEAN > ATLANTIC OCEAN > NORTH ATLANTIC OCEAN > SVALBARD AND JAN MAYEN",
+                    "GEMET:Hydrography",
+                    "NORTHEMES:Marine activities",
                 ]
             ),
             keywords_vocabulary=",".join(
@@ -38,6 +41,8 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                     "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
                     "GCMDPLA:GCMD Platforms:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/platforms",
                     "GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
+                    "GEMET:INSPIRE Themes:http://inspire.ec.europa.eu/theme",
+                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
                 ]
             ),
             iso_topic_category="oceans",
