@@ -83,13 +83,20 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                         long_name="Mass Concentration of Chlorophyll A in Sea Water",
                         units="µg/l",
                     ))
-                
             case "condvalue":
                 return asdict(
                     CFVariableAttrs(
                         standard_name="sea_water_electrical_conductivity",
                         long_name="Sea Water Conductivity",
                         units="S/m",
+                    )
+                )
+            case "fDOMCalib":
+                return asdict(
+                    CFVariableAttrs(
+                        standard_name="concentration_of_colored_dissolved_organic_matter_in_sea_water_expressed_as_equivalent_mass_fraction_of_quinine_sulfate_dihydrate",
+                        long_name="Concentration of Fluorescent Dissolved Organic Matter in Sea Water",
+                        units="µg/l",
                     )
                 )
             case _:

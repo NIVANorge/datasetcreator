@@ -107,10 +107,7 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
             "Salinity",
             "ChlaCalib",
             "CondValue",
-            # "OxygenCon",
-            # "OxygenSat",
-            # "RawBackScattering",
-            # "fDOMCalib",
+            "fDOMCalib",
         ],
     )
     dataset_builder = timeseries.sios.SiosBuilder(
