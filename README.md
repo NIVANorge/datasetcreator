@@ -16,11 +16,17 @@ then for local development set the varible
 DATABASE_URL=postgresql:///{DATABASE}?host={HOST}&port=5432&user={USERNAME}
 ```
 
-in your `.env` file or pass the password in the database URL, you can also export the password outside the `.env` file with
+in your `.env` file or pass the password in the database URL, you can also export the password outside the `.env` file.
 
+First, get the access token:
+```bash
+gcloud auth print-access-token
+```
+and then export it:
 ```bash
 export PGPASSWORD="MY ACCESS TOKEN"
 ```
+
 
 also see [config.py](./dscreator/config.py)
 
