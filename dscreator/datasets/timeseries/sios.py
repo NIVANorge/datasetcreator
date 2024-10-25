@@ -56,6 +56,7 @@ class SiosBuilder(TimeseriesDatasetBuilder):
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
             processing_level="Experimental",
+            comment="This dataset is not completely quality controlled",
             spatial_representation="point"
         )
 
@@ -96,7 +97,7 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                         units="S/m",
                     )
                 )
-            case "fDOMCalib":
+            case "fdomcalib":
                 return asdict(
                     CFVariableAttrs(
                         standard_name="concentration_of_colored_dissolved_organic_matter_in_sea_water_expressed_as_equivalent_mass_fraction_of_quinine_sulfate_dihydrate",

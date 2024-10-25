@@ -118,7 +118,6 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
         grouping="SIOS",
         is_acdd=acdd,
     )
-
     runner = DataRunner(
         extractor=timeseries_extractor,
         dataset_builder=dataset_builder,
