@@ -57,7 +57,8 @@ class SiosBuilder(TimeseriesDatasetBuilder):
             geospatial_lon_max=float(ds.longitude.max()),
             processing_level="Experimental",
             comment="This dataset is not completely quality controlled",
-            spatial_representation="point"
+            spatial_representation="point",
+            collection="GEONOR, SIOSIN",
         )
 
 

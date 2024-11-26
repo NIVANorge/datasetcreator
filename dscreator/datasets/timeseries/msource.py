@@ -54,6 +54,7 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
             spatial_representation="point",
+            collection="GEONOR",
         )
 
     def variable_attributes(self, variable_name) -> dict:
