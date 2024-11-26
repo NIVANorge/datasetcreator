@@ -82,7 +82,7 @@ class TimeseriesDatasetBuilder(DatasetBuilder):
 
         ds.attrs["id"] = self.uuid
         ds["station_name"] = idarray(self.station_name, "timeseries_id")
-        ds.attrs["featureType"] = "timeseries"
+        ds.attrs["featureType"] = "timeSeries"
 
         if self.is_acdd and ds.sizes["time"] > 0:
             # need to have data to add acdd
