@@ -56,6 +56,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
                 ]
             ),
             iso_topic_category="oceans",
+            collection="GEONOR, NMDC",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
             geospatial_lat_min=53.8,
