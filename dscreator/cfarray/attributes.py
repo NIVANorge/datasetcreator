@@ -149,7 +149,7 @@ class DatasetAttrsDefaults:
     # See https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#iso-topic-categories
     iso_topic_category: str = "Not available"
     history: str = "Built with dscreator"
-    collection: str = "GEONOR"
+    collection: str = ""
 
 
 @dataclass
