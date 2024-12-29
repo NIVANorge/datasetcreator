@@ -53,9 +53,9 @@ The different entrypoints can be listed with `poetry run dscreator --help`. By d
 ```bash
 poetry run dscreator sios --stop-after-n-files 2
 # or
-poetry run dscreator msource-inlet --stop-after-n-files 1 --acdd
+poetry run dscreator msource-inlet --stop-after-n-files 1 --acdd yes
 # or
-poetry run dscreator msource-outlet --max-time-slice 240 --stop-after-n-files 2 --acdd
+poetry run dscreator msource-outlet --max-time-slice 240 --stop-after-n-files 2 --acdd ncml
 ```
 
 ### Adding New Datasets
