@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from typing import List, Union
 
 import numpy as np
+import xarray as xr
 
 
 def numpy_to_datetime(dt: np.datetime64) -> datetime:
@@ -52,3 +53,13 @@ def datetime_intervals(start_time: datetime, end_time: datetime, delta: timedelt
         intervals.append(DatetimeInterval(current, current + delta))
         current = intervals[-1].end_time
     return intervals
+
+def to_ncml(ds: xr.Dataset) -> str:
+    """Create NcML string from dataset"""
+
+    xml_str = "<netcdf xmlns=\"http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2\">\n"
+    for key, value in ds.attrs.items():
+        xml_str += f'  <attribute name=\"{key}\" value=\"{value}\"/>\n'
+    xml_str += "</netcdf>\n"
+
+    return xml_str
