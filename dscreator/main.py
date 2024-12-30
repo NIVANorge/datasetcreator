@@ -1,6 +1,7 @@
 import logging
 import sys
 from datetime import datetime, timedelta
+from enum import Enum
 
 import typer
 from sqlalchemy import create_engine
@@ -20,8 +21,16 @@ logging.basicConfig(
 )
 
 
+class ACDDOptions(str, Enum):
+    no = "no"
+    """Do not add ACDD attributes"""
+    yes = "yes"
+    """Add ACDD attributes"""
+    ncml = "ncml"
+    """Add ACDD attributes and create a ncml template"""
+
 @app.command()
-def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
+def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build an msource inlet dataset from data in odm2
 
     The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
@@ -38,11 +47,11 @@ def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
     )
 
     dataset_builder = timeseries.msource.MSourceInletBuilder(
-        uuid="268ac6d7-c991-48e6-8c9c-f554eb5a9516",
+        uuid="no.niva:d2675936-8ebf-4fc5-988c-4a5198b2df57",
         dataset_name="msource-inlet",
         station_name="msource-inlet",
         grouping="Multisource",
-        is_acdd=acdd,
+        is_acdd=False if acdd == "no" else True,
     )
 
     runner = DataRunner(
@@ -51,12 +60,13 @@ def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False,
     )
     runner.start()
 
 
 @app.command()
-def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
+def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build an msource outlet dataset from data in odm2
 
     The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
@@ -72,11 +82,11 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     )
 
     dataset_builder = timeseries.msource.MSourceOutletBuilder(
-        uuid="09eb5028-9bc7-4587-b8ff-0436bc00494a",
+        uuid="no.niva:4b123377-e0a6-4c7e-b466-2f8a3199bc86",
         dataset_name="msource-outlet",
         station_name="msource-outlet",
         grouping="Multisource",
-        is_acdd=acdd,
+        is_acdd=False if acdd == "no" else True,
     )
 
     runner = DataRunner(
@@ -85,13 +95,14 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False,
     )
 
     runner.start()
 
 
 @app.command()
-def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
+def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build test sios dataset from data in odm2
 
     The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
@@ -112,24 +123,25 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = Fa
         ],
     )
     dataset_builder = timeseries.sios.SiosBuilder(
-        uuid="29b7de62-e1fa-4dce-90e4-7ff8a0931397",
+        uuid="no.niva:29b7de62-e1fa-4dce-90e4-7ff8a0931397",
         dataset_name="sios",
         station_name="adventfjorden",
         grouping="SIOS",
-        is_acdd=acdd,
+        is_acdd=False if acdd == "no" else True,
     )
     runner = DataRunner(
         extractor=timeseries_extractor,
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False,
     )
 
     runner.start()
 
 
 @app.command()
-def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: bool = False):
+def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build nrt color fantasy dataset from data in tsb"""
 
     logging.info("Exporting NRT FA dataset")
@@ -145,7 +157,7 @@ def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
         dataset_name="color_fantasy",
         station_name="color_fantasy",
         grouping="nrt",
-        is_acdd=acdd,
+        is_acdd=False if acdd == "no" else True,
     )
 
     runner = DataRunner(
@@ -154,6 +166,7 @@ def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False,
         end_time_delay=timedelta(minutes=90),
     )
 

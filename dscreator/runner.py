@@ -26,6 +26,8 @@ class DataRunner:
     """Set a delay for the end time of the export, useful for ensuring that all data is available before exporting"""
     time_intervals: List[DatetimeInterval] = field(init=False)
     storage_handler: BaseHandler = field(init=False)
+    ncml: bool = False
+    """Print ncml template"""
 
     def __post_init__(self):
         """Create timeintervals and storage handler for export
@@ -77,6 +79,10 @@ class DataRunner:
                 logging.info(f"Saving dataset slice {ds.time[0].values} --> {ds.time[-1].values}")
                 self.storage_handler.save_dataset(ds)
                 restart_dataset = ds
+                
+                if self.ncml:
+                    logging.info("NCML Template:\n")
+                    print(utils.to_ncml(ds))
             else:
                 logging.info("Found no data for interval")
 
