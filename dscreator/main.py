@@ -47,7 +47,7 @@ def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
     )
 
     dataset_builder = timeseries.msource.MSourceInletBuilder(
-        uuid="268ac6d7-c991-48e6-8c9c-f554eb5a9516",
+        uuid="no.niva:d2675936-8ebf-4fc5-988c-4a5198b2df57",
         dataset_name="msource-inlet",
         station_name="msource-inlet",
         grouping="Multisource",
@@ -82,7 +82,7 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     )
 
     dataset_builder = timeseries.msource.MSourceOutletBuilder(
-        uuid="09eb5028-9bc7-4587-b8ff-0436bc00494a",
+        uuid="no.niva:4b123377-e0a6-4c7e-b466-2f8a3199bc86",
         dataset_name="msource-outlet",
         station_name="msource-outlet",
         grouping="Multisource",
@@ -123,7 +123,7 @@ def sios(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptio
         ],
     )
     dataset_builder = timeseries.sios.SiosBuilder(
-        uuid="29b7de62-e1fa-4dce-90e4-7ff8a0931397",
+        uuid="no.niva:29b7de62-e1fa-4dce-90e4-7ff8a0931397",
         dataset_name="sios",
         station_name="adventfjorden",
         grouping="SIOS",
