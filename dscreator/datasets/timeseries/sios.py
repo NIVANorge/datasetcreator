@@ -48,7 +48,7 @@ class SiosBuilder(TimeseriesDatasetBuilder):
             iso_topic_category="oceans",
             featureType=ds.attrs["featureType"],
             date_created=utils.iso_now(),
-            project=self.grouping,
+            project="SIOS InfraNOR (SIOS InfraNOR)",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
             geospatial_lat_min=float(ds.latitude.min()),
