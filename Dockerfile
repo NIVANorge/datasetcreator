@@ -1,4 +1,7 @@
-FROM python:3.10-slim as base
+FROM python:3.11-slim AS base
+
+RUN pip install poetry
+RUN poetry config virtualenvs.create false
 
 WORKDIR /app
 COPY pyproject.toml poetry.lock README.md ./
@@ -7,10 +10,7 @@ COPY tests tests/
 
 FROM base as builder
 
-RUN pip install poetry==1.8.5
-RUN poetry config virtualenvs.create false
-
-RUN poetry export --without-hashes --with dev -f requirements.txt -o requirements.txt
+RUN poetry install --without dev,plots
 RUN poetry build 
 
 FROM base as runtime
@@ -20,8 +20,7 @@ RUN pip install /app/dist/*.whl
 
 FROM runtime as test
 
-COPY --from=builder /app/requirements.txt /app/requirements.txt
-RUN pip install -r requirements.txt
+RUN poetry install --with dev
 RUN pytest -m "not docker" .
 
 FROM runtime as prod
