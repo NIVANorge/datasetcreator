@@ -7,7 +7,7 @@ COPY tests tests/
 
 FROM base as builder
 
-RUN pip install poetry
+RUN pip install poetry==1.8.5
 RUN poetry config virtualenvs.create false
 
 RUN poetry export --without-hashes --with dev -f requirements.txt -o requirements.txt
