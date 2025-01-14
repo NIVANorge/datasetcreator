@@ -50,7 +50,7 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
             project=",".join(
                 [
                     "Norwegian Ships of Opportunity program (NorSOOP ID 269922)",
-                    "Joint European Research Infrastructure of Coastal Observatories (JERICO-S3 ID 871153 JERICO-NEXT ID 654410)",
+                    "Joint European Research Infrastructure of Coastal Observatories (JERICO)",
                     "Norwegian Environment Agency",
                     "Inner and Outer Oslofjord Fagrådet",
                 ]
