@@ -13,13 +13,13 @@ poetry install
 Then, for local development, set the variable:
 
 ```.env
-DATABASE_URL=postgresql:///{DATABASE}?host={HOST}&port=5432&user={USERNAME}
+ODM2_CONNECTION_STR=postgresql:///{DATABASE}?host={HOST}&port=5432&user={USERNAME}
 ```
 
 in your `.env` file or pass the password in the database URL. You can also export the password outside the `.env` file using:
 
 ```bash
-export  ODM2_CONNECTION_STR=$(gcloud auth print-access-token)
+export  PGPASSWORD=$(gcloud auth print-access-token)
 ```
 
 Also, see [config.py](./dscreator/config.py), note that for ferrybox you can set the password in the `TSB_CONNECTION_STR` variable in your `.env` file. 
