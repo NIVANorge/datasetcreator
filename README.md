@@ -1,52 +1,52 @@
-# Dataset Creator
+# Datasetcreator
 
 A program to create Climate and Forecast datasets with xarray.
 
-## Local development
+## Local Development
 
-To get started run
+To get started, run:
 
 ```bash
 poetry install
 ```
 
-then for local development set the varible
+Then, for local development, set the variable:
 
 ```.env
 DATABASE_URL=postgresql:///{DATABASE}?host={HOST}&port=5432&user={USERNAME}
 ```
 
-in your `.env` file or pass the password in the database URL, you can also export the password outside the `.env` file.
+in your `.env` file or pass the password in the database URL. You can also export the password outside the `.env` file using:
 
-First, get the access token:
 ```bash
-gcloud auth print-access-token
-```
-and then export it:
-```bash
-export PGPASSWORD="MY ACCESS TOKEN"
+export  PGPASSWORD=$(gcloud auth print-access-token)
 ```
 
-
-also see [config.py](./dscreator/config.py)
+Also, see [config.py](./dscreator/config.py), note that for ferrybox you can set the password in the `TSB_CONNECTION_STR` variable in your `.env` file. 
 
 ### Testing
 
-A local static database for tests can be found [here](./tests/data/README.md). Run the tests with
+A local static database for tests can be found [here](./tests/data/README.md). Run the tests with:
 
 ```bash
 poetry run pytest .
 ```
 
-To skip docker tests use
+To skip Docker tests, use:
 
 ```bash
 poetry run pytest -m "not docker" .
 ```
 
-## Creating datasets
+## Creating Datasets
 
-The different entrypoints can be listed with `poetry run dscreator --help`. By default data will be saved to the `./catalog` folder, this is changed using the enviroment variable `STORAGE_PATH`. The program uses a restart file from the give storage location to create new slices in time.
+The different entry points can be listed with:
+
+```bash
+poetry run dscreator --help
+```
+
+By default, data will be saved to the `./catalog` folder. This can be changed using the environment variable `STORAGE_PATH`. The program uses a restart file from the given storage location to create new slices in time.
 
 ### Examples
 
@@ -60,49 +60,28 @@ poetry run dscreator msource-outlet --max-time-slice 240 --stop-after-n-files 2 
 
 ### Adding New Datasets
 
-For dynamic datasets add an `app` to [main.py](./dscreator/main.py), that contains:
+For dynamic datasets, add an `app` to [main.py](./dscreator/main.py) that contains:
 
-- An `extractor`, subclassed from `BaseExtractor` in [sources/base.py](./dscreator/sources/base.py), see [TimeseriesExtractor](./dscreator/sources/odm2/extractor.py)
-- A dataset builder, subclassed from the appropriate class in [datasets/base.py](./dscreator/datasets/base.py), see [MSourceInletBuilder](./dscreator/datasets/timeseries/msource.py)
+- An `extractor`, subclassed from `BaseExtractor` in [sources/base.py](./dscreator/sources/base.py). See [TimeseriesExtractor](./dscreator/sources/odm2/extractor.py).
+- A dataset builder, subclassed from the appropriate class in [datasets/base.py](./dscreator/datasets/base.py). See [MSourceInletBuilder](./dscreator/datasets/timeseries/msource.py).
 
 It is also possible to use a notebook, as done for [exceedence_limits.ipynb](notebooks/exceedence_limits.ipynb).
 
-## Viewing datasets
+## Viewing Datasets
 
-A local `thredds` server that reads the files can be started using docker
+A local `thredds` server that reads the files can be started using Docker:
 
-```base
+```bash
 docker compose up
 ```
 
-and accessed on http://localhost/thredds/catalog/catalog.html.
+and accessed at http://localhost/thredds/catalog/catalog.html.
 
-### Configuring the view
+### Configuring a catalog
 
 The local catalog config file can be found in [catalog.xml](./catalog/catalog.xml). Documentation for working with this configuration file can be found [here](https://docs.unidata.ucar.edu/tds/current/userguide/basic_config_catalog.html). The ncml [documentation](https://docs.unidata.ucar.edu/netcdf-java/current/userguide/basic_ncml_tutorial.html) is also useful.
 
 ## Working with netCDF
 
-For most things [xarray](https://docs.xarray.dev/en/stable/) is a good choice. The command-line tool [ncdump](https://www.unidata.ucar.edu/software/netcdf/workshops/2011/utilities/Ncdump.html) is also quite nice for small things.
-
-
-## Working with metdata
-
-All the required attributes are defined in [dataclasses](./dscreator/cfarray/attributes.py) for easy use in python. When the dataset is published these attributes are translated to ncml and the stylesheet [ncml-to-iso.xsl](./catalog/ncml-to-iso.xsl) can translate to iso. It is also possible to translate from iso to other schemas like [mmd](https://github.com/metno/mmd/tree/master/xslt). For example using:
+For most tasks, [xarray](https://docs.xarray.dev/en/stable/) is a good choice. The command-line tool [ncdump](https://www.unidata.ucar.edu/software/netcdf/workshops/2011/utilities/Ncdump.html) is also useful for small tasks.
  
-```bash
-curl -O https://raw.githubusercontent.com/metno/mmd/master/xslt/mmd-to-geonorge.xsl
-curl -O https://raw.githubusercontent.com/metno/mmd/master/xslt/iso-to-mmd.xsl
-curl -o ./msource-outlet.xml https://thredds.niva.no/thredds/iso/datasets/msource-outlet.nc?catalog=file:/usr/local/tomcat/content/thredds/subcatalogs/loggers.xml&dataset=4b123377-e0a6-4c7e-b466-2f8a3199bc86
-
-xsltproc iso-to-mmd.xsl msource-outlet.xml > msource.mmd.xml
-xsltproc mmd-to-geonorge.xsl msource.mmd.xml > msource.geonorge.xml
-
-```
-
-There is also a tool [py-mmd-tool](https://github.com/metno/py-mmd-tools) that can translate straight from nc attributes.
-
-## Ferrybox datasets
-
-Update the DATABASE_URL in `.env` with tsb credentials and connect to tsb,
-also see the notebook [norsoop-2017-2022.ipynb](./notebooks/norsoop-2017-2022.ipynb)
