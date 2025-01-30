@@ -4,26 +4,30 @@ RUN pip install poetry
 RUN poetry config virtualenvs.create false
 
 WORKDIR /app
+
 COPY pyproject.toml poetry.lock README.md ./
+RUN poetry install --no-root --without dev,plots
+
 COPY dscreator dscreator/
-COPY tests tests/
 
-FROM base as builder
-
-RUN poetry install --without dev,plots
 RUN poetry build 
 
-FROM base as runtime
+FROM base AS runtime
 
-COPY --from=builder /app/dist/ /app/dist/
+COPY --from=base /app/dist/ /app/dist/
 RUN pip install /app/dist/*.whl
 
-FROM runtime as test
+FROM runtime AS test
 
-RUN poetry install --with dev
+RUN poetry install --no-root --with dev
+COPY tests tests/
+
 RUN pytest -m "not docker" .
 
-FROM runtime as prod
+FROM runtime AS prod
+
+# Fail if test stage fails
+COPY --from=test test-res* test-result
 
 ARG GIT_COMMIT_ID=unknown
 LABEL git_commit_id=$GIT_COMMIT_ID
