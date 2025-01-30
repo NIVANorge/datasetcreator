@@ -56,4 +56,4 @@ def test_time_interval(start_time, end_time, delta, expected):
     intervals = utils.datetime_intervals(start_time, end_time, delta)
     assert len(intervals) == expected
     assert intervals[0].start_time == start_time
-    assert intervals[-1].start_time + delta == intervals[-1].end_time
+    assert intervals[-1].end_time == end_time

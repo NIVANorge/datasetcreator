@@ -52,6 +52,8 @@ def datetime_intervals(start_time: datetime, end_time: datetime, delta: timedelt
     while current < end_time:
         intervals.append(DatetimeInterval(current, current + delta))
         current = intervals[-1].end_time
+    intervals[-1] = DatetimeInterval(intervals[-1].start_time, end_time)
+
     return intervals
 
 def to_ncml(ds: xr.Dataset) -> str:
