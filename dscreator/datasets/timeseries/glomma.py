@@ -20,9 +20,9 @@ class BaterodBuilder(TimeseriesDatasetBuilder):
         """
         return DatasetAttrsDiscrete(
             title="Sensor station at Baterød in Glomma",
-            summary="Sensor measurements collected by a sensor station at Baterød in Glomma.",
+            summary="Water quality sensor measurements collected in the Glomma river at Baterød waterworks. The purpose of the station is to monitor natural dynamics and trends in important physical and chemical water properties.",
             title_no="Sensorstasjon ved Baterød i nedre Glomma",
-            summary_no="Sensor målinger samlet i Glomma ved Baterød vannverk. Hensikten med stasjonen er å overvåke naturlig dynamikk og trender i viktige fysisk-kjemiske vannkvalitetsparametere.",
+            summary_no="Vannkvalitets målinger fra sensorstasjon i Glomma ved Baterød vannverk. Hensikten med stasjonen er å overvåke naturlig dynamikk og trender i viktige fysisk-kjemiske vannkvalitetsparametere.",
             keywords=",".join(
                 [
                     # GEMET & NORTHEMES
@@ -44,7 +44,8 @@ class BaterodBuilder(TimeseriesDatasetBuilder):
             iso_topic_category="inlandWaters",
             featureType=ds.attrs["featureType"],
             date_created=utils.iso_now(),
-            project="AquaINFRA",
+            processing_level="Experimental",
+            project="Elveovervåkingsprogrammet,AquaINFRA",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
             geospatial_lat_min=float(ds.latitude.min()),
@@ -52,7 +53,7 @@ class BaterodBuilder(TimeseriesDatasetBuilder):
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
             spatial_representation="point",
-            collection="",
+            collection="ADC",
         )
 
     def variable_attributes(self, variable_name) -> dict:
@@ -76,7 +77,7 @@ class BaterodBuilder(TimeseriesDatasetBuilder):
                     VariableAttrs(
                         short_name="water_electrical_conductivity",
                         long_name="River Water Conductivity",
-                        units="mS/m",
+                        units="µS/cm",
                     )
                 )
             case "turbidity_avg":
