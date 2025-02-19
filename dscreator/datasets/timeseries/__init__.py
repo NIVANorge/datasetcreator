@@ -1,3 +1,3 @@
-from dscreator.datasets.timeseries import msource, sios
+from dscreator.datasets.timeseries import msource, sios, glomma
 
-__all__ = ["msource", "sios"]
+__all__ = ["msource", "sios", "glomma"]
