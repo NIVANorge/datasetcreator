@@ -101,13 +101,13 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     runner.start()
 
 @app.command()
-def baterod(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
-    """Build test sios dataset from data in odm2
+def glomma(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Build glomma Baterød dataset from data in odm2
 
     The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
     """
 
-    logging.info("Exporting Baterød dataset")
+    logging.info("Exporting Glomma Baterød dataset")
     engine = create_engine(SETTINGS.odm2_connection_str)
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
