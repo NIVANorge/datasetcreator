@@ -10,7 +10,7 @@ from dscreator.datasets.base import TimeseriesDatasetBuilder
 
 
 @dataclass
-class BaterodBuilder(TimeseriesDatasetBuilder):
+class GlommaBuilder(TimeseriesDatasetBuilder):
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
         """Add ACDD attributes to a xarray dataset
 

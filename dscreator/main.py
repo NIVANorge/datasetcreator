@@ -120,7 +120,7 @@ def baterod(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOp
             "CDOMdigitalFinal"
         ],
     )
-    dataset_builder = timeseries.glomma.BaterodBuilder (
+    dataset_builder = timeseries.glomma.GlommaBuilder (
         uuid="no.niva:af047ff6-e92a-47a0-a9ab-1b2d1e011092",
         dataset_name="baterod",
         station_name="Baterød",
