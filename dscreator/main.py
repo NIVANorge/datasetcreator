@@ -101,7 +101,7 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     runner.start()
 
 @app.command()
-def glomma(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+def glomma_baterod(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build glomma Baterød dataset from data in odm2
 
     The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
@@ -133,6 +133,7 @@ def glomma(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOpt
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
         ncml=True if acdd == "ncml" else False,
+        end_time_delay=timedelta(days=7),
     )
 
     runner.start()
