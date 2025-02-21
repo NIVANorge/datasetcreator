@@ -123,7 +123,7 @@ def glomma_baterod(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     dataset_builder = timeseries.glomma.GlommaBuilder (
         uuid="no.niva:af047ff6-e92a-47a0-a9ab-1b2d1e011092",
         dataset_name="baterod",
-        station_name="Baterød",
+        station_name="Baterod",
         grouping="glomma",
         is_acdd=False if acdd == "no" else True,
     )
