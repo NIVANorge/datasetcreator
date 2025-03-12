@@ -171,3 +171,68 @@ class DailyFantasy(NorsoopFantasy):
         )
         attrs.project += "," + ",".join(["AquaINFRA"])
         return attrs
+
+
+@dataclass
+class RamsesFantasy(TrajectoryDatasetBuilder):
+    def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
+        return FerryboxDatasetAttrs(
+            title="RAMSES on MS Color Fantasy",
+            title_no="RAMSES på MS Color Fantasy",
+            summary="RAMSES on MS Color Fantasy. Also see: https://www.niva.no/en/ferrybox & https://www.colorline.no/oslo-kiel/fakta.",
+            summary_no="RAMSES på MS Color Fantasy. Se også: https://www.niva.no/ferrybox & https://www.colorline.no/oslo-kiel/fakta.",
+            keywords=",".join(
+                [
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > REFLECTANCE",
+                ]
+            ),
+            keywords_vocabulary=",".join(
+                [
+                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
+                ]
+            ),
+            depth="~5m",
+            creator_email="miljoinformatikk@niva.no",
+            featureType=ds.attrs["featureType"],
+            # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
+            references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md(Extended metadata)",
+            ices_platform_code="58CO",
+            platform_code="FA",
+            platform_name="Color Fantasy",
+            date_created=utils.iso_now(),
+            project=",".join(
+                [
+                    "AquaINFRA",
+                    "Norwegian Ships of Opportunity program (NorSOOP ID 269922)",
+                    "Joint European Research Infrastructure of Coastal Observatories (JERICO)",
+                    "Norwegian Environment Agency",
+                    "Inner and Outer Oslofjord Fagrådet",
+                ]
+            ),
+            iso_topic_category="oceans",
+            time_coverage_start=utils.to_isoformat(ds.time.min().values),
+            time_coverage_end=utils.to_isoformat(ds.time.max().values),
+            geospatial_lat_min=53.8,
+            geospatial_lat_max=59.93,
+            geospatial_lon_min=9.92,
+            geospatial_lon_max=12.6,
+            spatial_representation="trajectory",
+        )
+
+    def variable_attributes(self, variable_name: str):
+        """Match timeserie data to C&F
+
+        Match timeseries data to the climate and forecast convention based on the given variable_name code.
+        Standard names are found at http://vocab.nerc.ac.uk/collection/P07/current/
+        online unit list on https://ncics.org/portfolio/other-resources/udunits2/
+        """
+
+        _, wl = variable_name.split("_")
+
+        return asdict(
+            CFVariableAttrs(
+                standard_name="surface_ratio_of_upwelling_radiance_emerging_from_sea_water_to_downwelling_radiative_flux_in_air",
+                long_name=f"Remote sensing reflectance at {wl} nm",
+                units="sr^-1",
+            )
+        )
