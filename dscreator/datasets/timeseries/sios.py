@@ -20,9 +20,9 @@ class SiosBuilder(TimeseriesDatasetBuilder):
         """
         return DatasetAttrsDiscrete(
             title="SIOS oceanographic observations in Adventfjorden",
-            summary="Long-term measurements of sea water properties collected by sensor buoy in Adventfjorden as part of the Svalbard Integrated Arctic Earth Observing System (SIOS).",
+            summary="Long-term measurements of sea water properties collected by sensor buoy in Adventfjorden as part of the Svalbard Integrated Arctic Earth Observing System (SIOS). Also see https://sios-svalbard.org/",
             title_no="SIOS oseanografisk observasjoner i Adventfjorden",
-            summary_no="Langtidsmålinger av sjøvannsegenskaper samlet inn av sensor bøye i Adventfjorden som en del av Svalbard Integrated Arctic Earth Observing System (SIOS)",
+            summary_no="Langtidsmålinger av sjøvannsegenskaper samlet inn av sensor bøye i Adventfjorden som en del av Svalbard Integrated Arctic Earth Observing System (SIOS). Se også https://sios-svalbard.org/",
             keywords=",".join(
                 [
                     # GEMET & NORTHEMES
@@ -60,7 +60,6 @@ class SiosBuilder(TimeseriesDatasetBuilder):
             collection="GEONOR, SIOSIN",
         )
 
-
     def variable_attributes(self, variable_name) -> dict:
         """Match timeserie data to C&F
 
@@ -84,11 +83,13 @@ class SiosBuilder(TimeseriesDatasetBuilder):
                     CFVariableAttrs(standard_name="sea_water_salinity", long_name="Sea Water Salinity", units="1e-3")
                 )
             case "chlacalib":
-               return asdict(CFVariableAttrs(
+                return asdict(
+                    CFVariableAttrs(
                         standard_name="mass_concentration_of_chlorophyll_a_in_sea_water",
                         long_name="Mass Concentration of Chlorophyll A in Sea Water",
                         units="µg/l",
-                    ))
+                    )
+                )
             case "condvalue":
                 return asdict(
                     CFVariableAttrs(
