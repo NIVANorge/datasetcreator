@@ -179,8 +179,8 @@ class RamsesFantasy(TrajectoryDatasetBuilder):
         return FerryboxDatasetAttrs(
             title="RAMSES on MS Color Fantasy",
             title_no="RAMSES på MS Color Fantasy",
-            summary="RAMSES on MS Color Fantasy. Also see: https://www.niva.no/en/ferrybox & https://www.colorline.no/oslo-kiel/fakta.",
-            summary_no="RAMSES på MS Color Fantasy. Se også: https://www.niva.no/ferrybox & https://www.colorline.no/oslo-kiel/fakta.",
+            summary="Ocean surface reflectance derived from spectral imaging radiometer (RAMSES) measurements on board MS Color Fantasy sailing from Oslo, Norway to Kiel, Germany. Also see: https://www.niva.no/en/ferrybox & https://www.colorline.no/oslo-kiel/fakta.",
+            summary_no="Reflektans målinger fra spectral imaging radiometer (RAMSES) ombord MS Color Fantasy som går i rute Oslo - Kiel. Se også: https://www.niva.no/ferrybox & https://www.colorline.no/oslo-kiel/fakta.",
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN OPTICS > REFLECTANCE",
