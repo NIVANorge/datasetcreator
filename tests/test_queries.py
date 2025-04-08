@@ -45,5 +45,6 @@ def test_spectra_values(db_engine):
         datetime(2025, 2, 5),
         datetime(2025, 2, 6),
     )
-    assert len(ts) == 11
+
+    assert len(ts) == 2
     

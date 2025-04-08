@@ -58,6 +58,6 @@ def test_spectra_values(spectra_extractor: ferrybox.extractor.SpectraExtractor):
     assert len(data_dict) == 5
     assert "rrs_344" in data_dict
     assert "rrs_452" in data_dict
-    assert data_dict["rrs_344"] == [-0.0006604349498171411, None, None, None]
+    assert data_dict["rrs_344"] == [0.0006604349498171411, 0.0006579092427698614, None, None]
     assert data_dict["rrs_452"] == [None, 1.5, 2, 5]
     assert data_dict["time"] == [datetime(2025, 2, 5, 8, min) for min in range(49, 53)]

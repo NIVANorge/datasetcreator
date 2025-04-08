@@ -137,6 +137,7 @@ def get_spectra(
     ON date_trunc('minute', track.time) = date_trunc('minute', spectra.time)
     WHERE
         track.uuid = :track_uuid
+        AND spectra.value >= 0
         AND track.time > :start_time
         AND track.time <= :end_time
         AND spectra.uuid IN :uuids
