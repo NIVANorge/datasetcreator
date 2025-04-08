@@ -118,6 +118,18 @@ class TrajectoryExtractor(BaseExtractor):
 
 @dataclass
 class SpectraExtractor(TrajectoryExtractor):
+    def __post_init__(self):
+        vum = dict(self.variable_uuid_map)
+        name_shortcuts = []
+        for vcode in self.variable_codes:
+            name, wl = vcode.split("_")
+            name_shortcuts.append(name)
+            if name in self.variable_uuid_map:
+                vum[vcode] = f"{self.variable_uuid_map[name]}_{wl}"
+
+        self.variable_uuid_map = {k: v for k, v in vum.items() if k not in name_shortcuts}
+        super().__post_init__()
+
     def fetch_slice(
         self,
         start_time: datetime,
