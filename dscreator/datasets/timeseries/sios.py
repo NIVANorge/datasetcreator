@@ -20,9 +20,9 @@ class SiosBuilder(TimeseriesDatasetBuilder):
         """
         return DatasetAttrsDiscrete(
             title="SIOS oceanographic observations in Adventfjorden",
-            summary="Long-term measurements of sea water properties collected by sensor buoy in Adventfjorden as part of the Svalbard Integrated Arctic Earth Observing System (SIOS). Also see https://sios-svalbard.org/",
+            summary="Long-term measurements of sea water properties collected by sensor buoy in Adventfjorden as part of the Svalbard Integrated Arctic Earth Observing System (SIOS), also see https://sios-svalbard.org/.",
             title_no="SIOS oseanografisk observasjoner i Adventfjorden",
-            summary_no="Langtidsmålinger av sjøvannsegenskaper samlet inn av sensor bøye i Adventfjorden som en del av Svalbard Integrated Arctic Earth Observing System (SIOS). Se også https://sios-svalbard.org/",
+            summary_no="Langtidsmålinger av sjøvannsegenskaper samlet inn av sensor bøye i Adventfjorden som en del av Svalbard Integrated Arctic Earth Observing System (SIOS), se også https://sios-svalbard.org/.",
             keywords=",".join(
                 [
                     # GEMET & NORTHEMES

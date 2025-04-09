@@ -20,8 +20,12 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
         return FerryboxDatasetAttrs(
             title="FerryBox on MS Color Fantasy",
             title_no="FerryBox på MS Color Fantasy",
-            summary="The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Color Fantasy Oslo-Kiel. This amounts to about one measurement every ~500 metres. For more information see https://www.niva.no/en/ferrybox",
-            summary_no="Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Color Fantasy sin faste rute Oslo-Kiel. Dette tilsvarer en måling ~500 meter. For mer informasjon se https://www.niva.no/ferrybox",
+            summary=(
+                "The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Color Fantasy Oslo-Kiel. This amounts to about one measurement every ~500 metres, for more information see https://www.niva.no/en/ferrybox. This dataset covers 5 years from 2017 to 2022.",
+            ),
+            summary_no=(
+                "Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Color Fantasy sin faste rute Oslo-Kiel. Dette tilsvarer en måling ca hver 500 meter, for mer informasjon se https://www.niva.no/ferrybox. Dette datasettet dekker 5 år fra 2017 til 2022.",
+            ),
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
@@ -157,10 +161,10 @@ class DailyFantasy(NorsoopFantasy):
         attrs.title = "FerryBox on MS Color Fantasy, daily data"
         attrs.title_no = "FerryBox på MS Color Fantasy, daglige data"
         attrs.summary = (
-            "The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Color Fantasy Oslo-Kiel. This amounts to about one measurement every ~500 metres. This dataset will normally be updated daily. For more information see https://www.niva.no/en/ferrybox.",
+            "The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Color Fantasy Oslo-Kiel. This amounts to about one measurement every ~500 metres, for more information see https://www.niva.no/en/ferrybox. This dataset will normally be updated daily.",
         )
         attrs.summary_no = (
-            "Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Color Fantasy sin faste rute Oslo-Kiel. Dette tilsvarer en måling ~500 meter. Dette datasettet vil normalt bli oppdatert daglig. For mer informasjon se https://www.niva.no/ferrybox.",
+            "Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Color Fantasy sin faste rute Oslo-Kiel. Dette tilsvarer en måling ca hver 500 meter, for mer informasjon se https://www.niva.no/ferrybox. Dette datasettet vil normalt bli oppdatert daglig.",
         )
         attrs.keywords = (
             ",".join(
