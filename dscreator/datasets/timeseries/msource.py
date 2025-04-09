@@ -20,8 +20,8 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
         return DatasetAttrsDiscrete(
             title="MULTISOURCE/DIGIVEIVANN Inlet",
             title_no="MULTISOURCE/DIGIVEIVANN Innløp",
-            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing a rain garden as a nature-based solution for water treatment (NBSWT) to treat road runoff.",
-            summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann.",
+            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing a rain garden as a nature-based solution for water treatment (NBSWT) to treat road runoff. For more information see https://www.niva.no/en/projects/multisource.",
+            summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann. For mer informasjon se https://www.niva.no/prosjekter/multisource.",
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
@@ -32,15 +32,14 @@ class MSourceInletBuilder(TimeseriesDatasetBuilder):
                     "GCMDSK:EARTH SCIENCE > ATMOSPHERE > PRECIPITATION > PRECIPITATION PROFILES > RAIN WATER PATH",
                     "GCMDSK:EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > WATER QUALITY/WATER CHEMISTRY",
                     "GCMDLOC:CONTINENT > EUROPE > NORTHERN EUROPE > SCANDINAVIA > NORWAY",
-                    "NORTHEMES:Pollution"
-
+                    "NORTHEMES:Pollution",
                 ]
             ),
             keywords_vocabulary=",".join(
                 [
                     "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
                     "GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
-                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling"
+                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
                 ]
             ),
             iso_topic_category="inlandWaters",
@@ -105,8 +104,8 @@ class MSourceOutletBuilder(MSourceInletBuilder):
         return DatasetAttrsDiscrete(
             title="MULTISOURCE/DIGIVEIVANN Outlet",
             title_no="MULTISOURCE/DIGIVEIVANN Utløp",
-            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing a rain garden as a nature-based solution for water treatment (NBSWT) to treat road runoff.",
-            summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann.",
+            summary="In the MULTISOURCE/DigiVEIVANN project, we are testing a rain garden as a nature-based solution for water treatment (NBSWT) to treat road runoff. For more information see https://www.niva.no/en/projects/multisource.",
+            summary_no="I prosjektet MULTISOURCE/DigiVEIVANN så tester vi regnbed som en naturbasert renseløsning for forurenset overvann. For mer informasjon se https://www.niva.no/prosjekter/multisource.",
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
@@ -117,14 +116,14 @@ class MSourceOutletBuilder(MSourceInletBuilder):
                     "GCMDSK:EARTH SCIENCE > ATMOSPHERE > PRECIPITATION > PRECIPITATION PROFILES > RAIN WATER PATH",
                     "GCMDSK:EARTH SCIENCE > TERRESTRIAL HYDROSPHERE > WATER QUALITY/WATER CHEMISTRY",
                     "GCMDLOC:CONTINENT > EUROPE > NORTHERN EUROPE > SCANDINAVIA > NORWAY",
-                    "NORTHEMES:Pollution"
+                    "NORTHEMES:Pollution",
                 ]
             ),
             keywords_vocabulary=",".join(
                 [
                     "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
                     "GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
-                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling"
+                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
                 ]
             ),
             iso_topic_category="inlandWaters",
