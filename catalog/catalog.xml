@@ -75,6 +75,24 @@
       </aggregation>
     </netcdf>
   </dataset>
+    <dataset name="Test Ramses" ID="testramses" serviceName="trajectory"
+    urlPath="datasets/ferryboxes/ramses_color_fantasy.nc">
+    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+      <attribute name="id" value="4b123377" />
+      <group name="THREDDSMetadata">
+        <group name="services">
+          <attribute name="opendap_service"
+            value="https://thredds.t.niva.no/thredds/dodsC/datasets/msource-outlet.nc" />
+          <attribute name="nccs_service"
+            value="https://thredds.t.niva.no/thredds/ncss/point/datasets/msource-outlet.nc/dataset.html" />
+        </group>
+      </group>
+      <aggregation dimName="time" type="joinExisting">
+        <!-- <scan location="/datasets/ferryboxes/ramses_color_fantasy.nc" regExp=".*color_fantasy.nc" /> -->
+        <scan location="/datasets/ramses/color_fantasy" regExp=".*color_fantasy.nc" />
+      </aggregation>
+    </netcdf>
+  </dataset>
     <dataset name="Color Fantasy - Daily" ID="no.niva:test-af11b" serviceName="trajectory"
     urlPath="datasets/nrt/color_fantasy.nc">
     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
