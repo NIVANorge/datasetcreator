@@ -228,9 +228,9 @@ class DailyNordbjorn(FerryboxDatasetBuilder):
             collection="GEONOR, NMDC",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
-            geospatial_lat_min=0,
-            geospatial_lat_max=0,
-            geospatial_lon_min=0,
-            geospatial_lon_max=0,
+            geospatial_lat_min=69.68,
+            geospatial_lat_max=79.00,
+            geospatial_lon_min=8.80,
+            geospatial_lon_max=21.15,
             spatial_representation="trajectory",
         )
