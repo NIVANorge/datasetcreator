@@ -1,4 +1,3 @@
-version: '3.5'
 services:
   thredds:
     image: unidata/thredds-docker:5.5
