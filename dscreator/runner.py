@@ -20,8 +20,10 @@ class DataRunner:
     """The number of hours to use for each time interval"""
     n_intervals: int
     """The number of intervals to use, if 0 all intervals are used"""
-    custom_start_time: Optional[datetime] = None
+    start_time: Optional[datetime] = None
     """Optional a custom start time to use for the export"""
+    end_time: Optional[datetime] = None
+    """Optional a custom end time to use for the export"""
     end_time_delay: Optional[timedelta] = None
     """Set a delay for the end time of the export, useful for ensuring that all data is available before exporting"""
     time_intervals: List[DatetimeInterval] = field(init=False)
@@ -45,12 +47,16 @@ class DataRunner:
         if restart_info is not None:
             logging.info(f"Restarting from restart file at {restart_info.end_time}")
             start_time = restart_info.end_time
-        elif self.custom_start_time is not None:
-            start_time = self.custom_start_time
+        elif self.start_time is not None:
+            start_time = self.start_time
         else:
             start_time = self.extractor.first_timestamp()
+        
+        if self.end_time is not None:
+            end_time = self.end_time
+        else:
+            end_time = self.extractor.last_timestamp()
 
-        end_time = self.extractor.last_timestamp()
         if self.end_time_delay is not None:
             end_time = end_time - self.end_time_delay
 

@@ -1,22 +1,26 @@
 services:
   thredds:
-    image: unidata/thredds-docker:5.5
+    image: thredds:latest
     #image: europe-west1-docker.pkg.dev/niva-cd/images/thredds:latest
     ports:
       - "80:8080"
       - "443:8443"
       - "8443:8443"
     container_name: thredds
+    environment:
+      - BASE_URL=http://localhost
+      - XVIEW_URL=http://localhost:8000/xview/panel
     volumes:
       - ./catalog/catalog.xml:/usr/local/tomcat/content/thredds/catalog.xml
       - ./catalog/datasets:/datasets
       - ./catalog/ncml-to-iso.xsl:/usr/local/tomcat/webapps/thredds/WEB-INF/classes/resources/xsl/nciso/UnidataDD2MI.xsl
+
   pycsw:
     image: geopython/pycsw:latest
     environment:
-      - PYCSW_SERVER_URL=http://localhost:8000
+      - PYCSW_SERVER_URL=http://localhost:8100
     ports:
-      - 8000:8000
+      - 8100:8100
     volumes:
       - ./catalog/metadata/pycsw.yml:/etc/pycsw/pycsw.yml
       - ./catalog/metadata/:/home/pycsw/data/
