@@ -19,10 +19,10 @@ class UsageBuilder(TimeseriesDatasetBuilder):
         For converting CF standard names erddap also contains a good converter for cf standard names.
         """
         return DatasetAttrsDiscrete(
-            title="",
-            summary="",
-            title_no="",
-            summary_no="",
+            title="AKVABY: Miljø- og vannkvalitetsovervåkning I akvaponipilot",
+            summary="Continuous measurements of environmental and water quality parameters in the aquaponics pilot to ensure fish welfare, good growing conditions for growth in hydroponics and control of the facility. The aquaponics pilot is part of the project AKVABY, read more here: AKVABY | NIVA.",
+            title_no="AKVABY: environment and water surveillance in aquaponics pilot",
+            summary_no="Kontinuerlige målinger av miljø- og vannkvalitetsparametere i akvaponipilot for å sikre fiskevelferd, gode vekstvilkår for vekst I hydroponi og kontroll av fasiliteten. Akvaponipiloten er en del av prosjektet AKVABY, les mer her: AKVABY | NIVA.",
             keywords=",".join(
                 [
                     # GEMET & NORTHEMES
@@ -30,8 +30,7 @@ class UsageBuilder(TimeseriesDatasetBuilder):
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > WATER MANAGEMENT > STORMWATER MANAGEMENT",
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
                     "GCMDLOC:CONTINENT > EUROPE > NORTHERN EUROPE > SCANDINAVIA > NORWAY",
-                    "GEMET:Agricultural and aquaculture facilities"
-                    "NORTHEMES:Agriculture",
+                    "GEMET:Agricultural and aquaculture facilities" "NORTHEMES:Agriculture",
                 ]
             ),
             keywords_vocabulary=",".join(
