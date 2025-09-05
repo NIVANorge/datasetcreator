@@ -19,9 +19,9 @@ class UsageBuilder(TimeseriesDatasetBuilder):
         For converting CF standard names erddap also contains a good converter for cf standard names.
         """
         return DatasetAttrsDiscrete(
-            title="AKVABY: Miljø- og vannkvalitetsovervåkning I akvaponipilot",
+            title="AKVABY: environment and water surveillance in aquaponics pilot",
             summary="Continuous measurements of environmental and water quality parameters in the aquaponics pilot to ensure fish welfare, good growing conditions for growth in hydroponics and control of the facility. The aquaponics pilot is part of the project AKVABY, read more here: AKVABY | NIVA.",
-            title_no="AKVABY: environment and water surveillance in aquaponics pilot",
+            title_no="AKVABY: Miljø- og vannkvalitetsovervåkning I akvaponipilot",
             summary_no="Kontinuerlige målinger av miljø- og vannkvalitetsparametere i akvaponipilot for å sikre fiskevelferd, gode vekstvilkår for vekst I hydroponi og kontroll av fasiliteten. Akvaponipiloten er en del av prosjektet AKVABY, les mer her: AKVABY | NIVA.",
             keywords=",".join(
                 [
@@ -66,11 +66,15 @@ class UsageBuilder(TimeseriesDatasetBuilder):
         match variable_name:
             case "temp":
                 return asdict(
-                    VariableAttrs(short_name="temperature", long_name="Water Temperature Aquaponics", units="degree_Celsius")
+                    VariableAttrs(
+                        short_name="temperature", long_name="Water Temperature Aquaponics", units="degree_Celsius"
+                    )
                 )
             case "temp_air":
                 return asdict(
-                    CFVariableAttrs(standard__name="air_temperature", long_name="Air Temperature Aquaponics", units="degree_Celsius")
+                    CFVariableAttrs(
+                        standard__name="air_temperature", long_name="Air Temperature Aquaponics", units="degree_Celsius"
+                    )
                 )
             case "phvalue":
                 return asdict(VariableAttrs(short_name="pH", long_name="Water pH Aquaponics", units=""))
