@@ -44,7 +44,7 @@ class UsageBuilder(TimeseriesDatasetBuilder):
             iso_topic_category="farming",
             featureType=ds.attrs["featureType"],
             date_created=utils.iso_now(),
-            processing_level="Experimental",
+            processing_level="Raw Sensor Data",
             project="USAGE,AKVABY",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
