@@ -5,7 +5,7 @@ import xarray as xr
 from dataclasses import asdict
 
 from dscreator import utils
-from dscreator.cfarray.attributes import VariableAttrs, DatasetAttrsDiscrete
+from dscreator.cfarray.attributes import VariableAttrs, CFVariableAttrs, DatasetAttrsDiscrete
 from dscreator.datasets.base import TimeseriesDatasetBuilder
 
 
@@ -53,7 +53,7 @@ class UsageBuilder(TimeseriesDatasetBuilder):
             geospatial_lon_min=float(ds.longitude.min()),
             geospatial_lon_max=float(ds.longitude.max()),
             spatial_representation="point",
-            collection="",
+            collection="ADC",
         )
 
     def variable_attributes(self, variable_name) -> dict:
@@ -66,27 +66,27 @@ class UsageBuilder(TimeseriesDatasetBuilder):
         match variable_name:
             case "temp":
                 return asdict(
-                    VariableAttrs(short_name="temperature", long_name="Water Temperature", units="degree_Celsius")
+                    VariableAttrs(short_name="temperature", long_name="Water Temperature Aquaponics", units="degree_Celsius")
                 )
             case "temp_air":
                 return asdict(
-                    VariableAttrs(short_name="temperature_air", long_name="Air Temperature", units="degree_Celsius")
+                    CFVariableAttrs(standard__name="air_temperature", long_name="Air Temperature Aquaponics", units="degree_Celsius")
                 )
             case "phvalue":
-                return asdict(VariableAttrs(short_name="pH", long_name="Water pH", units=""))
+                return asdict(VariableAttrs(short_name="pH", long_name="Water pH Aquaponics", units=""))
             case "oxygencon":
                 return asdict(
                     VariableAttrs(
-                        short_name="dissolved_oxygen_concentration",
-                        long_name="Dissolved Oxygen Concentration in Water",
+                        short_name="oxygen_concentration",
+                        long_name="Oxygen Concentration in Water Aquaponics",
                         units="mg/l",
                     )
                 )
             case "oxygensat":
                 return asdict(
                     VariableAttrs(
-                        short_name="dissolved_oxygen_saturation",
-                        long_name="Dissolved Oxygen Saturation in Water",
+                        short_name="oxygen_saturation",
+                        long_name="Oxygen Saturation in Water Aquaponics",
                         units="%",
                     )
                 )
@@ -94,7 +94,7 @@ class UsageBuilder(TimeseriesDatasetBuilder):
                 return asdict(
                     VariableAttrs(
                         short_name="humidity",
-                        long_name="Humidity",
+                        long_name="Humidity Aquaponics",
                         units="%RH",
                     )
                 )
