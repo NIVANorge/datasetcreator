@@ -63,17 +63,17 @@ class UsageBuilder(TimeseriesDatasetBuilder):
         online unit list on https://ncics.org/portfolio/other-resources/udunits2/
         """
         match variable_name:
-            case "Temp":
+            case "temp":
                 return asdict(
                     VariableAttrs(short_name="temperature", long_name="Water Temperature", units="degree_Celsius")
                 )
-            case "Temp_air":
+            case "temp_air":
                 return asdict(
                     VariableAttrs(short_name="temperature_air", long_name="Air Temperature", units="degree_Celsius")
                 )
-            case "PhValue":
+            case "phvalue":
                 return asdict(VariableAttrs(short_name="pH", long_name="Water pH", units=""))
-            case "OxygenCon":
+            case "oxygencon":
                 return asdict(
                     VariableAttrs(
                         short_name="dissolved_oxygen_concentration",
@@ -81,7 +81,7 @@ class UsageBuilder(TimeseriesDatasetBuilder):
                         units="mg/l",
                     )
                 )
-            case "OxygenSat":
+            case "oxygensat":
                 return asdict(
                     VariableAttrs(
                         short_name="dissolved_oxygen_saturation",
@@ -89,7 +89,7 @@ class UsageBuilder(TimeseriesDatasetBuilder):
                         units="%",
                     )
                 )
-            case "LF_psnt_Avg":
+            case "lf_psnt_avg":
                 return asdict(
                     VariableAttrs(
                         short_name="humidity",
