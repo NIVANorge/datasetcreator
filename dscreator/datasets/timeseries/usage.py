@@ -73,7 +73,7 @@ class UsageBuilder(TimeseriesDatasetBuilder):
             case "temp_air":
                 return asdict(
                     CFVariableAttrs(
-                        standard__name="air_temperature", long_name="Air Temperature Aquaponics", units="degree_Celsius"
+                        standard_name="air_temperature", long_name="Air Temperature Aquaponics", units="degree_Celsius"
                     )
                 )
             case "phvalue":
