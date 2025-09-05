@@ -26,15 +26,17 @@ class UsageBuilder(TimeseriesDatasetBuilder):
             keywords=",".join(
                 [
                     # GEMET & NORTHEMES
+                    "GCMDSK:EARTH SCIENCE > AGRICULTURE > AGRICULTURAL AQUATIC SCIENCES > AQUACULTURE",
+                    "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > WATER MANAGEMENT > STORMWATER MANAGEMENT",
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
                     "GCMDLOC:CONTINENT > EUROPE > NORTHERN EUROPE > SCANDINAVIA > NORWAY",
-                    "NORTHEMES:Weather and climate",
+                    "GEMET:Agricultural and aquaculture facilities"
+                    "NORTHEMES:Agriculture",
                 ]
             ),
             keywords_vocabulary=",".join(
                 [
                     "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
-                    "GCMDPLA:GCMD Platforms:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/platforms",
                     "GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations",
                     "GEMET:INSPIRE Themes:http://inspire.ec.europa.eu/theme",
                     "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
