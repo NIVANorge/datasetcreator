@@ -20,9 +20,9 @@ class UsageBuilder(TimeseriesDatasetBuilder):
         """
         return DatasetAttrsDiscrete(
             title="AKVABY: environment and water surveillance in aquaponics pilot",
-            summary="Continuous measurements of environmental and water quality parameters in the aquaponics pilot to ensure fish welfare, good growing conditions for growth in hydroponics and control of the facility. The aquaponics pilot is part of the project AKVABY, read more here: https://www.niva.no/prosjekter/akvaby?trk=public_post-text",
+            summary="Continuous measurements of environmental and water quality parameters in the aquaponics pilot to ensure fish welfare, good growing conditions for growth in hydroponics and control of the facility. The aquaponics pilot is part of the project AKVABY, read more here: https://www.niva.no/prosjekter/akvaby.",
             title_no="AKVABY: Miljø- og vannkvalitetsovervåkning I akvaponipilot",
-            summary_no="Kontinuerlige målinger av miljø- og vannkvalitetsparametere i akvaponipilot for å sikre fiskevelferd, gode vekstvilkår for vekst I hydroponi og kontroll av fasiliteten. Akvaponipiloten er en del av prosjektet AKVABY, les mer her: https://www.niva.no/prosjekter/akvaby?trk=public_post-text",
+            summary_no="Kontinuerlige målinger av miljø- og vannkvalitetsparametere i akvaponipilot for å sikre fiskevelferd, gode vekstvilkår for vekst I hydroponi og kontroll av fasiliteten. Akvaponipiloten er en del av prosjektet AKVABY, les mer her: https://www.niva.no/prosjekter/akvaby.",
             keywords=",".join(
                 [
                     # GEMET & NORTHEMES
