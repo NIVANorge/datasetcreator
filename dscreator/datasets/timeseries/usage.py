@@ -42,7 +42,7 @@ class UsageBuilder(TimeseriesDatasetBuilder):
                     "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
                 ]
             ),
-            iso_topic_category="inlandWaters",
+            iso_topic_category="farming",
             featureType=ds.attrs["featureType"],
             date_created=utils.iso_now(),
             processing_level="Experimental",
