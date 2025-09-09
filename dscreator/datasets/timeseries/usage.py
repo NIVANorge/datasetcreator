@@ -30,7 +30,8 @@ class UsageBuilder(TimeseriesDatasetBuilder):
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE/MANAGEMENT > WATER MANAGEMENT > STORMWATER MANAGEMENT",
                     "GCMDSK:EARTH SCIENCE > HUMAN DIMENSIONS > SUSTAINABILITY > SUSTAINABLE DEVELOPMENT",
                     "GCMDLOC:CONTINENT > EUROPE > NORTHERN EUROPE > SCANDINAVIA > NORWAY",
-                    "GEMET:Agricultural and aquaculture facilities" "NORTHEMES:Agriculture",
+                    "GEMET:Agricultural and aquaculture facilities",
+                    "NORTHEMES:Agriculture",
                 ]
             ),
             keywords_vocabulary=",".join(
