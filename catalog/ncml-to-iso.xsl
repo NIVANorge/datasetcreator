@@ -437,6 +437,9 @@
                                                     </xsl:attribute>
                                                     <xsl:value-of select="$vocLong" />
                                                 </xsl:element>
+                                                <xsl:element name="gco:CharacterString">
+                                                    <xsl:value-of select="$vocLong" />
+                                                </xsl:element>
                                             </gmd:title>
                                             <gmd:date>
                                                 <xsl:attribute name="gco:nilReason">
