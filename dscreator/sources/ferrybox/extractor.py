@@ -25,7 +25,9 @@ class TrajectoryExtractor(BaseExtractor):
     qc_variables: List[str] = field(init=False)
 
     def __post_init__(self):
-        self.variable_uuid_map = {k: v for k, v in self.variable_uuid_map.items() if k in self.variable_codes + ["track"]}
+        self.variable_uuid_map = {
+            k: v for k, v in self.variable_uuid_map.items() if k in self.variable_codes + ["track"]
+        }
         if self.with_qc:
             self.qc_variables = [f"{v}_qc" for v in self.variable_codes]
         else:
@@ -60,7 +62,6 @@ class TrajectoryExtractor(BaseExtractor):
 
     def _format_data(self, data_list: List[RowMapping]) -> dict[str, list]:
         """Format data from get_ts to a data dictionary"""
-
 
         data_dict = {v: [] for v in ["time", "latitude", "longitude"] + self.variable_codes + self.qc_variables}
         value_template = {v: (None, 9) for v in self.variable_uuid_map.values()}
@@ -101,7 +102,9 @@ class TrajectoryExtractor(BaseExtractor):
             value_template[k] = (None, 9)
 
     def _timestamp(self, is_asc: bool) -> datetime:
-        return queries.get_time_by_uuids(self.engine, [self.variable_uuid_map[vcode] for vcode in self.variable_codes], is_asc)
+        return queries.get_time_by_uuids(
+            self.engine, [self.variable_uuid_map[vcode] for vcode in self.variable_codes], is_asc
+        )
 
     def first_timestamp(self) -> datetime:
         """The first timestamp for extraction
@@ -145,19 +148,58 @@ class SpectraExtractor(TrajectoryExtractor):
 
         The all list should have the same length and time should be increasing. Missing value returned as 9 for qc
         """
-        uuids, wls = zip(*(self.variable_uuid_map[vcode].split("_") for vcode in self.variable_codes))
-        data_list = queries.get_spectra(
-            self.engine,
-            track_uuid=self.variable_uuid_map["track"],
-            uuids=list(uuids),
-            wave_lengths=list(wls),
-            start_time=start_time,
-            end_time=end_time,
-            qc_flags=self.qc_flags,
-        )
+        # Separate rrs and other radiance/irradiance variables
+        rrs_codes = [vcode for vcode in self.variable_codes if vcode.startswith("rrs_")]
+        radiancelu_codes = [vcode for vcode in self.variable_codes if vcode.startswith("radiancelu_")]
+        radianceld_codes = [vcode for vcode in self.variable_codes if vcode.startswith("radianceld_")]
+        irradianceed_codes = [vcode for vcode in self.variable_codes if vcode.startswith("irradianceed_")]
+
+        data_list = []
+
+        # Query rrs with QC flag 1 - this determines which datapoints we keep
+        if rrs_codes:
+            rrs_uuids, rrs_wls = zip(*(self.variable_uuid_map[vcode].split("_") for vcode in rrs_codes))
+            rrs_data = queries.get_spectra(
+                self.engine,
+                track_uuid=self.variable_uuid_map["track"],
+                uuids=list(rrs_uuids),
+                wave_lengths=list(rrs_wls),
+                start_time=start_time,
+                end_time=end_time,
+                qc_flags=[1],
+            )
+            data_list.extend(rrs_data)
+
+            # Build set of (time, wavelength) tuples where rrs has QC=1
+            valid_time_wl_pairs = {(row["time"], row["uuid"].split("_")[-1]) for row in rrs_data}
+        else:
+            valid_time_wl_pairs = set()
+
+        # Query other variables (radiancelu, radianceld, irradianceed) with all QC flags
+        # but only keep matching (time, wavelength) pairs where rrs has QC=1
+        for var_codes in [radiancelu_codes, radianceld_codes, irradianceed_codes]:
+            if var_codes and valid_time_wl_pairs:
+                var_uuids, var_wls = zip(*(self.variable_uuid_map[vcode].split("_") for vcode in var_codes))
+                var_data = queries.get_spectra(
+                    self.engine,
+                    track_uuid=self.variable_uuid_map["track"],
+                    uuids=list(var_uuids),
+                    wave_lengths=list(var_wls),
+                    start_time=start_time,
+                    end_time=end_time,
+                    qc_flags=[0, 1, -1],  # Accept all QC flags
+                )
+                # Filter to only include data where corresponding rrs had QC=1
+                filtered_var_data = [
+                    row for row in var_data if (row["time"], row["uuid"].split("_")[-1]) in valid_time_wl_pairs
+                ]
+                data_list.extend(filtered_var_data)
+
+        # Sort by time to maintain order
+        data_list.sort(key=lambda x: x["time"])
 
         return self._format_data(data_list)
-    
+
     def _timestamp(self, is_asc: bool) -> datetime:
         uuids, wls = zip(*(self.variable_uuid_map[vcode].split("_") for vcode in self.variable_codes))
         return queries.get_spectra_time_by_uuids(self.engine, uuids, wls, is_asc)

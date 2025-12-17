@@ -120,13 +120,13 @@ def get_spectra(
     qc_flags: List[str] = [-1, 0, 1],
 ) -> Sequence[RowMapping]:
     """Query spectra along track
-    
+
     The timeseries is limited to start_time<t<=end_time and joined with track on minute level.
     """
     query = text(
         """
     SELECT
-        track.time, 
+        spectra.time, 
         spectra.uuid || '_' || spectra.wl as uuid,
         AVG(ST_X(track.pos)) as longitude, 
         AVG(ST_Y(track.pos)) as latitude,
@@ -137,18 +137,22 @@ def get_spectra(
     ON date_trunc('minute', track.time) = date_trunc('minute', spectra.time)
     WHERE
         track.uuid = :track_uuid
-        AND spectra.value >= 0
         AND track.time > :start_time
         AND track.time <= :end_time
         AND spectra.uuid IN :uuids
         AND spectra.wl IN :wave_lengths
         AND spectra.qc IN :qc_flags
-    GROUP BY track.time, spectra.uuid, spectra.wl
+    GROUP BY spectra.time, spectra.uuid, spectra.wl
     ORDER BY
-        track.time ASC
+        spectra.time ASC
     """
     ).bindparams(
-        track_uuid=track_uuid, uuids=tuple(uuids), wave_lengths=tuple(wave_lengths), start_time=start_time, end_time=end_time, qc_flags=tuple(qc_flags)
+        track_uuid=track_uuid,
+        uuids=tuple(uuids),
+        wave_lengths=tuple(wave_lengths),
+        start_time=start_time,
+        end_time=end_time,
+        qc_flags=tuple(qc_flags),
     )
 
     with engine.connect() as conn:
