@@ -148,55 +148,32 @@ class SpectraExtractor(TrajectoryExtractor):
 
         The all list should have the same length and time should be increasing. Missing value returned as 9 for qc
         """
-        # Separate rrs and other radiance/irradiance variables
+        # Extract rrs UUID and other UUIDs from variable_uuid_map
         rrs_codes = [vcode for vcode in self.variable_codes if vcode.startswith("rrs_")]
-        radiancelu_codes = [vcode for vcode in self.variable_codes if vcode.startswith("radiancelu_")]
-        radianceld_codes = [vcode for vcode in self.variable_codes if vcode.startswith("radianceld_")]
-        irradianceed_codes = [vcode for vcode in self.variable_codes if vcode.startswith("irradianceed_")]
+        not_rrs_codes = [vcode for vcode in self.variable_codes if not vcode.startswith("rrs_")]
 
-        data_list = []
+        if not rrs_codes:
+            return {v: [] for v in ["time", "latitude", "longitude"] + self.variable_codes + self.qc_variables}
 
-        # Query rrs with QC flag 1 - this determines which datapoints we keep
-        if rrs_codes:
-            rrs_uuids, rrs_wls = zip(*(self.variable_uuid_map[vcode].split("_") for vcode in rrs_codes))
-            rrs_data = queries.get_spectra(
-                self.engine,
-                track_uuid=self.variable_uuid_map["track"],
-                uuids=list(rrs_uuids),
-                wave_lengths=list(rrs_wls),
-                start_time=start_time,
-                end_time=end_time,
-                qc_flags=[1],
-            )
-            data_list.extend(rrs_data)
+        # Get unique UUIDs (without wavelength suffix) and wavelengths
+        rrs_uuid_wl = [self.variable_uuid_map[vcode].split("_") for vcode in rrs_codes]
+        rrs_uuid = rrs_uuid_wl[0][0]  # All rrs variables share same UUID
+        wave_lengths = list(set(wl for _, wl in rrs_uuid_wl))
 
-            # Build set of (time, wavelength) tuples where rrs has QC=1
-            valid_time_wl_pairs = {(row["time"], row["uuid"].split("_")[-1]) for row in rrs_data}
-        else:
-            valid_time_wl_pairs = set()
+        other_uuids = []
+        if not_rrs_codes:
+            other_uuid_wl = [self.variable_uuid_map[vcode].split("_") for vcode in not_rrs_codes]
+            other_uuids = list(set(uuid for uuid, _ in other_uuid_wl))
 
-        # Query other variables (radiancelu, radianceld, irradianceed) with all QC flags
-        # but only keep matching (time, wavelength) pairs where rrs has QC=1
-        for var_codes in [radiancelu_codes, radianceld_codes, irradianceed_codes]:
-            if var_codes and valid_time_wl_pairs:
-                var_uuids, var_wls = zip(*(self.variable_uuid_map[vcode].split("_") for vcode in var_codes))
-                var_data = queries.get_spectra(
-                    self.engine,
-                    track_uuid=self.variable_uuid_map["track"],
-                    uuids=list(var_uuids),
-                    wave_lengths=list(var_wls),
-                    start_time=start_time,
-                    end_time=end_time,
-                    qc_flags=[0, 1, -1],  # Accept all QC flags
-                )
-                # Filter to only include data where corresponding rrs had QC=1
-                filtered_var_data = [
-                    row for row in var_data if (row["time"], row["uuid"].split("_")[-1]) in valid_time_wl_pairs
-                ]
-                data_list.extend(filtered_var_data)
-
-        # Sort by time to maintain order
-        data_list.sort(key=lambda x: x["time"])
+        data_list = queries.get_spectra_with_rrs_qc_filter(
+            self.engine,
+            track_uuid=self.variable_uuid_map["track"],
+            rrs_uuid=rrs_uuid,
+            other_uuids=other_uuids,
+            wave_lengths=[int(wl) for wl in wave_lengths],
+            start_time=start_time,
+            end_time=end_time,
+        )
 
         return self._format_data(data_list)
 
