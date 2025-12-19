@@ -56,7 +56,7 @@ def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
     )
 
     runner = DataRunner(
-        custom_start_time=datetime(2022, 9, 23),
+        start_time=datetime(2022, 9, 23),
         extractor=timeseries_extractor,
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
@@ -91,7 +91,7 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     )
 
     runner = DataRunner(
-        custom_start_time=datetime(2022, 9, 23),
+        start_time=datetime(2022, 9, 23),
         extractor=timeseries_extractor,
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
@@ -195,7 +195,45 @@ def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
     )
 
     runner = DataRunner(
-        custom_start_time=datetime(2023, 1, 1),
+        start_time=datetime(2023, 1, 1),
+        extractor=trajectory_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False,
+        end_time_delay=timedelta(minutes=90),
+    )
+
+    runner.start()
+
+
+@app.command()
+def ramses_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Build nrt color fantasy dataset from data in tsb"""
+
+    logging.info("Exporting Ramses FA dataset")
+    trajectory_extractor = ferrybox.extractor.SpectraExtractor(
+        create_engine(SETTINGS.tsb_connection_str),
+        variable_codes=[f"rrs_{wl}" for wl in range(323, 902, 3)]
+        + [f"radiancelu_{wl}" for wl in range(323, 902, 3)]
+        + [f"radianceld_{wl}" for wl in range(323, 902, 3)]
+        + [f"irradianceed_{wl}" for wl in range(323, 902, 3)],
+        variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["FA_19"],
+        qc_flags=[0, 1],
+        with_qc=False,
+    )
+
+    dataset_builder = trajectories.ferrybox.RamsesFantasy(
+        uuid="no.niva:d241a1a1-ea17-4ac5-a4cf-7f78844bfa36",
+        dataset_name="color_fantasy",
+        station_name="color_fantasy",
+        grouping="ramses",
+        is_acdd=False if acdd == "no" else True,
+    )
+
+    runner = DataRunner(
+        start_time=datetime(2023, 6, 1),
+        end_time=datetime(2023, 9, 30, 23, 59, 59),
         extractor=trajectory_extractor,
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,

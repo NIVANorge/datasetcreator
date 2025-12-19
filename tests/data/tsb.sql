@@ -152,11 +152,53 @@ CREATE INDEX ts_time_idx ON public.ts USING btree ("time" DESC);
 
 CREATE INDEX ts_uuid_time_idx ON public.ts USING btree (uuid, "time" DESC);
 
+CREATE TABLE public.spectra (
+    "time" timestamp without time zone NOT NULL,
+    uuid uuid NOT NULL,
+    value double precision,
+    wl double precision NOT NULL,
+    qc integer
+);
+
+
+
+ALTER TABLE ONLY public.spectra
+    ADD CONSTRAINT spectra_ut UNIQUE ("time", uuid, wl);
+
+
+--
+-- Name: spectra_time_idx; Type: INDEX; Schema: public; Owner: tsb
+--
+
+CREATE INDEX spectra_time_idx ON public.spectra USING btree ("time" DESC);
+
+
+--
+-- Name: spectra_uuid_time_idx; Type: INDEX; Schema: public; Owner: tsb
+--
+
+CREATE INDEX spectra_uuid_time_idx ON public.spectra USING btree (uuid, "time" DESC);
+
+
+--
+-- Name: wl_inx; Type: INDEX; Schema: public; Owner: tsb
+--
+
+CREATE INDEX wl_inx ON public.spectra USING btree (wl);
+
+
+--
+-- Name: spectra ts_insert_blocker; Type: TRIGGER; Schema: public; Owner: tsb
+--
+
 \COPY public.ts FROM /docker-entrypoint-initdb.d/ts.csv CSV
 \COPY public.flag FROM /docker-entrypoint-initdb.d/flag.csv CSV
 \COPY public.track FROM /docker-entrypoint-initdb.d/track.csv CSV
+\COPY public.spectra FROM /docker-entrypoint-initdb.d/spectra.csv CSV
+\COPY public.track FROM /docker-entrypoint-initdb.d/spectra_track.csv CSV
 
 
+INSERT INTO public.uuid_path_map (uuid, path) VALUES ('f8a2e40c-1225-4b51-8a07-eb2051a5d736', 'FA/RAMSES/DERIVED/RRS/CALIBRATED');
 INSERT INTO public.uuid_path_map (uuid, path) VALUES ('2b2d8b7b-4a40-40f4-a208-07cbe5a909f7', 'NO/GPS/TIME');
 INSERT INTO public.uuid_path_map (uuid, path) VALUES ('11a1d1c0-6d57-42b8-aa40-0d6f0b2acf47', 'NO/PH/datetime');
 INSERT INTO public.uuid_path_map (uuid, path) VALUES ('43c49736-8608-4aee-805c-931b17e8cd00', 'Survey_2019_04/SeaGlider_1/CT_Sail/POTENTIAL_TEMPERATURE');
