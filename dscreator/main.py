@@ -29,6 +29,7 @@ class ACDDOptions(str, Enum):
     ncml = "ncml"
     """Add ACDD attributes and create a ncml template"""
 
+
 @app.command()
 def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build an msource inlet dataset from data in odm2
@@ -100,6 +101,7 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
 
     runner.start()
 
+
 @app.command()
 def glomma_baterod(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build glomma Baterød dataset from data in odm2
@@ -112,15 +114,9 @@ def glomma_baterod(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
         sampling_feature_code="Baterod",
-        variable_codes=[
-            "Temp_water_Avg",
-            "PhValue_Avg",
-            "CondValue_Avg",
-            "Turbidity_Avg",
-            "CDOMdigitalFinal"
-        ],
+        variable_codes=["Temp_water_Avg", "PhValue_Avg", "CondValue_Avg", "Turbidity_Avg", "CDOMdigitalFinal"],
     )
-    dataset_builder = timeseries.glomma.GlommaBuilder (
+    dataset_builder = timeseries.glomma.GlommaBuilder(
         uuid="no.niva:af047ff6-e92a-47a0-a9ab-1b2d1e011092",
         dataset_name="baterod",
         station_name="Baterod",
@@ -218,9 +214,12 @@ def ramses_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1,
     logging.info("Exporting Ramses FA dataset")
     trajectory_extractor = ferrybox.extractor.SpectraExtractor(
         create_engine(SETTINGS.tsb_connection_str),
-        variable_codes=[f"rrs_{wl}" for wl in range(323, 902, 3)],
+        variable_codes=[f"rrs_{wl}" for wl in range(323, 902, 3)]
+        + [f"radiancelu_{wl}" for wl in range(323, 902, 3)]
+        + [f"radianceld_{wl}" for wl in range(323, 902, 3)]
+        + [f"irradianceed_{wl}" for wl in range(323, 902, 3)],
         variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["FA_19"],
-        qc_flags=[1],
+        qc_flags=[0, 1],
         with_qc=False,
     )
 
@@ -244,6 +243,7 @@ def ramses_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1,
     )
 
     runner.start()
+
 
 if __name__ == "__main__":
     app()
