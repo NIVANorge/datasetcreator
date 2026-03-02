@@ -28,4 +28,14 @@ MAPPER = {
         "turbidity": "c6e48009-6ad9-4b3b-b3fc-17202189c2e0",  # NB/FERRYBOX/C3/TURBIDITY/SENSOR_ADJUSTED
         "fdom": "e6455d65-7294-47a7-88f6-5295338a542b",  # NB/FERRYBOX/C3/CDOM_FLUORESCENCE/SENSOR_ADJUSTED
     },
+    "CH": {
+        "temperature": "6da5c765-be52-45cf-8423-9c1e70b8233e`",  # degc, CH/INLET/SBE38/TEMPERATURE/RAW
+        "salinity": "f6053690-473e-4c38-8f32-d1a70e12cc29",  # psu, sbe45, CH/FERRYBOX/SBE45/SALINITY/RAW
+        "oxygen_sat": "56d95cf0-9819-403a-8fb7-d486da944e53",  # aanderaa, %,  CH/FERRYBOX/OPTODE/OXYGEN_SATURATION/RAW
+        "track": "3723b943-c588-46e2-9db8-22dc61ca6dda",  # NB/gpstrack
+        "chlorophyll": "9c82e505-5745-4129-bf28-70387c6a407d",  # "CH/FERRYBOX/C3/CHLA_FLUORESCENCE/ADJUSTED"  mg/m3 master adjusted for now 
+        "turbidity": "d924b4ac-c07d-45b5-99fc-59876d5494b8",  # CH/FERRYBOX/C3/TURBIDITY/ADJUSTED  mg/m3 master adjusted for now 
+        "fdom": "23e14230-a828-4578-a739-916b80cb123e",  # CH/FERRYBOX/C3/CDOM_FLUORESCENCE/ADJUSTED  mg/m3 master adjusted for now 
+    },    
 }
+    
