@@ -223,7 +223,7 @@ def nrt_nordbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
         qc_flags=[1],
     )
 
-    dataset_builder = trajectories.ferrybox.DailyFantasy(
+    dataset_builder = trajectories.ferrybox.DailyNordbjorn(
         uuid="no.niva:c9a52589-d345-4c74-8775-82f31e7873d5",
         dataset_name="nordbjoern",
         station_name="nordbjoern",
