@@ -223,7 +223,7 @@ def nrt_nordbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
         qc_flags=[1],
     )
 
-    dataset_builder = trajectories.ferrybox.DailyFantasy(
+    dataset_builder = trajectories.ferrybox.DailyNordbjorn(
         uuid="no.niva:c9a52589-d345-4c74-8775-82f31e7873d5",
         dataset_name="nordbjoern",
         station_name="nordbjoern",
@@ -242,6 +242,43 @@ def nrt_nordbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     )
 
     runner.start()
+
+
+@app.command()
+def nrt_color_hybrid(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Build nrt color hybrid dataset from data in tsb"""
+
+    logging.info("Exporting NRT CH dataset")
+    logging.info(f"Using TSB connection string: {SETTINGS.tsb_connection_str}")
+    trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
+        create_engine(SETTINGS.tsb_connection_str, connect_args={"connect_timeout": 30}),
+        variable_codes=["temperature", "salinity", "oxygen_sat", "chlorophyll", "turbidity", "fdom"],
+        variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["CH"],
+        qc_flags=[1],
+    )
+
+    dataset_builder = trajectories.ferrybox.DailyColorHybrid(
+        uuid="no.niva:c9a52589-d345-4c74-8775-82f31e7873d5",
+        dataset_name="color_hybrid",
+        station_name="color_hybrid",
+        grouping="nrt",
+        is_acdd=False if acdd == "no" else True,
+    )
+
+    runner = DataRunner(
+        custom_start_time=datetime(2026, 1, 1),
+        extractor=trajectory_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False,
+        end_time_delay=timedelta(minutes=90),
+    )
+
+    runner.start()
+
+
+
 
 if __name__ == "__main__":
     app()

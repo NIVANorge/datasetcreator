@@ -238,7 +238,7 @@ class DailyNordbjorn(FerryboxDatasetBuilder):
 
 
 @dataclass
-class DailyNordbjorn(FerryboxDatasetBuilder):
+class DailyColorHybrid(FerryboxDatasetBuilder):
     def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
         return FerryboxDatasetAttrs(
             title="FerryBox on MS Color Hybrid, daily data",

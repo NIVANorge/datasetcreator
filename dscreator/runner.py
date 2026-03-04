@@ -35,29 +35,41 @@ class DataRunner:
         The existence of a restart file in the storage location takes precedence and will override a
         custom start time.
         """
+        logging.info("Initializing DataRunner")
         self.storage_handler = get_storage_handler(
             grouping=self.dataset_builder.grouping,
             dataset_name=self.dataset_builder.dataset_name,
             unlimited_dims=["time"],
         )
+        logging.info("Storage handler created")
         restart_info = self.storage_handler.open_restart()
+        logging.info(f"Restart info: {restart_info}")
 
         if restart_info is not None:
             logging.info(f"Restarting from restart file at {restart_info.end_time}")
             start_time = restart_info.end_time
         elif self.custom_start_time is not None:
+            logging.info(f"Using custom start time: {self.custom_start_time}")
             start_time = self.custom_start_time
         else:
+            logging.info("Getting first timestamp from extractor")
             start_time = self.extractor.first_timestamp()
+            logging.info(f"First timestamp: {start_time}")
 
+        logging.info("Getting last timestamp from extractor (this may require database connection)")
         end_time = self.extractor.last_timestamp()
+        logging.info(f"Last timestamp: {end_time}")
         if self.end_time_delay is not None:
+            logging.info(f"Applying end time delay: {self.end_time_delay}")
             end_time = end_time - self.end_time_delay
 
+        logging.info(f"Creating time intervals from {start_time} to {end_time}")
         time_intervals = utils.datetime_intervals(start_time, end_time, timedelta(hours=self.hourly_delta))
         last_index = len(time_intervals) if self.n_intervals < 1 else self.n_intervals
+        logging.info(f"Generated {len(time_intervals)} intervals, using first {last_index}")
 
         self.time_intervals = time_intervals[0:last_index]
+        logging.info("DataRunner initialization complete")
 
     def start(self):
         """Start the dataset export

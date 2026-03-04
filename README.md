@@ -58,6 +58,15 @@ poetry run dscreator msource-inlet --stop-after-n-files 1 --acdd yes
 poetry run dscreator msource-outlet --max-time-slice 240 --stop-after-n-files 2 --acdd ncml
 ```
 
+
+#### Viewing example files 
+To quickly view the contents of a netCDF file, you can use `ncdump`:
+
+```bash
+ncdump -h path/to/file.nc
+```
+
+
 ### Adding New Datasets
 
 For dynamic datasets, add an `app` to [main.py](./dscreator/main.py) that contains:
@@ -66,6 +75,15 @@ For dynamic datasets, add an `app` to [main.py](./dscreator/main.py) that contai
 - A dataset builder, subclassed from the appropriate class in [datasets/base.py](./dscreator/datasets/base.py). See [MSourceInletBuilder](./dscreator/datasets/timeseries/msource.py).
 
 It is also possible to use a notebook, as done for [exceedence_limits.ipynb](notebooks/exceedence_limits.ipynb).
+
+
+You also need to add a mapper between variable codes and variable UUIDs for the extractor, as done in [uuid_variable_code_mapper.py](./dscreator/sources/ferrybox/uuid_variable_code_mapper.py).
+
+The easiest option for checking uuids is to use Superset SQL (so you skip setting up a TSB connection)
+``` 
+select * from uuid_path_map where path like 'CH/gps%' 
+```
+
 
 ## Viewing Datasets
 
