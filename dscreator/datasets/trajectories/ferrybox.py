@@ -10,7 +10,6 @@ from dscreator.datasets.base import TrajectoryDatasetBuilder
 
 @dataclass
 class FerryboxDatasetBuilder(TrajectoryDatasetBuilder):
-
     def variable_attributes(self, variable_name: str):
         """Match timeserie data to C&F
 
@@ -186,13 +185,19 @@ class DailyFantasy(NorsoopFantasy):
 
 
 @dataclass
-class DailyNordbjorn(FerryboxDatasetBuilder):
+class DailyNorbjorn(FerryboxDatasetBuilder):
     def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
         return FerryboxDatasetAttrs(
-            title="FerryBox on MS Nordbjørn, daily data",
-            title_no="FerryBox på MS Nordbjørn, daglige data",
-            summary="The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Nordbjørn. This amounts to about one measurement every ~500 metres, for more information see https://www.niva.no/en/ferrybox. This dataset will normally be updated daily.",
-            summary_no="Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Nordbjørs faste rute Oslo-Kiel. Dette tilsvarer en måling ca hver 500 meter, for mer informasjon se https://www.niva.no/ferrybox. Dette datasettet vil normalt bli oppdatert daglig.",
+            title="FerryBox on MS Norbjørn, daily data",
+            title_no="FerryBox på MS Norbjørn, daglige data",
+            summary="Timeseries from observations made with the FerryBox system at a depth of ~4m along the route of MS Norbjørn. "
+            "The observations have gone through the NIVA's data collection system, which includes multiple automated quality control routines.  "
+            "Note that this is a live/dynamic dataset normally updated daily with the new data and existing observations may be corrected (even very old observations). "
+            "For more information see https://www.niva.no/en/ferrybox.",
+            summary_no="Timeseries fra observasjoner gjort med FerryBox-systemet på en dybde på ~4 m langs ruten til MS Nordbjørn. "
+            "Observasjonene har gått gjennom NIVAs datasamlingssystem, som inkluderer flere automatiserte kvalitetskontrollrutiner. "
+            "Merk at dette er et levende/dynamisk datasett som normalt oppdateres daglig med nye data, og eksisterende observasjoner kan bli korrigert (også svært gamle observasjoner). "
+            "For mer informasjon, se https://www.niva.no/en/ferrybox.",
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
@@ -214,7 +219,7 @@ class DailyNordbjorn(FerryboxDatasetBuilder):
             featureType=ds.attrs["featureType"],
             # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
             references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md(Extended metadata)",
-            #https://vocab.ices.dk/services/pox/GetCodeList/SHIPC
+            # https://vocab.ices.dk/services/pox/GetCodeList/SHIPC
             ices_platform_code="?",
             platform_code="NB",
             platform_name="Norbjoern",

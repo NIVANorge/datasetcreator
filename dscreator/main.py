@@ -219,14 +219,13 @@ def nrt_nordbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
         qc_flags=[1],
     )
 
-    dataset_builder = trajectories.ferrybox.DailyNordbjorn(
+    dataset_builder = trajectories.ferrybox.DailyNorbjorn(
         uuid="no.niva:c9a52589-d345-4c74-8775-82f31e7873d5",
         dataset_name="nordbjoern",
         station_name="nordbjoern",
         grouping="nrt",
         is_acdd=False if acdd == "no" else True,
     )
-
 
     runner = DataRunner(
         custom_start_time=datetime(2023, 1, 1),
