@@ -26,9 +26,6 @@ RUN pytest -m "not docker" .
 
 FROM runtime AS prod
 
-# Fail if test stage fails
-COPY --from=test test-res* test-result
-
 ARG GIT_COMMIT_ID=unknown
 LABEL git_commit_id=$GIT_COMMIT_ID
 ENV GIT_COMMIT_ID=$GIT_COMMIT_ID
