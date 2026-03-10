@@ -9,67 +9,7 @@ from dscreator.datasets.base import TrajectoryDatasetBuilder
 
 
 @dataclass
-class NorsoopFantasy(TrajectoryDatasetBuilder):
-    def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
-        """Add ACDD attributes to a xarray dataset
-
-        Add attributes following the Attribute Convention for Data Discovery to a dataset.
-        More information can be found here https://adc.met.no/node/96.
-        A good viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
-        """
-        return FerryboxDatasetAttrs(
-            title="FerryBox on MS Color Fantasy",
-            title_no="FerryBox på MS Color Fantasy",
-            summary=(
-                "The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Color Fantasy Oslo-Kiel. This amounts to about one measurement every ~500 metres, for more information see https://www.niva.no/en/ferrybox. This dataset covers 5 years from 2017 to 2022.",
-            ),
-            summary_no=(
-                "Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Color Fantasy sin faste rute Oslo-Kiel. Dette tilsvarer en måling ca hver 500 meter, for mer informasjon se https://www.niva.no/ferrybox. Dette datasettet dekker 5 år fra 2017 til 2022.",
-            ),
-            keywords=",".join(
-                [
-                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
-                    "GCMDSK:EARTH SCIENCE > OCEANS > SALINITY/DENSITY > OCEAN SALINITY > OCEAN SURFACE SALINITY",
-                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > OXYGEN",
-                    "GEMET:Oceanographic geographical features",
-                    "NORTHEMES:Marine activities",
-                ]
-            ),
-            keywords_vocabulary=",".join(
-                [
-                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
-                    "GEMET:INSPIRE Themes:http://inspire.ec.europa.eu/theme",
-                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
-                ]
-            ),
-            depth="~5m",
-            creator_email="norsoop@niva.no",
-            featureType=ds.attrs["featureType"],
-            # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
-            references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md(Extended metadata)",
-            ices_platform_code="58CO",
-            platform_code="FA",
-            platform_name="Color Fantasy",
-            date_created=utils.iso_now(),
-            project=",".join(
-                [
-                    "Norwegian Ships of Opportunity program (NorSOOP ID 269922)",
-                    "Joint European Research Infrastructure of Coastal Observatories (JERICO)",
-                    "Norwegian Environment Agency",
-                    "Inner and Outer Oslofjord Fagrådet",
-                ]
-            ),
-            iso_topic_category="oceans",
-            collection="GEONOR, NMDC",
-            time_coverage_start=utils.to_isoformat(ds.time.min().values),
-            time_coverage_end=utils.to_isoformat(ds.time.max().values),
-            geospatial_lat_min=53.8,
-            geospatial_lat_max=59.93,
-            geospatial_lon_min=9.92,
-            geospatial_lon_max=12.6,
-            spatial_representation="trajectory",
-        )
-
+class FerryboxDatasetBuilder(TrajectoryDatasetBuilder):
     def variable_attributes(self, variable_name: str):
         """Match timeserie data to C&F
 
@@ -155,6 +95,69 @@ class NorsoopFantasy(TrajectoryDatasetBuilder):
 
 
 @dataclass
+class NorsoopFantasy(FerryboxDatasetBuilder):
+    def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
+        """Add ACDD attributes to a xarray dataset
+
+        Add attributes following the Attribute Convention for Data Discovery to a dataset.
+        More information can be found here https://adc.met.no/node/96.
+        A good viewer is located here https://gcmd.earthdata.nasa.gov/KeywordViewer
+        """
+        return FerryboxDatasetAttrs(
+            title="FerryBox on MS Color Fantasy",
+            title_no="FerryBox på MS Color Fantasy",
+            summary=(
+                "The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Color Fantasy Oslo-Kiel. This amounts to about one measurement every ~500 metres, for more information see https://www.niva.no/en/ferrybox. This dataset covers 5 years from 2017 to 2022.",
+            ),
+            summary_no=(
+                "Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Color Fantasy sin faste rute Oslo-Kiel. Dette tilsvarer en måling ca hver 500 meter, for mer informasjon se https://www.niva.no/ferrybox. Dette datasettet dekker 5 år fra 2017 til 2022.",
+            ),
+            keywords=",".join(
+                [
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > SALINITY/DENSITY > OCEAN SALINITY > OCEAN SURFACE SALINITY",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > OXYGEN",
+                    "GEMET:Oceanographic geographical features",
+                    "NORTHEMES:Marine activities",
+                ]
+            ),
+            keywords_vocabulary=",".join(
+                [
+                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
+                    "GEMET:INSPIRE Themes:http://inspire.ec.europa.eu/theme",
+                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
+                ]
+            ),
+            depth="~5m",
+            creator_email="norsoop@niva.no",
+            featureType=ds.attrs["featureType"],
+            # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
+            references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md(Extended metadata)",
+            ices_platform_code="58CO",
+            platform_code="FA",
+            platform_name="Color Fantasy",
+            date_created=utils.iso_now(),
+            project=",".join(
+                [
+                    "Norwegian Ships of Opportunity program (NorSOOP ID 269922)",
+                    "Joint European Research Infrastructure of Coastal Observatories (JERICO)",
+                    "Norwegian Environment Agency",
+                    "Inner and Outer Oslofjord Fagrådet",
+                ]
+            ),
+            iso_topic_category="oceans",
+            collection="GEONOR, NMDC",
+            time_coverage_start=utils.to_isoformat(ds.time.min().values),
+            time_coverage_end=utils.to_isoformat(ds.time.max().values),
+            geospatial_lat_min=53.8,
+            geospatial_lat_max=59.93,
+            geospatial_lon_min=9.92,
+            geospatial_lon_max=12.6,
+            spatial_representation="trajectory",
+        )
+
+
+@dataclass
 class DailyFantasy(NorsoopFantasy):
     def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
         attrs = super().dataset_attributes(ds)
@@ -179,3 +182,63 @@ class DailyFantasy(NorsoopFantasy):
         )
         attrs.project += "," + ",".join(["AquaINFRA"])
         return attrs
+
+
+@dataclass
+class DailyNorbjorn(FerryboxDatasetBuilder):
+    def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
+        return FerryboxDatasetAttrs(
+            title="FerryBox on MS Norbjørn, daily data",
+            title_no="FerryBox på MS Norbjørn, daglige data",
+            summary="Timeseries from observations made with the FerryBox system at a depth of ~4m along the route of MS Norbjørn. "
+            "The observations have gone through the NIVA's data collection system, which includes multiple automated quality control routines.  "
+            "Note that this is a live/dynamic dataset normally updated daily with the new data and existing observations may be corrected (even very old observations). "
+            "For more information see https://www.niva.no/en/ferrybox.",
+            summary_no="Timeseries fra observasjoner gjort med FerryBox-systemet på en dybde på ~4 m langs ruten til MS Nordbjørn. "
+            "Observasjonene har gått gjennom NIVAs datasamlingssystem, som inkluderer flere automatiserte kvalitetskontrollrutiner. "
+            "Merk at dette er et levende/dynamisk datasett som normalt oppdateres daglig med nye data, og eksisterende observasjoner kan bli korrigert (også svært gamle observasjoner). "
+            "For mer informasjon, se https://www.niva.no/en/ferrybox.",
+            keywords=",".join(
+                [
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > SALINITY/DENSITY > OCEAN SALINITY > OCEAN SURFACE SALINITY",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > OXYGEN",
+                    "GEMET:Oceanographic geographical features",
+                    "NORTHEMES:Marine activities",
+                ]
+            ),
+            keywords_vocabulary=",".join(
+                [
+                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
+                    "GEMET:INSPIRE Themes:http://inspire.ec.europa.eu/theme",
+                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
+                ]
+            ),
+            depth="~5m",
+            creator_email="norsoop@niva.no",
+            featureType=ds.attrs["featureType"],
+            # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
+            references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md(Extended metadata)",
+            # https://vocab.ices.dk/services/pox/GetCodeList/SHIPC
+            # https://vocab.nerc.ac.uk/collection/C17/current/
+            # https://vocab.ices.dk/?codeguid=eb7f0fa1-0c50-4521-8c03-6f886a532c64
+            ices_platform_code="58S6",
+            platform_code="NB",
+            platform_name="Norbjoern",
+            date_created=utils.iso_now(),
+            project=",".join(
+                [
+                    "Norwegian Ships of Opportunity program (NorSOOP ID 269922)",
+                    "Joint European Research Infrastructure of Coastal Observatories (JERICO)",
+                ]
+            ),
+            iso_topic_category="oceans",
+            collection="GEONOR, NMDC",
+            time_coverage_start=utils.to_isoformat(ds.time.min().values),
+            time_coverage_end=utils.to_isoformat(ds.time.max().values),
+            geospatial_lat_min=69.24,
+            geospatial_lat_max=79.46,
+            geospatial_lon_min=7.07,
+            geospatial_lon_max=22.7,
+            spatial_representation="trajectory",
+        )

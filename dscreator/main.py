@@ -208,6 +208,39 @@ def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
 
 
 @app.command()
+def nrt_norbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Build nrt norbjoern dataset from data in tsb"""
+
+    logging.info("Exporting NRT NB dataset")
+    trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
+        create_engine(SETTINGS.tsb_connection_str),
+        variable_codes=["temperature", "salinity", "oxygen_sat", "chlorophyll", "turbidity", "fdom"],
+        variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["NB"],
+        qc_flags=[1],
+    )
+
+    dataset_builder = trajectories.ferrybox.DailyNorbjorn(
+        uuid="no.niva:c9a52589-d345-4c74-8775-82f31e7873d5",
+        dataset_name="nordbjoern",
+        station_name="nordbjoern",
+        grouping="nrt",
+        is_acdd=False if acdd == "no" else True,
+    )
+
+    runner = DataRunner(
+        custom_start_time=datetime(2023, 1, 1),
+        extractor=trajectory_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False,
+        end_time_delay=timedelta(minutes=90),
+    )
+
+    runner.start()
+
+
+@app.command()
 def usage(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build USAGE dataset from data in odm2
 
@@ -241,6 +274,7 @@ def usage(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOpti
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
         ncml=True if acdd == "ncml" else False,
+        end_time_delay=timedelta(minutes=90),
     )
 
     runner.start()

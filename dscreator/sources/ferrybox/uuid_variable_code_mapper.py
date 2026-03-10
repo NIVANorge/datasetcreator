@@ -19,5 +19,13 @@ MAPPER = {
         "fdom": "a02eea6b-042d-4209-8307-c88230639b86",  # FA/FERRYBOX/C3/CDOM_FLUORESCENCE/SENSOR_ADJUSTED
     },
     "TF": {},
-    "NB": {},
+    "NB": {
+        "temperature": "7d4003e3-51e3-45e7-aab0-56f46b508b0b",  # degc, NB/INLET/SBE38/TEMPERATURE/RAW
+        "salinity": "441771b6-ca91-4cc7-a837-f1504c04e5a2",  # psu, sbe45, NB/FERRYBOX/SBE45/SALINITY/RAW
+        "oxygen_sat": "bc22b061-6e75-4139-b52c-ce12610683df",  # aanderaa, %,  NB/FERRYBOX/OPTODE/OXYGEN_SATURATION/RAW
+        "track": "72708b78-f8b6-4969-af70-426021c7d155",  # NB/gpstrack
+        "chlorophyll": "63e2e820-a75d-4bb6-a663-9b3508b73cad",  # NB/FERRYBOX/C3/CHLA_FLUORESCENCE/ADJUSTED
+        "turbidity": "19f343be-2708-4a40-92c0-0a6b7220958d",  # NB/FERRYBOX/C3/TURBIDITY/ADJUSTED
+        "fdom": "d052e722-8a9b-4a43-98ae-1cc4677ec69b",  # NB/FERRYBOX/C3/CDOM_FLUORESCENCE/ADJUSTED
+    },
 }
