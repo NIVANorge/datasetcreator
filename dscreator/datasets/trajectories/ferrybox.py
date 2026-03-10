@@ -220,7 +220,9 @@ class DailyNorbjorn(FerryboxDatasetBuilder):
             # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
             references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md(Extended metadata)",
             # https://vocab.ices.dk/services/pox/GetCodeList/SHIPC
-            ices_platform_code="?",
+            # https://vocab.nerc.ac.uk/collection/C17/current/
+            # https://vocab.ices.dk/?codeguid=eb7f0fa1-0c50-4521-8c03-6f886a532c64
+            ices_platform_code="58S6",
             platform_code="NB",
             platform_name="Norbjoern",
             date_created=utils.iso_now(),
@@ -234,9 +236,9 @@ class DailyNorbjorn(FerryboxDatasetBuilder):
             collection="GEONOR, NMDC",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
-            geospatial_lat_min=69.68,
-            geospatial_lat_max=79.00,
-            geospatial_lon_min=8.80,
-            geospatial_lon_max=21.15,
+            geospatial_lat_min=69.24,
+            geospatial_lat_max=79.46,
+            geospatial_lon_min=7.07,
+            geospatial_lon_max=22.7,
             spatial_representation="trajectory",
         )
