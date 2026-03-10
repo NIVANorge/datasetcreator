@@ -208,8 +208,8 @@ def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
 
 
 @app.command()
-def nrt_nordbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
-    """Build nrt color fantasy dataset from data in tsb"""
+def nrt_norbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Build nrt norbjoern dataset from data in tsb"""
 
     logging.info("Exporting NRT NB dataset")
     trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
