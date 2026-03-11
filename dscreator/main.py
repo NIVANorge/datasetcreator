@@ -221,8 +221,8 @@ def nrt_norbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: 
 
     dataset_builder = trajectories.ferrybox.DailyNorbjorn(
         uuid="no.niva:c9a52589-d345-4c74-8775-82f31e7873d5",
-        dataset_name="nordbjoern",
-        station_name="nordbjoern",
+        dataset_name="norbjoern",
+        station_name="norbjoern",
         grouping="nrt",
         is_acdd=False if acdd == "no" else True,
     )

@@ -194,7 +194,7 @@ class DailyNorbjorn(FerryboxDatasetBuilder):
             "The observations have gone through the NIVA's data collection system, which includes multiple automated quality control routines.  "
             "Note that this is a live/dynamic dataset normally updated daily with the new data and existing observations may be corrected (even very old observations). "
             "For more information see https://www.niva.no/en/ferrybox.",
-            summary_no="Timeseries fra observasjoner gjort med FerryBox-systemet på en dybde på ~4 m langs ruten til MS Nordbjørn. "
+            summary_no="Timeseries fra observasjoner gjort med FerryBox-systemet på en dybde på ~4 m langs ruten til MS Norbjørn. "
             "Observasjonene har gått gjennom NIVAs datasamlingssystem, som inkluderer flere automatiserte kvalitetskontrollrutiner. "
             "Merk at dette er et levende/dynamisk datasett som normalt oppdateres daglig med nye data, og eksisterende observasjoner kan bli korrigert (også svært gamle observasjoner). "
             "For mer informasjon, se https://www.niva.no/en/ferrybox.",
