@@ -13,10 +13,10 @@ cat_file = "catalog=file:/usr/local/tomcat/content/thredds/subcatalogs"
 
 # %%
 datasets = []
-for cat in ["ferryboxes", "loggers"]:
+for cat in ["ferryboxes", "loggers", "samples"]:
     cat_doc = etree.fromstring(requests.get(f"{catalog_base}/{cat}.xml").content)
     for el in cat_doc:
-        if el.tag.endswith("dataset") and el[0].text in ["trajectory", "trajectory-download", "timeseries"]:
+        if el.tag.endswith("dataset") and el[0].text in ["trajectory", "trajectory-download", "timeseries", "timeseries-download"]:
             datasets.append((el.get("urlPath"), el.get("ID"), cat))
 
 # %%
@@ -25,3 +25,5 @@ for ds_name, uuid, cat_name in datasets:
     res = requests.get(ds_url)
     with open(os.path.join(target_path, f"{ds_name.split('/')[-1]}.xml"), "w") as f:
         f.write(res.text)
+
+# %%

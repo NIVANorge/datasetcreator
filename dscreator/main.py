@@ -29,6 +29,7 @@ class ACDDOptions(str, Enum):
     ncml = "ncml"
     """Add ACDD attributes and create a ncml template"""
 
+
 @app.command()
 def msource_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build an msource inlet dataset from data in odm2
@@ -100,6 +101,7 @@ def msource_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
 
     runner.start()
 
+
 @app.command()
 def glomma_baterod(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build glomma Baterød dataset from data in odm2
@@ -112,15 +114,9 @@ def glomma_baterod(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     timeseries_extractor = odm2.extractor.TimeseriesExtractor(
         engine,
         sampling_feature_code="Baterod",
-        variable_codes=[
-            "Temp_water_Avg",
-            "PhValue_Avg",
-            "CondValue_Avg",
-            "Turbidity_Avg",
-            "CDOMdigitalFinal"
-        ],
+        variable_codes=["Temp_water_Avg", "PhValue_Avg", "CondValue_Avg", "Turbidity_Avg", "CDOMdigitalFinal"],
     )
-    dataset_builder = timeseries.glomma.GlommaBuilder (
+    dataset_builder = timeseries.glomma.GlommaBuilder(
         uuid="no.niva:af047ff6-e92a-47a0-a9ab-1b2d1e011092",
         dataset_name="baterod",
         station_name="Baterod",
@@ -212,8 +208,8 @@ def nrt_color_fantasy(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
 
 
 @app.command()
-def nrt_nordbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
-    """Build nrt color fantasy dataset from data in tsb"""
+def nrt_norbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Build nrt norbjoern dataset from data in tsb"""
 
     logging.info("Exporting NRT NB dataset")
     trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
@@ -223,10 +219,10 @@ def nrt_nordbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
         qc_flags=[1],
     )
 
-    dataset_builder = trajectories.ferrybox.DailyNordbjorn(
+    dataset_builder = trajectories.ferrybox.DailyNorbjorn(
         uuid="no.niva:c9a52589-d345-4c74-8775-82f31e7873d5",
-        dataset_name="nordbjoern",
-        station_name="nordbjoern",
+        dataset_name="norbjoern",
+        station_name="norbjoern",
         grouping="nrt",
         is_acdd=False if acdd == "no" else True,
     )
@@ -242,6 +238,47 @@ def nrt_nordbjoern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
     )
 
     runner.start()
+
+
+@app.command()
+def usage(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Build USAGE dataset from data in odm2
+
+    The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
+    """
+
+    logging.info("Exporting USAGE dataset")
+    engine = create_engine(SETTINGS.odm2_connection_str)
+    timeseries_extractor = odm2.extractor.TimeseriesExtractor(
+        engine,
+        sampling_feature_code="USAGE",
+        variable_codes=[
+            "LF_psnt_Avg",
+            "OxygenCon",
+            "OxygenSat",
+            "PhValue",
+            "Temp",
+            "Temp_air",
+        ],
+    )
+    dataset_builder = timeseries.usage.UsageBuilder(
+        uuid="no.niva:10816f11-2eb2-4dc4-a9b2-19274b181c39",
+        dataset_name="usage",
+        station_name="USAGE",
+        grouping="usage",
+        is_acdd=False if acdd == "no" else True,
+    )
+    runner = DataRunner(
+        extractor=timeseries_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False,
+        end_time_delay=timedelta(minutes=90),
+    )
+
+    runner.start()
+
 
 
 @app.command()
