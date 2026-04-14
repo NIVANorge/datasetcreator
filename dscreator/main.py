@@ -280,5 +280,165 @@ def usage(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOpti
     runner.start()
 
 
+@app.command()
+def langtjern_boye(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Bygg Langtjern bøye-datasett fra data i odm2
+
+    Datasettet forsøker å følge klima- og prognosekonvensjonen og lagres som netcdf.
+    """
+
+    logging.info("Exporting Langtjern_boye dataset")
+    engine = create_engine(SETTINGS.odm2_connection_str)
+    timeseries_extractor = odm2.extractor.TimeseriesExtractor(
+        engine,
+        sampling_feature_code="Langtjern_boye",
+        variable_codes=[
+            "OxygenSat_6m",
+            "OxygenSat_1m",
+            "Temp_0.5m",
+            "Temp_1.5m",
+            "Temp_1m",
+            "Temp_2m",
+            "Temp_3m",
+            "Temp_4m",
+            "Temp_6m",
+            "Temp_8m",
+        ],
+    )
+    dataset_builder = timeseries.langtjern.LangtjernBoyeBuilder(
+        uuid="no.niva:abf9ccdb-0c4a-4c69-945b-a64409028946",
+        dataset_name="langtjern-boye",
+        station_name="Langtjern_boye",
+        grouping="langtjern",
+        is_acdd=False if acdd == "no" else True,
+    )
+    runner = DataRunner(
+        extractor=timeseries_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False
+    )
+    runner.start()
+
+
+@app.command()
+def langtjern_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Bygg Langtjern innløp-datasett fra data i odm2
+
+    Datasettet forsøker å følge klima- og prognosekonvensjonen og lagres som netcdf.
+    """
+
+    logging.info("Exporting Langtjern_inlet dataset")
+    engine = create_engine(SETTINGS.odm2_connection_str)
+    timeseries_extractor = odm2.extractor.TimeseriesExtractor(
+        engine,
+        sampling_feature_code="Langtjern_inlet",
+        variable_codes=[
+            "Temp_ground_15cm_Avg",
+            "Temp_ground_20cm_Avg",
+            "Temp_water_Avg",
+            "LevelValue_Avg",
+            "CO2Value_Avg",
+        ],
+    )
+    dataset_builder = timeseries.langtjern.LangtjernInletBuilder(
+        uuid="no.niva:64c18660-4a74-414a-b3af-fa2b7e23208f",
+        dataset_name="langtjern-inlet",
+        station_name="Langtjern_inlet",
+        grouping="langtjern",
+        is_acdd=False if acdd == "no" else True,
+    )
+    runner = DataRunner(
+        extractor=timeseries_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False
+    )
+    runner.start()
+
+
+@app.command()
+def langtjern_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Bygg Langtjern utløp-datasett fra data i odm2
+
+    Datasettet forsøker å følge klima- og prognosekonvensjonen og lagres som netcdf.
+    """
+
+    logging.info("Exporting Langtjern_outlet dataset")
+    engine = create_engine(SETTINGS.odm2_connection_str)
+    timeseries_extractor = odm2.extractor.TimeseriesExtractor(
+        engine,
+        sampling_feature_code="Langtjern_outlet",
+        variable_codes=[
+            "Temp_air_Avg",
+            "Temp_ground_Avg",
+            "Temp_water_Avg",
+            "PhValue_Avg",
+            "CondValue_Avg",
+            "CO2Value_Avg",
+            "CDOMdigitalFinal_Avg",
+            "LevelValue_Avg",
+        ],
+    )
+    dataset_builder = timeseries.langtjern.LangtjernOutletBuilder(
+        uuid="no.niva:89ea54fe-e034-45e8-af65-cc46c8b6f449",
+        dataset_name="langtjern-outlet",
+        station_name="Langtjern_outlet",
+        grouping="langtjern",
+        is_acdd=False if acdd == "no" else True,
+    )
+    runner = DataRunner(
+        extractor=timeseries_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False
+    )
+    runner.start()
+
+
+@app.command()
+def langtjern_weather(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Bygg Langtjern værstasjon-datasett fra data i odm2
+
+    Datasettet forsøker å følge klima- og prognosekonvensjonen og lagres som netcdf.
+    """
+
+    logging.info("Exporting Langtjern_weather dataset")
+    engine = create_engine(SETTINGS.odm2_connection_str)
+    timeseries_extractor = odm2.extractor.TimeseriesExtractor(
+        engine,
+        sampling_feature_code="Langtjern_weather",
+        variable_codes=[
+            "LT_gr_C_Avg",
+            "VH_3_s_Max",
+            "VH_mps_WVc(1)",
+            "VH_mps_WVc(2)",
+            "LF_psnt_Avg",
+            "GS_Wpm2_Avg",
+            "NB_mm",
+            "waterLevel_mm_Avg",
+            "snowDepth_cm_Avg",
+        ],
+    )
+    dataset_builder = timeseries.langtjern.LangtjernWeatherBuilder(
+        uuid="no.niva:a4eccdcd-ef17-4fc8-9dbb-ad7b52ec9cf5",
+        dataset_name="langtjern-weather",
+        station_name="Langtjern_weather",
+        grouping="langtjern",
+        is_acdd=False if acdd == "no" else True,
+    )
+    runner = DataRunner(
+        extractor=timeseries_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False
+    )
+    runner.start()
+
+
 if __name__ == "__main__":
     app()
