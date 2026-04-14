@@ -282,9 +282,9 @@ def usage(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOpti
 
 @app.command()
 def langtjern_boye(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
-    """Bygg Langtjern bøye-datasett fra data i odm2
+    """Build Langtjern buoy dataset from data in odm2
 
-    Datasettet forsøker å følge klima- og prognosekonvensjonen og lagres som netcdf.
+    The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
     """
 
     logging.info("Exporting Langtjern_boye dataset")
@@ -324,9 +324,9 @@ def langtjern_boye(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
 
 @app.command()
 def langtjern_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
-    """Bygg Langtjern innløp-datasett fra data i odm2
+    """Build Langtjern inlet dataset from data in odm2
 
-    Datasettet forsøker å følge klima- og prognosekonvensjonen og lagres som netcdf.
+    The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
     """
 
     logging.info("Exporting Langtjern_inlet dataset")
@@ -361,9 +361,9 @@ def langtjern_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd
 
 @app.command()
 def langtjern_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
-    """Bygg Langtjern utløp-datasett fra data i odm2
+    """Build Langtjern outlet dataset from data in odm2
 
-    Datasettet forsøker å følge klima- og prognosekonvensjonen og lagres som netcdf.
+    The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
     """
 
     logging.info("Exporting Langtjern_outlet dataset")
@@ -401,9 +401,9 @@ def langtjern_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acd
 
 @app.command()
 def langtjern_weather(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
-    """Bygg Langtjern værstasjon-datasett fra data i odm2
+    """Build Langtjern weather station dataset from data in odm2
 
-    Datasettet forsøker å følge klima- og prognosekonvensjonen og lagres som netcdf.
+    The dataset tries to follow the climate & forecast convention and is dumped as netcdf.
     """
 
     logging.info("Exporting Langtjern_weather dataset")
@@ -438,6 +438,16 @@ def langtjern_weather(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
         ncml=True if acdd == "ncml" else False
     )
     runner.start()
+
+
+@app.command()
+def langtjern(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Build all Langtjern datasets from data in odm2"""
+
+    langtjern_boye(max_time_slice, stop_after_n_files, acdd)
+    langtjern_inlet(max_time_slice, stop_after_n_files, acdd)
+    langtjern_outlet(max_time_slice, stop_after_n_files, acdd)
+    langtjern_weather(max_time_slice, stop_after_n_files, acdd)
 
 
 if __name__ == "__main__":
