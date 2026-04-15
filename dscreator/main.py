@@ -420,7 +420,7 @@ def langtjern_weather(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
             "GS_Wpm2_Avg",
             "NB_mm",
             "waterLevel_mm_Avg",
-            "snowDepth_cm_Avg",
+            "snowValue_mm_Avg",
         ],
     )
     dataset_builder = timeseries.langtjern.LangtjernWeatherBuilder(

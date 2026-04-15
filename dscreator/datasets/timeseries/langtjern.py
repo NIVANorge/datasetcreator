@@ -7,8 +7,18 @@ from dscreator import utils
 from dscreator.cfarray.attributes import DatasetAttrsDiscrete, VariableAttrs
 from dscreator.datasets.base import TimeseriesDatasetBuilder
 
-_DESCRIPTION = (
-    "Climate change will lead to warming and changes in snowmelt and precipitation patterns. "
+_UPDATE_NOTE = (
+    "The dataset is usually updated daily. "
+    "Data has been through automatic quality control, and changes to previously published data may occur."
+)
+
+_UPDATE_NOTE_NO = (
+    "Datasettet oppdateres vanligvis daglig. "
+    "Data har gjennomgått automatisk kvalitetskontroll, og endringer i tidligere publiserte data kan forekomme."
+)
+
+_ABOUT = (
+    "About Langtjern: Climate change will lead to warming and changes in snowmelt and precipitation patterns. "
     "Such changes can affect lake ice cover and water temperatures, with possible consequences "
     "for fish and water-dwelling insects, food webs and oxygen availability. Also, greenhouse "
     "gas production, water color and acidity may be impacted. There are few lake ecosystems in "
@@ -21,8 +31,8 @@ _DESCRIPTION = (
     "dissolved organic matter and production of greenhouse gases."
 )
 
-_DESCRIPTION_NO = (
-    "Klimaendringer vil føre til oppvarming og endringer i snøsmelting og nedbørsmønstre. "
+_ABOUT_NO = (
+    "Om Langtjern: Klimaendringer vil føre til oppvarming og endringer i snøsmelting og nedbørsmønstre. "
     "Slike endringer kan påvirke islegging og vanntemperatur i innsjøer, med mulige konsekvenser "
     "for fisk og vannlevende insekter, næringsnett og oksygentilgang. I tillegg kan produksjon av "
     "klimagasser, vannfarge og surhet bli påvirket. Det finnes få innsjøøkosystemer i Norge der "
@@ -33,6 +43,7 @@ _DESCRIPTION_NO = (
     "for overvåking av sur nedbørs effekter på vannkvalitet og vannbiologi. Andre forskningstemaer "
     "inkluderer kvikksølvforurensning, løst organisk materiale og produksjon av klimagasser."
 )
+
 
 _KEYWORDS = ",".join(
     [
@@ -65,8 +76,8 @@ def _base_dataset_attrs(title: str, summary: str, title_no: str, summary_no: str
         iso_topic_category="inlandWaters",
         featureType=ds.attrs["featureType"],
         date_created=utils.iso_now(),
-        processing_level="Experimental",
-        project="Langtjern",
+        processing_level="Operational",
+        project="Økofersk",
         time_coverage_start=utils.to_isoformat(ds.time.min().values),
         time_coverage_end=utils.to_isoformat(ds.time.max().values),
         geospatial_lat_min=float(ds.latitude.min()),
@@ -80,12 +91,27 @@ def _base_dataset_attrs(title: str, summary: str, title_no: str, summary_no: str
 
 @dataclass
 class LangtjernBoyeBuilder(TimeseriesDatasetBuilder):
+    _summary = " ".join(
+        [
+            "This dataset contains water temperature and oxygen saturation measurements from sensors mounted on the buoy at Langtjern.",
+            _UPDATE_NOTE,
+            _ABOUT,
+        ]
+    )
+    _summary_no = " ".join(
+        [
+            "Dette datasettet inneholder målinger av vanntemperatur og oksygenmetning fra sensorer montert på bøyen ved Langtjern.",
+            _UPDATE_NOTE_NO,
+            _ABOUT_NO,
+        ]
+    )
+
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
         return _base_dataset_attrs(
             title="Climate monitoring at Langtjern – buoy",
-            summary=_DESCRIPTION,
+            summary=self._summary,
             title_no="Klimaovervåking ved Langtjern – bøye",
-            summary_no=_DESCRIPTION_NO,
+            summary_no=self._summary_no,
             ds=ds,
         )
 
@@ -95,9 +121,9 @@ class LangtjernBoyeBuilder(TimeseriesDatasetBuilder):
                 return asdict(VariableAttrs(short_name="oxygen_saturation", long_name="Oxygen Saturation at 6 m Depth", units="%"))
             case "oxygensat_1m":
                 return asdict(VariableAttrs(short_name="oxygen_saturation", long_name="Oxygen Saturation at 1 m Depth", units="%"))
-            case "temp_0.5m":
+            case "temp_0_5m":
                 return asdict(VariableAttrs(short_name="water_temperature", long_name="Water Temperature at 0.5 m Depth", units="degree_Celsius"))
-            case "temp_1.5m":
+            case "temp_1_5m":
                 return asdict(VariableAttrs(short_name="water_temperature", long_name="Water Temperature at 1.5 m Depth", units="degree_Celsius"))
             case "temp_1m":
                 return asdict(VariableAttrs(short_name="water_temperature", long_name="Water Temperature at 1 m Depth", units="degree_Celsius"))
@@ -118,12 +144,27 @@ class LangtjernBoyeBuilder(TimeseriesDatasetBuilder):
 
 @dataclass
 class LangtjernInletBuilder(TimeseriesDatasetBuilder):
+    _summary = " ".join(
+        [
+            "This dataset contains water temperature, water level, soil temperature, and CO2 measurements from the inlet of Langtjern.",
+            _UPDATE_NOTE,
+            _ABOUT,
+        ]
+    )
+    _summary_no = " ".join(
+        [
+            "Dette datasettet inneholder målinger av vanntemperatur, vannstand, jordtemperatur og CO2 fra innløpet til Langtjern.",
+            _UPDATE_NOTE_NO,
+            _ABOUT_NO,
+        ]
+    )
+
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
         return _base_dataset_attrs(
             title="Climate monitoring at Langtjern – inlet",
-            summary=_DESCRIPTION,
+            summary=self._summary,
             title_no="Klimaovervåking ved Langtjern – innløp",
-            summary_no=_DESCRIPTION_NO,
+            summary_no=self._summary_no,
             ds=ds,
         )
 
@@ -146,12 +187,27 @@ class LangtjernInletBuilder(TimeseriesDatasetBuilder):
 
 @dataclass
 class LangtjernOutletBuilder(TimeseriesDatasetBuilder):
+    _summary = " ".join(
+        [
+            "This dataset contains water temperature, air temperature, water level, pH, conductivity, CO2, and CDOM measurements from the outlet of Langtjern.",
+            _UPDATE_NOTE,
+            _ABOUT,
+        ]
+    )
+    _summary_no = " ".join(
+        [
+            "Dette datasettet inneholder målinger av vanntemperatur, lufttemperatur, vannstand, pH, ledningsevne, CO2 og KDOM fra utløpet av Langtjern.",
+            _UPDATE_NOTE_NO,
+            _ABOUT_NO,
+        ]
+    )
+
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
         return _base_dataset_attrs(
             title="Climate monitoring at Langtjern – outlet",
-            summary=_DESCRIPTION,
+            summary=self._summary,
             title_no="Klimaovervåking ved Langtjern – utløp",
-            summary_no=_DESCRIPTION_NO,
+            summary_no=self._summary_no,
             ds=ds,
         )
 
@@ -180,12 +236,27 @@ class LangtjernOutletBuilder(TimeseriesDatasetBuilder):
 
 @dataclass
 class LangtjernWeatherBuilder(TimeseriesDatasetBuilder):
+    _summary = " ".join(
+        [
+            "This dataset contains meteorological measurements from the weather station at Langtjern, including air temperature, wind, humidity, solar radiation, precipitation, and snow depth.",
+            _UPDATE_NOTE,
+            _ABOUT,
+        ]
+    )
+    _summary_no = " ".join(
+        [
+            "Dette datasettet inneholder meteorologiske målinger fra værstasjonen ved Langtjern, inkludert lufttemperatur, vind, fuktighet, solstråling, nedbør og snødybde.",
+            _UPDATE_NOTE_NO,
+            _ABOUT_NO,
+        ]
+    )
+
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
         return _base_dataset_attrs(
             title="Climate monitoring at Langtjern – weather station",
-            summary=_DESCRIPTION,
+            summary=self._summary,
             title_no="Klimaovervåking ved Langtjern – værstasjon",
-            summary_no=_DESCRIPTION_NO,
+            summary_no=self._summary_no,
             ds=ds,
         )
 
@@ -195,9 +266,9 @@ class LangtjernWeatherBuilder(TimeseriesDatasetBuilder):
                 return asdict(VariableAttrs(short_name="air_temperature", long_name="Air Temperature", units="degree_Celsius"))
             case "vh_3_s_max":
                 return asdict(VariableAttrs(short_name="wind_speed", long_name="Maximum Wind Velocity", units="m/s"))
-            case "vh_mps_wvc(1)":
+            case "vh_mps_wvc_1_":
                 return asdict(VariableAttrs(short_name="wind_speed", long_name="Wind Velocity", units="m/s"))
-            case "vh_mps_wvc(2)":
+            case "vh_mps_wvc_2_":
                 return asdict(VariableAttrs(short_name="wind_from_direction", long_name="Wind Direction", units="degrees"))
             case "lf_psnt_avg":
                 return asdict(VariableAttrs(short_name="relative_humidity", long_name="Relative Air Humidity", units="%"))
@@ -207,8 +278,8 @@ class LangtjernWeatherBuilder(TimeseriesDatasetBuilder):
                 return asdict(VariableAttrs(short_name="rainfall_amount", long_name="Rainfall", units="mm"))
             case "waterlevel_mm_avg":
                 return asdict(VariableAttrs(short_name="water_level", long_name="Water Level", units="mm"))
-            case "snowdepth_cm_avg":
-                return asdict(VariableAttrs(short_name="surface_snow_thickness", long_name="Snow Depth", units="cm"))
+            case "snowvalue_mm_avg":
+                return asdict(VariableAttrs(short_name="surface_snow_thickness", long_name="Snow Depth", units="mm"))
             case _:
                 logging.warning(f"Array definition not found for: {variable_name}")
                 raise RuntimeError("Unknown variable code")

@@ -13,6 +13,7 @@ from dscreator.sources.odm2.queries import (
     resultuuids_by_code,
     timeseries_by_resultuuid,
     timestamp_by_code,
+    _sql_alias,
 )
 
 
@@ -45,18 +46,20 @@ class TimeseriesExtractor(BaseExtractor):
         - longitude (list of float) only one value mapped to a scalar
         """
 
+        sql_aliases = [_sql_alias(v.lower()) for v in self.variable_codes]
         res = timeseries_by_resultuuid(
             engine=self.engine,
             result_uuids=self._resultuuids,
-            variable_names=self.variable_codes,
+            variable_names=sql_aliases,
             start_time=start_time,
             end_time=end_time,
         )
-        data_dict = {v.lower(): [] for v in self.variable_codes}
+        data_dict: dict[str, list] = {alias: [] for alias in sql_aliases}
         data_dict["time"] = []
         for value in res:
-            for vname in data_dict:
-                data_dict[vname].append(value[vname])
+            data_dict["time"].append(value["time"])
+            for alias in sql_aliases:
+                data_dict[alias].append(value[alias])
 
         data_dict["longitude"] = [self._point.longitude]
         data_dict["latitude"] = [self._point.latitude]
