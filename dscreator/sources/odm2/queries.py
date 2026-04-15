@@ -1,3 +1,4 @@
+import re
 import logging
 from dataclasses import dataclass
 from datetime import datetime
@@ -7,6 +8,11 @@ from sqlalchemy import Engine, Sequence, RowMapping
 from sqlalchemy.sql import text
 
 from dscreator.sources.base import Point
+
+
+def _sql_alias(variable_name: str) -> str:
+    """Convert a variable name to a valid SQL identifier by replacing non-alphanumeric characters with underscores."""
+    return re.sub(r"[^a-zA-Z0-9_]", "_", variable_name)
 
 
 def resultuuids_by_code(engine: Engine, sampling_feature_code: str, variable_code: str) -> str:
@@ -26,6 +32,8 @@ def resultuuids_by_code(engine: Engine, sampling_feature_code: str, variable_cod
     ).bindparams(sampling_feature_code=sampling_feature_code, variable_code=variable_code)
     with engine.connect() as conn:
         res = conn.execute(query).fetchone()
+    if res is None:
+        raise ValueError(f"No result found for sampling_feature_code={sampling_feature_code!r}, variable_code={variable_code!r}")
     return str(res[0])
 
 
@@ -49,7 +57,7 @@ def timeseries_by_resultuuid(
     """
     cols = ", ".join(
         [
-            f"max(case when (r.resultuuid='{r}') then datavalue else NULL end) as {v}"
+            f"max(case when (r.resultuuid='{r}') then datavalue else NULL end) as {_sql_alias(v)}"
             for r, v in zip(result_uuids, variable_names)
         ]
     )
