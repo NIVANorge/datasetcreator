@@ -76,6 +76,7 @@ def _base_dataset_attrs(title: str, summary: str, title_no: str, summary_no: str
         iso_topic_category="inlandWaters",
         featureType=ds.attrs["featureType"],
         date_created=utils.iso_now(),
+        creator_email="heleen.de.wit@niva.no",
         processing_level="Operational",
         project="Økofersk",
         time_coverage_start=utils.to_isoformat(ds.time.min().values),
