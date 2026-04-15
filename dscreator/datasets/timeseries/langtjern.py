@@ -108,9 +108,9 @@ class LangtjernBoyeBuilder(TimeseriesDatasetBuilder):
 
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
         return _base_dataset_attrs(
-            title="Climate monitoring at Langtjern – buoy",
+            title="Climate monitoring at Langtjern - buoy",
             summary=self._summary,
-            title_no="Klimaovervåking ved Langtjern – bøye",
+            title_no="Klimaovervåking ved Langtjern - bøye",
             summary_no=self._summary_no,
             ds=ds,
         )
@@ -161,9 +161,9 @@ class LangtjernInletBuilder(TimeseriesDatasetBuilder):
 
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
         return _base_dataset_attrs(
-            title="Climate monitoring at Langtjern – inlet",
+            title="Climate monitoring at Langtjern - inlet",
             summary=self._summary,
-            title_no="Klimaovervåking ved Langtjern – innløp",
+            title_no="Klimaovervåking ved Langtjern - innløp",
             summary_no=self._summary_no,
             ds=ds,
         )
@@ -204,9 +204,9 @@ class LangtjernOutletBuilder(TimeseriesDatasetBuilder):
 
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
         return _base_dataset_attrs(
-            title="Climate monitoring at Langtjern – outlet",
+            title="Climate monitoring at Langtjern - outlet",
             summary=self._summary,
-            title_no="Klimaovervåking ved Langtjern – utløp",
+            title_no="Klimaovervåking ved Langtjern - utløp",
             summary_no=self._summary_no,
             ds=ds,
         )
@@ -253,9 +253,9 @@ class LangtjernWeatherBuilder(TimeseriesDatasetBuilder):
 
     def dataset_attributes(self, ds: xr.Dataset) -> DatasetAttrsDiscrete:
         return _base_dataset_attrs(
-            title="Climate monitoring at Langtjern – weather station",
+            title="Climate monitoring at Langtjern - weather station",
             summary=self._summary,
-            title_no="Klimaovervåking ved Langtjern – værstasjon",
+            title_no="Klimaovervåking ved Langtjern - værstasjon",
             summary_no=self._summary_no,
             ds=ds,
         )
