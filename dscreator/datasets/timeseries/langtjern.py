@@ -4,7 +4,7 @@ from dataclasses import asdict, dataclass
 import xarray as xr
 
 from dscreator import utils
-from dscreator.cfarray.attributes import DatasetAttrsDiscrete, VariableAttrs
+from dscreator.cfarray.attributes import DatasetAttrsDiscrete, VariableAttrs, CFVariableAttrs
 from dscreator.datasets.base import TimeseriesDatasetBuilder
 
 _UPDATE_NOTE = (
@@ -171,15 +171,15 @@ class LangtjernInletBuilder(TimeseriesDatasetBuilder):
     def variable_attributes(self, variable_name: str) -> dict:
         match variable_name:
             case "temp_ground_15cm_avg":
-                return asdict(VariableAttrs(short_name="soil_temperature", long_name="Soil Temperature at 15 cm Depth (Riparian)", units="degree_Celsius"))
+                return asdict(CFVariableAttrs(standard_name="temperature_in_ground", long_name="Soil Temperature at 15 cm Depth (Riparian)", units="degree_Celsius"))
             case "temp_ground_20cm_avg":
-                return asdict(VariableAttrs(short_name="soil_temperature", long_name="Soil Temperature at 20 cm Depth (Riparian)", units="degree_Celsius"))
+                return asdict(CFVariableAttrs(standard_name="temperature_in_ground", long_name="Soil Temperature at 20 cm Depth (Riparian)", units="degree_Celsius"))
             case "temp_water_avg":
                 return asdict(VariableAttrs(short_name="water_temperature", long_name="Water Temperature", units="degree_Celsius"))
             case "levelvalue_avg":
                 return asdict(VariableAttrs(short_name="water_level", long_name="Water Level", units="m"))
             case "co2value_avg":
-                return asdict(VariableAttrs(short_name="mole_fraction_of_carbon_dioxide_in_water", long_name="CO2 Concentration in Water", units="ppm"))
+                return asdict(CFVariableAttrs(standard_name="mole_fraction_of_carbon_dioxide_in_air", long_name="CO2 Concentration in Air", units="ppm"))
             case _:
                 logging.warning(f"Array definition not found for: {variable_name}")
                 raise RuntimeError("Unknown variable code")
@@ -214,17 +214,17 @@ class LangtjernOutletBuilder(TimeseriesDatasetBuilder):
     def variable_attributes(self, variable_name: str) -> dict:
         match variable_name:
             case "temp_air_avg":
-                return asdict(VariableAttrs(short_name="air_temperature", long_name="Air Temperature", units="degree_Celsius"))
+                return asdict(CFVariableAttrs(standard_name="air_temperature", long_name="Air Temperature", units="degree_Celsius"))
             case "temp_ground_avg":
-                return asdict(VariableAttrs(short_name="soil_temperature", long_name="Ground Temperature", units="degree_Celsius"))
+                return asdict(CFVariableAttrs(standard_name="soil_temperature", long_name="Ground Temperature", units="degree_Celsius"))
             case "temp_water_avg":
                 return asdict(VariableAttrs(short_name="water_temperature", long_name="Water Temperature", units="degree_Celsius"))
             case "phvalue_avg":
                 return asdict(VariableAttrs(short_name="water_ph", long_name="Water pH", units=""))
             case "condvalue_avg":
-                return asdict(VariableAttrs(short_name="water_electrical_conductivity", long_name="Water Conductivity", units="mS/m"))
+                return asdict(VariableAttrs(short_name="conductivity", long_name="Water Conductivity", units="mS/m"))
             case "co2value_avg":
-                return asdict(VariableAttrs(short_name="mole_fraction_of_carbon_dioxide_in_water", long_name="CO2 Concentration in Water", units="ppm"))
+                return asdict(CFVariableAttrs(standard_name="mole_fraction_of_carbon_dioxide_in_air", long_name="CO2 Concentration in Air", units="ppm"))
             case "cdomdigitalfinal_avg":
                 return asdict(VariableAttrs(short_name="water_cdom", long_name="Colored Dissolved Organic Matter in Water", units="µg/L"))
             case "levelvalue_avg":
@@ -263,23 +263,23 @@ class LangtjernWeatherBuilder(TimeseriesDatasetBuilder):
     def variable_attributes(self, variable_name: str) -> dict:
         match variable_name:
             case "lt_gr_c_avg":
-                return asdict(VariableAttrs(short_name="air_temperature", long_name="Air Temperature", units="degree_Celsius"))
+                return asdict(CFVariableAttrs(standard_name="air_temperature", long_name="Air Temperature", units="degree_Celsius"))
             case "vh_3_s_max":
-                return asdict(VariableAttrs(short_name="wind_speed", long_name="Maximum Wind Velocity", units="m/s"))
+                return asdict(CFVariableAttrs(standard_name="wind_speed", long_name="Maximum Wind Velocity", units="m/s"))
             case "vh_mps_wvc_1_":
-                return asdict(VariableAttrs(short_name="wind_speed", long_name="Wind Velocity", units="m/s"))
+                return asdict(CFVariableAttrs(standard_name="wind_speed", long_name="Wind Velocity", units="m/s"))
             case "vh_mps_wvc_2_":
-                return asdict(VariableAttrs(short_name="wind_from_direction", long_name="Wind Direction", units="degrees"))
+                return asdict(CFVariableAttrs(standard_name="wind_from_direction", long_name="Wind Direction", units="degrees"))
             case "lf_psnt_avg":
-                return asdict(VariableAttrs(short_name="relative_humidity", long_name="Relative Air Humidity", units="%"))
+                return asdict(CFVariableAttrs(standard_name="relative_humidity", long_name="Relative Air Humidity", units="%"))
             case "gs_wpm2_avg":
-                return asdict(VariableAttrs(short_name="surface_downwelling_shortwave_flux_in_air", long_name="Solar Radiation", units="W/m2"))
+                return asdict(CFVariableAttrs(standard_name="surface_downwelling_shortwave_flux_in_air", long_name="Solar Radiation", units="W/m2"))
             case "nb_mm":
-                return asdict(VariableAttrs(short_name="rainfall_amount", long_name="Rainfall", units="mm"))
+                return asdict(CFVariableAttrs(standard_name="rainfall_amount", long_name="Rainfall", units="mm"))
             case "waterlevel_mm_avg":
                 return asdict(VariableAttrs(short_name="water_level", long_name="Water Level", units="mm"))
             case "snowvalue_mm_avg":
-                return asdict(VariableAttrs(short_name="surface_snow_thickness", long_name="Snow Depth", units="mm"))
+                return asdict(CFVariableAttrs(standard_name="surface_snow_thickness", long_name="Snow Depth", units="mm"))
             case _:
                 logging.warning(f"Array definition not found for: {variable_name}")
                 raise RuntimeError("Unknown variable code")
