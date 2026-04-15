@@ -180,7 +180,9 @@ class LangtjernInletBuilder(TimeseriesDatasetBuilder):
             case "levelvalue_avg":
                 return asdict(VariableAttrs(short_name="water_level", long_name="Water Level", units="m"))
             case "co2value_avg":
-                return asdict(VariableAttrs(short_name="pco2", long_name="Internal sensor pCO2 in equilibrium with water", units="ppm"))
+                attrs = asdict(VariableAttrs(short_name="pco2", long_name="pCO2 in water (unprocessed signal)", units="ppm"))
+                attrs["comment"] = "Internal sensor pCO2 in equilibrium with water"
+                return attrs
             case _:
                 logging.warning(f"Array definition not found for: {variable_name}")
                 raise RuntimeError("Unknown variable code")
@@ -225,7 +227,9 @@ class LangtjernOutletBuilder(TimeseriesDatasetBuilder):
             case "condvalue_avg":
                 return asdict(VariableAttrs(short_name="conductivity", long_name="Water Conductivity", units="mS/m"))
             case "co2value_avg":
-                return asdict(VariableAttrs(short_name="pco2", long_name="Internal sensor pCO2 in equilibrium with water", units="ppm"))
+                attrs = asdict(VariableAttrs(short_name="pco2", long_name="pCO2 in water (unprocessed signal)", units="ppm"))
+                attrs["comment"] = "Internal sensor pCO2 in equilibrium with water"
+                return attrs
             case "cdomdigitalfinal_avg":
                 return asdict(VariableAttrs(short_name="water_cdom", long_name="Colored Dissolved Organic Matter in Water", units="µg/L"))
             case "levelvalue_avg":
