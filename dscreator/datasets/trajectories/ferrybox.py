@@ -269,11 +269,11 @@ class DailyColorHybrid(FerryboxDatasetBuilder):
                 ]
             ),
             depth="~5m",
-            creator_email="norsoop@niva.no",
+            creator_email="miljoinformatikk@niva.no",
             featureType=ds.attrs["featureType"],
             # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
             references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md (Extended metadata)",
-            #https://vocab.ices.dk/services/pox/GetCodeList/SHIPC
+            # https://vocab.ices.dk/services/pox/GetCodeList/SHIPC
             ices_platform_code="?",
             platform_code="CH",
             platform_name="Color Hybrid",
@@ -288,9 +288,9 @@ class DailyColorHybrid(FerryboxDatasetBuilder):
             collection="GEONOR, NMDC",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
-            #geospatial_lat_min=69.68,
-            #geospatial_lat_max=79.00,
-            #geospatial_lon_min=8.80,
-            #geospatial_lon_max=21.15,
+            geospatial_lat_min=58.82,
+            geospatial_lat_max=59.2,
+            geospatial_lon_min=10.05,
+            geospatial_lon_max=11.21,
             spatial_representation="trajectory",
         )

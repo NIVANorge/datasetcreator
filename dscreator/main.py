@@ -280,7 +280,6 @@ def usage(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOpti
     runner.start()
 
 
-
 @app.command()
 def nrt_color_hybrid(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build nrt color hybrid dataset from data in tsb"""
@@ -313,8 +312,6 @@ def nrt_color_hybrid(max_time_slice: int = 24, stop_after_n_files: int = -1, acd
     )
 
     runner.start()
-
-
 
 
 if __name__ == "__main__":

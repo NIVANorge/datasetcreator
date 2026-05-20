@@ -91,7 +91,7 @@ class DataRunner:
                 logging.info(f"Saving dataset slice {ds.time[0].values} --> {ds.time[-1].values}")
                 self.storage_handler.save_dataset(ds)
                 restart_dataset = ds
-                
+
                 if self.ncml:
                     logging.info("NCML Template:\n")
                     print(utils.to_ncml(ds))
