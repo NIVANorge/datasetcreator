@@ -23,11 +23,13 @@ def resultuuids_by_code(engine: Engine, sampling_feature_code: str, variable_cod
     FROM
         ODM2.RESULTS r
         JOIN odm2.variables v ON v.variableid = r.variableid
+        JOIN odm2.processinglevels pl on pl.processinglevelid = r.processinglevelid
         JOIN odm2.featureactions f ON f.featureactionid = r.featureactionid
-        JOIN odm2.samplingfeatures sf ON f.samplingfeatureid = sf.samplingfeatureid 
+        JOIN odm2.samplingfeatures sf ON f.samplingfeatureid = sf.samplingfeatureid
     WHERE
         sf.samplingfeaturecode = :sampling_feature_code
         AND v.variablecode = :variable_code
+        AND pl.processinglevelcode = '0'
     """
     ).bindparams(sampling_feature_code=sampling_feature_code, variable_code=variable_code)
     with engine.connect() as conn:
