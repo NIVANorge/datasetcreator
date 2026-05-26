@@ -68,12 +68,14 @@ def timeseries_by_resultuuid(
     FROM
         odm2.timeseriesresultvalues tsrv
         JOIN odm2.results r ON r.resultid = tsrv.resultid
+        JOIN odm2.processinglevels pl on pl.processinglevelid = r.processinglevelid
     WHERE
         r.resultuuid IN :result_uuids
         AND tsrv.valuedatetime > :start_time
         AND tsrv.valuedatetime <= :end_time
         AND tsrv.qualitycodecv != 'Bad'
         AND tsrv.censorcodecv != 'Discarded'
+        AND pl.processinglevelcode = '0'
     GROUP BY
         tsrv.valuedatetime
     ORDER BY
