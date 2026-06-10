@@ -294,7 +294,7 @@ def nrt_color_hybrid(max_time_slice: int = 24, stop_after_n_files: int = -1, acd
     )
 
     dataset_builder = trajectories.ferrybox.DailyColorHybrid(
-        uuid="no.niva:c9a52589-d345-4c74-8775-82f31e7873d5",
+        uuid="no.niva:b7543ca0-d9b5-47d1-a174-8940a5f20977",
         dataset_name="color_hybrid",
         station_name="color_hybrid",
         grouping="nrt",
@@ -350,7 +350,7 @@ def langtjern_boye(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
-        ncml=True if acdd == "ncml" else False
+        ncml=True if acdd == "ncml" else False,
     )
     runner.start()
 
@@ -387,7 +387,7 @@ def langtjern_inlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
-        ncml=True if acdd == "ncml" else False
+        ncml=True if acdd == "ncml" else False,
     )
     runner.start()
 
@@ -427,7 +427,7 @@ def langtjern_outlet(max_time_slice: int = 24, stop_after_n_files: int = -1, acd
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
-        ncml=True if acdd == "ncml" else False
+        ncml=True if acdd == "ncml" else False,
     )
     runner.start()
 
@@ -468,7 +468,7 @@ def langtjern_weather(max_time_slice: int = 24, stop_after_n_files: int = -1, ac
         dataset_builder=dataset_builder,
         hourly_delta=max_time_slice,
         n_intervals=stop_after_n_files,
-        ncml=True if acdd == "ncml" else False
+        ncml=True if acdd == "ncml" else False,
     )
     runner.start()
 
