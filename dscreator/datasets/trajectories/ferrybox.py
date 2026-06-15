@@ -274,7 +274,7 @@ class DailyColorHybrid(FerryboxDatasetBuilder):
             # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
             references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md (Extended metadata)",
             # https://vocab.ices.dk/services/pox/GetCodeList/SHIPC
-            ices_platform_code="?",
+            ices_platform_code="",
             platform_code="CH",
             platform_name="Color Hybrid",
             date_created=utils.iso_now(),
