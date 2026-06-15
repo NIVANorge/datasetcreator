@@ -56,4 +56,4 @@ ds = timeseriesdataset(
 # %%
 ds
 # %%
-ds.to_netcdf("timeseries.nc", unlimited_dims=["time"], encoding={ "time": TIME_ENCODING })
+ds.to_netcdf("timeseries.nc", unlimited_dims=["time"], encoding={"time": TIME_ENCODING})

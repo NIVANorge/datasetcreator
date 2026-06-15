@@ -34,9 +34,7 @@ class FlagAttrs:
 
     long_name: str
     standard_name: str = "status_flag"
-    flag_meanings: str = (
-        "no_qc_performed good_data probably_good_data bad_data_that_are_potentially_correctable bad_data value_changed value_below_detection nominal_value interpolated_value missing_value"
-    )
+    flag_meanings: str = "no_qc_performed good_data probably_good_data bad_data_that_are_potentially_correctable bad_data value_changed value_below_detection nominal_value interpolated_value missing_value"
     valid_max: int = 9
     valid_min: int = 0
     flag_values: List[int] = field(init=False)

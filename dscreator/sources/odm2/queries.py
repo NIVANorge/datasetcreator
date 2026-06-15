@@ -35,7 +35,9 @@ def resultuuids_by_code(engine: Engine, sampling_feature_code: str, variable_cod
     with engine.connect() as conn:
         res = conn.execute(query).fetchone()
     if res is None:
-        raise ValueError(f"No result found for sampling_feature_code={sampling_feature_code!r}, variable_code={variable_code!r}")
+        raise ValueError(
+            f"No result found for sampling_feature_code={sampling_feature_code!r}, variable_code={variable_code!r}"
+        )
     return str(res[0])
 
 

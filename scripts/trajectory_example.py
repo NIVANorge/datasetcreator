@@ -62,7 +62,7 @@ ds = trajectorydataset([temperature, turbidity], "trajectory-test")
 ds.temperature.plot()
 
 # %%
-ds.to_netcdf("example_trajectory.nc", encoding={ "time": TIME_ENCODING })
+ds.to_netcdf("example_trajectory.nc", encoding={"time": TIME_ENCODING})
 # run `ncdump example_trajectory.nc` on commandline to view text repr also
 
 # %%

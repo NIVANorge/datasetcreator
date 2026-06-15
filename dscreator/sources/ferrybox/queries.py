@@ -104,7 +104,7 @@ def get_time_by_uuids(
     """
     query_str += "ASC LIMIT 1" if is_asc else "DESC LIMIT 1"
     query = text(query_str).bindparams(uuids=tuple(uuids))
-    with engine.connect() as conn:
+    with engine.connect().execution_options(timeout=60) as conn:
         res = conn.execute(query)
         res_dict = res.mappings().one()
     return res_dict["time"]
