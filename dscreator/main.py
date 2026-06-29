@@ -314,6 +314,40 @@ def nrt_color_hybrid(max_time_slice: int = 24, stop_after_n_files: int = -1, acd
     runner.start()
 
 
+@app.command()
+def nrt_octantis(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
+    """Build nrt Octantis dataset from data in tsb"""
+
+    logging.info("Exporting NRT OC dataset")
+    logging.info(f"Using TSB connection string: {SETTINGS.tsb_connection_str}")
+    trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
+        create_engine(SETTINGS.tsb_connection_str, connect_args={"connect_timeout": 30}),
+        variable_codes=["temperature", "salinity", "oxygen_sat", "chlorophyll", "turbidity", "fdom"],
+        variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["OC"],
+        qc_flags=[1],
+    )
+
+    dataset_builder = trajectories.ferrybox.DailyOctantis(
+        uuid="no.niva:6cfb42d1-656d-451f-b124-9f26dcf804f0",
+        dataset_name="octantis",
+        station_name="octantis",
+        grouping="nrt",
+        is_acdd=False if acdd == "no" else True,
+    )
+
+    runner = DataRunner(
+        custom_start_time=datetime(2026, 1, 1),
+        extractor=trajectory_extractor,
+        dataset_builder=dataset_builder,
+        hourly_delta=max_time_slice,
+        n_intervals=stop_after_n_files,
+        ncml=True if acdd == "ncml" else False,
+        end_time_delay=timedelta(minutes=90),
+    )
+
+    runner.start()
+
+
 def langtjern_boye(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOptions = "no"):
     """Build Langtjern buoy dataset from data in odm2
 
