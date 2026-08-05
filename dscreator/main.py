@@ -260,6 +260,9 @@ def usage(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: ACDDOpti
             "Temp",
             "Temp_air",
         ],
+        processing_levels={
+            "OxygenSat": "2",
+        },
     )
     dataset_builder = timeseries.usage.UsageBuilder(
         uuid="no.niva:10816f11-2eb2-4dc4-a9b2-19274b181c39",
@@ -336,7 +339,7 @@ def langtjern_boye(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
             "Temp_4m",
             "Temp_6m",
             "Temp_8m",
-        ],
+        ]
     )
     dataset_builder = timeseries.langtjern.LangtjernBoyeBuilder(
         uuid="no.niva:abf9ccdb-0c4a-4c69-945b-a64409028946",

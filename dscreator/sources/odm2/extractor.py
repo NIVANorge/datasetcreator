@@ -22,13 +22,17 @@ class TimeseriesExtractor(BaseExtractor):
     engine: Engine
     sampling_feature_code: str
     variable_codes: str
+    processing_levels: dict[str, str] = field(default_factory=dict)
     _point: Point = field(init=False)
     _resultuuids: List[str] = field(init=False)
 
     def __post_init__(self):
         self._point = point_by_sampling_code(self.engine, self.sampling_feature_code)
         self._resultuuids = [
-            resultuuids_by_code(self.engine, self.sampling_feature_code, vc) for vc in self.variable_codes
+            resultuuids_by_code(
+                self.engine, self.sampling_feature_code, vc, pl_code=self.processing_levels.get(vc, "0")
+            )
+            for vc in self.variable_codes
         ]
 
     def fetch_slice(

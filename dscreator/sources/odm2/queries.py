@@ -15,7 +15,9 @@ def _sql_alias(variable_name: str) -> str:
     return re.sub(r"[^a-zA-Z0-9_]", "_", variable_name)
 
 
-def resultuuids_by_code(engine: Engine, sampling_feature_code: str, variable_code: str) -> str:
+def resultuuids_by_code(
+    engine: Engine, sampling_feature_code: str, variable_code: str, pl_code: str = "0"
+) -> str:
     query = text(
         """
     SELECT
@@ -29,9 +31,9 @@ def resultuuids_by_code(engine: Engine, sampling_feature_code: str, variable_cod
     WHERE
         sf.samplingfeaturecode = :sampling_feature_code
         AND v.variablecode = :variable_code
-        AND pl.processinglevelcode = '0'
+        AND pl.processinglevelcode = :pl_code
     """
-    ).bindparams(sampling_feature_code=sampling_feature_code, variable_code=variable_code)
+    ).bindparams(sampling_feature_code=sampling_feature_code, variable_code=variable_code, pl_code=pl_code)
     with engine.connect() as conn:
         res = conn.execute(query).fetchone()
     if res is None:
