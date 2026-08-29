@@ -28,6 +28,24 @@ MAPPER = {
         "turbidity": "19f343be-2708-4a40-92c0-0a6b7220958d",  # NB/FERRYBOX/C3/TURBIDITY/ADJUSTED
         "fdom": "d052e722-8a9b-4a43-98ae-1cc4677ec69b",  # NB/FERRYBOX/C3/CDOM_FLUORESCENCE/ADJUSTED
     },
+    "PO": {
+        "temperature": "ea4b4fe4-9ef9-4103-9d41-a48785726ee4",  # PO/INLET/SBE38/TEMPERATURE/RAW
+        "salinity": "75c7312c-5552-409b-94a1-907ad9db4629",  # PO/FERRYBOX/SBE45/SALINITY/RAW
+        "oxygen_sat": "d83b6b8f-1317-4894-925d-794355aaba85",  # PO/FERRYBOX/OPTODE/OXYGEN_SATURATION/RAW
+        "track": "2cd254cb-d882-4558-a7ac-6d4da470c85b",  # PO/gpstrack
+        "chlorophyll": "3e235e99-daac-4394-986c-561518cfe05b",  # PO/FERRYBOX/C6/CHLA_FLUORESCENCE/ADJUSTED
+        "turbidity": "64c1a2d7-b580-4a5c-81cb-f070abf160c1",  # PO/FERRYBOX/C6/TURBIDITY/ADJUSTED
+        "fdom": "e05c84a4-4816-4961-b094-121ecdf4e6b6",  # PO/FERRYBOX/C6/CDOM_FLUORESCENCE/ADJUSTED
+    },
+    "OC": {
+        "temperature": "c8ae9eb6-4c2a-4752-9913-2dd87e17289",  # OC/INLET/SBE38/TEMPERATURE/RAW
+        "salinity": "7cfcc3ec-268d-4edc-a012-551de555d28a",  # OC/FERRYBOX/SBE45/SALINITY/RAW
+        "oxygen_sat": "072442e9-388b-488d-b0fd-003eacb33a9f",  # OC/FERRYBOX/ANDERAA_4835/OXYGEN_SATURATION/RAW
+        "track": "af3040b5-77f3-4822-83ec-768234616ac7",  # OC/gpstrack
+        "chlorophyll": "c90cbcfc-e16d-4891-ad6a-66b178060b1d",  # OC/FERRYBOX/C6/CHLA_FLUORESCENCE/ADJUSTED
+        "turbidity": "e541c5b7-a0db-403e-b21d-f6a3487a7094",  # OC/FERRYBOX/C6/TURBIDITY/ADJUSTED
+        "fdom": "c34e3640-356a-47a2-9c94-1e7051de5d9d",  # OC/FERRYBOX/C3/CDOM_FLUORESCENCE/ADJUSTED
+    },
     "CH": {
         "temperature": "11aba23f-f184-42f4-a864-b54d7075fe02",  # degc, CH/INLET/SBE38/TEMPERATURE/RAW
         "salinity": "04f9e336-2476-4385-acba-971fe9a41b6f",  # psu, sbe45, CH/FERRYBOX/SBE45/SALINITY/RAW
