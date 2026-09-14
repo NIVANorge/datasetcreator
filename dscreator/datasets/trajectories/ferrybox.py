@@ -275,7 +275,7 @@ class DailyPolaris(FerryboxDatasetBuilder):
             # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
             references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md (Extended metadata)",
             # https://vocab.ices.dk/services/pox/GetCodeList/SHIPC
-            ices_platform_code="58N7",
+            ices_platform_code="58K7",
             platform_code="PO",
             platform_name="Viking Polaris",
             date_created=utils.iso_now(),

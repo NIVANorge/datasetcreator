@@ -38,7 +38,7 @@ MAPPER = {
         "fdom": "e05c84a4-4816-4961-b094-121ecdf4e6b6",  # PO/FERRYBOX/C6/CDOM_FLUORESCENCE/ADJUSTED
     },
     "OC": {
-        "temperature": "c8ae9eb6-4c2a-4752-9913-2dd87e17289",  # OC/INLET/SBE38/TEMPERATURE/RAW
+        "temperature": "c8ae9eb6-4c2a-4752-9913-2dd87e172897",  # OC/INLET/SBE38/TEMPERATURE/RAW
         "salinity": "7cfcc3ec-268d-4edc-a012-551de555d28a",  # OC/FERRYBOX/SBE45/SALINITY/RAW
         "oxygen_sat": "072442e9-388b-488d-b0fd-003eacb33a9f",  # OC/FERRYBOX/ANDERAA_4835/OXYGEN_SATURATION/RAW
         "track": "af3040b5-77f3-4822-83ec-768234616ac7",  # OC/gpstrack
