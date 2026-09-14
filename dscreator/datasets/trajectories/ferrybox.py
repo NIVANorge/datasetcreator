@@ -270,13 +270,14 @@ class DailyPolaris(FerryboxDatasetBuilder):
             ),
             depth="~5m",
             creator_email="miljoinformatikk@niva.no",
+            data_owner="Viking",
             featureType=ds.attrs["featureType"],
             # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
             references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md (Extended metadata)",
             # https://vocab.ices.dk/services/pox/GetCodeList/SHIPC
-            ices_platform_code="",
+            ices_platform_code="58N7",
             platform_code="PO",
-            platform_name="Polaris",
+            platform_name="Viking Polaris",
             date_created=utils.iso_now(),
             project=",".join(
                 [
@@ -322,13 +323,14 @@ class DailyOctantis(FerryboxDatasetBuilder):
             ),
             depth="~5m",
             creator_email="miljoinformatikk@niva.no",
+            data_owner="Viking",
             featureType=ds.attrs["featureType"],
             # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
             references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md (Extended metadata)",
             # https://vocab.ices.dk/services/pox/GetCodeList/SHIPC
-            ices_platform_code="",
+            ices_platform_code="58N7",
             platform_code="OC",
-            platform_name="Octantis",
+            platform_name="Viking Octantis",
             date_created=utils.iso_now(),
             project=",".join(
                 [

@@ -328,7 +328,7 @@ def nrt_polaris(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd: AC
     )
 
     dataset_builder = trajectories.ferrybox.DailyPolaris(
-        uuid="no.niva:TODO",  # TODO: assign dataset UUID
+        uuid="no.niva:58a7377a-b39f-456a-8dc7-5bb9ff1ed84a",
         dataset_name="polaris",
         station_name="polaris",
         grouping="nrt",
