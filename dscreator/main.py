@@ -291,7 +291,15 @@ def nrt_color_hybrid(max_time_slice: int = 24, stop_after_n_files: int = -1, acd
     logging.info(f"Using TSB connection string: {SETTINGS.tsb_connection_str}")
     trajectory_extractor = ferrybox.extractor.TrajectoryExtractor(
         create_engine(SETTINGS.tsb_connection_str, connect_args={"connect_timeout": 30}),
-        variable_codes=["temperature", "salinity", "oxygen_sat", "chlorophyll", "turbidity", "fdom"],
+        variable_codes=[
+            "temperature",
+            "sea_surface_temperature",
+            "salinity",
+            "oxygen_sat",
+            "chlorophyll",
+            "turbidity",
+            "fdom",
+        ],
         variable_uuid_map=ferrybox.uuid_variable_code_mapper.MAPPER["CH"],
         qc_flags=[1],
     )
@@ -407,7 +415,7 @@ def langtjern_boye(max_time_slice: int = 24, stop_after_n_files: int = -1, acdd:
             "Temp_4m",
             "Temp_6m",
             "Temp_8m",
-        ]
+        ],
     )
     dataset_builder = timeseries.langtjern.LangtjernBoyeBuilder(
         uuid="no.niva:abf9ccdb-0c4a-4c69-945b-a64409028946",

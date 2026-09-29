@@ -15,9 +15,7 @@ def _sql_alias(variable_name: str) -> str:
     return re.sub(r"[^a-zA-Z0-9_]", "_", variable_name)
 
 
-def resultuuids_by_code(
-    engine: Engine, sampling_feature_code: str, variable_code: str, pl_code: str = "0"
-) -> str:
+def resultuuids_by_code(engine: Engine, sampling_feature_code: str, variable_code: str, pl_code: str = "0") -> str:
     query = text(
         """
     SELECT
