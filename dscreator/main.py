@@ -293,7 +293,7 @@ def nrt_color_hybrid(max_time_slice: int = 24, stop_after_n_files: int = -1, acd
         create_engine(SETTINGS.tsb_connection_str, connect_args={"connect_timeout": 30}),
         variable_codes=[
             "temperature",
-            "sea_surface_temperature",
+            "sst_skin",
             "salinity",
             "oxygen_sat",
             "chlorophyll",

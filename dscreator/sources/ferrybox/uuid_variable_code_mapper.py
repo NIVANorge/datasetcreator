@@ -48,7 +48,7 @@ MAPPER = {
     },
     "CH": {
         "temperature": "11aba23f-f184-42f4-a864-b54d7075fe02",  # degc, CH/INLET/SBE38/TEMPERATURE/RAW
-        "sea_surface_temperature": "ee45ef81-c6f3-471e-ab67-0db1ab783788",  # CH/CALEX/SST/TEMPERATURE/AVERAGE
+        "sst_skin": "ee45ef81-c6f3-471e-ab67-0db1ab783788",  # CH/CALEX/SST/TEMPERATURE/AVERAGE
         "salinity": "04f9e336-2476-4385-acba-971fe9a41b6f",  # psu, sbe45, CH/FERRYBOX/SBE45/SALINITY/RAW
         "oxygen_sat": "e0548daf-f321-4cae-a083-c875aa30d812",  # aanderaa, %,  CH/FERRYBOX/OPTODE/OXYGEN_SATURATION/RAW
         "track": "e6185cc6-9f02-4cdd-81b3-afda28b8b743",  # NB/gpstrack
