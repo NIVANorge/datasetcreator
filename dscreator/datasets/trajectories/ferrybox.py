@@ -30,6 +30,24 @@ class FerryboxDatasetBuilder(TrajectoryDatasetBuilder):
             case "temperature_qc":
                 return asdict(FlagAttrs(long_name="Sea Water Temperature Quality Flag"))
 
+            case "sst_skin":
+                attrs = asdict(
+                    CFVariableAttrs(
+                        # Measured by a Calex PMB201 non-contact infrared radiometer (8-14 micron), which per CF
+                        # measures skin temperature rather than bulk water temperature, see
+                        # https://vocab.nerc.ac.uk/standard_name/sea_surface_skin_temperature/
+                        # Independently confirmed by SeaDataNet P02:PSST (https://vocab.nerc.ac.uk/collection/P02/current/PSST/),
+                        # whose definition explicitly excludes thermosalinograph-depth measurements like the "temperature" variable above.
+                        standard_name="sea_surface_skin_temperature",
+                        long_name="Sea Surface Skin Temperature",
+                        units="degree_Celsius",
+                    )
+                )
+                attrs["ancillary_variables"] = "sst_skin_qc"
+                return attrs
+            case "sst_skin_qc":
+                return asdict(FlagAttrs(long_name="Sea Surface Skin Temperature Quality Flag"))
+
             case "turbidity":
                 attrs = asdict(
                     CFVariableAttrs(standard_name="sea_water_turbidity", long_name="Sea Water Turbidity", units="FTU")
@@ -356,8 +374,8 @@ class DailyColorHybrid(FerryboxDatasetBuilder):
         return FerryboxDatasetAttrs(
             title="FerryBox on MS Color Hybrid, daily data",
             title_no="FerryBox på MS Color Hybrid, daglige data",
-            summary="The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Color Hybrid Sandefjord-Strømstad. This amounts to about one measurement every ~500 metres, for more information see https://www.niva.no/en/ferrybox. This dataset will normally be updated daily.",
-            summary_no="Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Color Hybrids faste rute Sandefjord-Strømstad. Dette tilsvarer en måling ca hver 500 meter, for mer informasjon se https://www.niva.no/ferrybox. Dette datasettet vil normalt bli oppdatert daglig.",
+            summary="The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Color Hybrid Sandefjord-Strømstad, along with additional measurements from above-water remote sensing instruments. This amounts to about one measurement every ~500 metres, for more information see https://www.niva.no/en/ferrybox. This dataset will normally be updated daily.",
+            summary_no="Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Color Hybrids faste rute Sandefjord-Strømstad, i tillegg til målinger fra fjernmålingsinstrumenter over vannoverflaten. Dette tilsvarer en måling ca hver 500 meter, for mer informasjon se https://www.niva.no/ferrybox. Dette datasettet vil normalt bli oppdatert daglig.",
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
@@ -374,7 +392,7 @@ class DailyColorHybrid(FerryboxDatasetBuilder):
                     "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
                 ]
             ),
-            depth="~5m",
+            depth="~5m, except sst_skin which is measured at the sea surface",
             creator_email="miljoinformatikk@niva.no",
             featureType=ds.attrs["featureType"],
             # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types

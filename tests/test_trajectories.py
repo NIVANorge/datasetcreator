@@ -25,3 +25,22 @@ def test_ferrybox_trajectory():
     assert ds.sizes["time"] == 3
     assert ds.attrs["featureType"] == "trajectory"
     assert ds.temperature.attrs["standard_name"] == "sea_water_temperature"
+
+
+def test_ferrybox_trajectory_sst_skin():
+    trajectory = dict(
+        latitude=[50.70, 50.71, 50.72],
+        longitude=[10.70, 10.71, 10.72],
+        sst_skin=[10, 11, 12],
+        time=[datetime(1999, 10, 4), datetime(1999, 10, 5), datetime(1999, 10, 6)],
+    )
+
+    example_builder = trajectories.ferrybox.DailyColorHybrid(
+        "uuid", "dataset_name", "trajectory_name", "project_name", True
+    )
+
+    ds = example_builder.create(trajectory)
+
+    assert all(ds.sst_skin == [10, 11, 12])
+    assert ds.sst_skin.attrs["standard_name"] == "sea_surface_skin_temperature"
+    assert ds.sst_skin.attrs["ancillary_variables"] == "sst_skin_qc"
