@@ -374,8 +374,8 @@ class DailyRichardWith(FerryboxDatasetBuilder):
         return FerryboxDatasetAttrs(
             title="FerryBox on MS Richard With, daily data",
             title_no="FerryBox på MS Richard With, daglige data",
-            summary="The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Richard With Tromsø-Kirkenes. This amounts to about one measurement every ~500 metres, for more information see https://www.niva.no/en/ferrybox. This dataset will normally be updated daily.",
-            summary_no="Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Richard With sin faste rute Tromsø-Kirkenes. Dette tilsvarer en måling ca hver 500 meter, for mer informasjon se https://www.niva.no/ferrybox. Dette datasettet vil normalt bli oppdatert daglig.",
+            summary="The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Richard With along the Norwegian coast. This amounts to about one measurement every ~500 metres, for more information see https://www.niva.no/en/ferrybox. This dataset will normally be updated daily.",
+            summary_no="Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Richard With sin faste rute langs norskekysten. Dette tilsvarer en måling ca hver 500 meter, for mer informasjon se https://www.niva.no/ferrybox. Dette datasettet vil normalt bli oppdatert daglig.",
             keywords=",".join(
                 [
                     "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
@@ -412,11 +412,11 @@ class DailyRichardWith(FerryboxDatasetBuilder):
             collection="GEONOR, NMDC",
             time_coverage_start=utils.to_isoformat(ds.time.min().values),
             time_coverage_end=utils.to_isoformat(ds.time.max().values),
-            # Tromsø-Kirkenes
-            geospatial_lat_min=69.5,
+            # Bergen-Kirkenes
+            geospatial_lat_min=60.0,
             geospatial_lat_max=71.3,
-            geospatial_lon_min=18.5,
-            geospatial_lon_max=30.5,
+            geospatial_lon_min=4.5,
+            geospatial_lon_max=31.0,
             spatial_representation="trajectory",
         )
 
