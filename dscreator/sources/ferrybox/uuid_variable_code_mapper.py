@@ -46,6 +46,15 @@ MAPPER = {
         "turbidity": "e541c5b7-a0db-403e-b21d-f6a3487a7094",  # OC/FERRYBOX/C6/TURBIDITY/ADJUSTED
         "fdom": "c34e3640-356a-47a2-9c94-1e7051de5d9d",  # OC/FERRYBOX/C3/CDOM_FLUORESCENCE/ADJUSTED
     },
+    "RW": {
+        "temperature": "ea200b5d-6732-4f59-8e92-df3227645156",  # RW/INLET/SBE38/TEMPERATURE/RAW
+        "salinity": "8691b99a-7527-418b-ad3b-485f0283a520",  # RW/FERRYBOX/SBE45/SALINITY/RAW
+        "oxygen_sat": "604af78e-3b88-4d32-9d57-1c2351695f11",  # RW/FERRYBOX/OPTODE/OXYGEN_SATURATION/RAW
+        "track": "42a1f6c3-9902-42c2-91bc-5896e2bdf44c",  # RW/gpstrack
+        "chlorophyll": "32c0d808-3ba0-4c65-8865-d654737b9060",  # RW/FERRYBOX/C3/CHLA_FLUORESCENCE/ADJUSTED
+        "turbidity": "8559b404-b9e6-4de3-a26b-d3e021fdf1b9",  # RW/FERRYBOX/C3/TURBIDITY/ADJUSTED
+        "fdom": "187a3df1-c069-45e2-b30e-2e281b390077",  # RW/FERRYBOX/C3/CDOM_FLUORESCENCE/ADJUSTED
+    },
     "CH": {
         "temperature": "11aba23f-f184-42f4-a864-b54d7075fe02",  # degc, CH/INLET/SBE38/TEMPERATURE/RAW
         "sst_skin": "ee45ef81-c6f3-471e-ab67-0db1ab783788",  # CH/CALEX/SST/TEMPERATURE/AVERAGE

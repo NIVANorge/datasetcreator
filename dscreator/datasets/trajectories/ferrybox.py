@@ -369,6 +369,59 @@ class DailyOctantis(FerryboxDatasetBuilder):
 
 
 @dataclass
+class DailyRichardWith(FerryboxDatasetBuilder):
+    def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
+        return FerryboxDatasetAttrs(
+            title="FerryBox on MS Richard With, daily data",
+            title_no="FerryBox på MS Richard With, daglige data",
+            summary="The FerryBox system measures temperature, salinity, oxygen, chlorophyll and particle content at a depth of ~5m along the route of MS Richard With along the Norwegian coast. This amounts to about one measurement every ~500 metres, for more information see https://www.niva.no/en/ferrybox. This dataset will normally be updated daily.",
+            summary_no="Ferrybox-systemet måler som standard hvert minutt temperatur, saltinnhold, oksygen, klorofyll-a fluorescens og turbiditet på ~5m meters dyp langs MS Richard With sin faste rute langs norskekysten. Dette tilsvarer en måling ca hver 500 meter, for mer informasjon se https://www.niva.no/ferrybox. Dette datasettet vil normalt bli oppdatert daglig.",
+            keywords=",".join(
+                [
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > SEA SURFACE TEMPERATURE",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > SALINITY/DENSITY > OCEAN SALINITY > OCEAN SURFACE SALINITY",
+                    "GCMDSK:EARTH SCIENCE > OCEANS > OCEAN CHEMISTRY > OXYGEN",
+                    "GEMET:Oceanographic geographical features",
+                    "NORTHEMES:Marine activities",
+                ]
+            ),
+            keywords_vocabulary=",".join(
+                [
+                    "GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
+                    "GEMET:INSPIRE Themes:http://inspire.ec.europa.eu/theme",
+                    "NORTHEMES:GeoNorge Themes:https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling",
+                ]
+            ),
+            depth="~5m",
+            creator_email="miljoinformatikk@niva.no",
+            featureType=ds.attrs["featureType"],
+            # https://htmlpreview.github.io/?https://github.com/metno/mmd/blob/master/doc/mmd-specification.html#related-information-types
+            references="https://github.com/NIVANorge/dataset-extended-metadata/blob/main/README.md (Extended metadata)",
+            # https://vocab.ices.dk/services/pox/GetCodeList/SHIPC
+            ices_platform_code="58R5",
+            platform_code="RW",
+            platform_name="Richard With",
+            date_created=utils.iso_now(),
+            project=",".join(
+                [
+                    "Norwegian Ships of Opportunity program (NorSOOP ID 269922)",
+                    "Joint European Research Infrastructure of Coastal Observatories (JERICO)",
+                ]
+            ),
+            iso_topic_category="oceans",
+            collection="GEONOR, NMDC",
+            time_coverage_start=utils.to_isoformat(ds.time.min().values),
+            time_coverage_end=utils.to_isoformat(ds.time.max().values),
+            # Bergen-Kirkenes
+            geospatial_lat_min=60.0,
+            geospatial_lat_max=71.3,
+            geospatial_lon_min=4.5,
+            geospatial_lon_max=31.0,
+            spatial_representation="trajectory",
+        )
+
+
+@dataclass
 class DailyColorHybrid(FerryboxDatasetBuilder):
     def dataset_attributes(self, ds: xr.Dataset) -> FerryboxDatasetAttrs:
         return FerryboxDatasetAttrs(
